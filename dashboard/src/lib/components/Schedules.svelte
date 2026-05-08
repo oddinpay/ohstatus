@@ -30,10 +30,10 @@
 
   const id = $props.id();
 
-  function formatTime24(t: Time) {
-    if (!t) return "";
-    return `${String(t.hour).padStart(2, "0")}:${String(t.minute).padStart(2, "0")}`;
-  }
+  // function formatTime24(t: Time) {
+  //   if (!t) return "";
+  //   return `${String(t.hour).padStart(2, "0")}:${String(t.minute).padStart(2, "0")}`;
+  // }
 
   function convertToUTC24(d: any, t: Time) {
     if (!d || !t) return "";

@@ -4,37 +4,170 @@
   import Label from "$lib/components/ui/label.svelte";
   import * as Dialog from "$lib/components/ui/dialog";
   import { cn } from "$lib/utils";
+  import * as Form from "$lib/components/ui/form/index.js";
   import * as Select from "$lib/components/ui/select/index.js";
-  import { ShieldAlert } from "lucide-svelte";
+  import { CalendarCheck } from "lucide-svelte";
   import * as Empty from "$lib/components/ui/empty/index.js";
   import ArrowUpRightIcon from "@lucide/svelte/icons/arrow-up-right";
-  import Textarea from "$lib/components/ui/textarea.svelte";
-  import { incidentCreate } from "$lib/types/form";
   import { useCharacterLimit } from "$lib/hooks/use-character-limit.svelte";
+  import Textarea from "$lib/components/ui/textarea.svelte";
+  import { page } from "$app/state";
+  import { superForm } from "sveltekit-superforms";
+  import { zod4 } from "sveltekit-superforms/adapters";
+  import { toast } from "svelte-sonner";
+  import { incidentCreate } from "$lib/types/form";
+  import Loader2 from "@lucide/svelte/icons/loader-2";
+  import { TimeRangeField, DateField, DateRangePicker } from "bits-ui";
+  import CalendarBlank from "phosphor-svelte/lib/CalendarBlankIcon";
+  import CaretLeft from "phosphor-svelte/lib/CaretLeftIcon";
+  import CaretRight from "phosphor-svelte/lib/CaretRightIcon";
+  import {
+    Time,
+    getLocalTimeZone,
+    toZoned,
+    toCalendarDateTime,
+  } from "@internationalized/date";
 
   const id = $props.id();
 
-  const incidents = [
-    { class: "text-emerald-500", label: "Resolved", value: "Resolved" },
-    { class: "text-yellow-500", label: "In Progress", value: "In Progress" },
-    { class: "text-gray-500", label: "Investigating", value: "Investigating" },
+  // function formatTime24(t: Time) {
+  //   if (!t) return "";
+  //   return `${String(t.hour).padStart(2, "0")}:${String(t.minute).padStart(2, "0")}`;
+  // }
+
+  function convertToUTC24(d: any, t: Time) {
+    if (!d || !t) return "";
+    const tz = getLocalTimeZone();
+    const date = toZoned(toCalendarDateTime(d, t), tz).toDate();
+
+    const h = String(date.getUTCHours()).padStart(2, "0");
+    const m = String(date.getUTCMinutes()).padStart(2, "0");
+    return `${h}:${m}`;
+  }
+
+  const timeRangeString = $derived.by(() => {
+    const startD = $formData.date?.start;
+    const startT = $formData.time?.start;
+    const endD = $formData.date?.end;
+    const endT = $formData.time?.end;
+
+    if (startD && startT && endD && endT) {
+      // const localRange = `${formatTime24(startT)} - ${formatTime24(endT)}`;
+
+      const utcStart = convertToUTC24(startD, startT);
+      const utcEnd = convertToUTC24(endD, endT);
+      const utcRange = `${utcStart} - ${utcEnd}`;
+
+      return `${utcRange}`;
+    }
+    return "";
+  });
+
+  function formatDate(d: any) {
+    if (!d) return "";
+    const monthNames = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const monthName = monthNames[d.month - 1] || "";
+    return `${monthName} ${String(d.day).padStart(2, "0")}, ${d.year}`;
+  }
+
+  const dateRangeString = $derived.by(() => {
+    const start = $formData.date?.start;
+    const end = $formData.date?.end;
+
+    if (start && end) {
+      return `${formatDate(start)} - ${formatDate(end)}`;
+    }
+    return "";
+  });
+
+  const schedules = [
     { class: "text-red-500", label: "Identified", value: "Identified" },
   ] as const;
 
-  let value = $state("Identified");
-
+  let open = $state(false);
   let name = $state("");
+  let service = $state("");
+  let bioLimit = useCharacterLimit(180, "");
 
-  const bioLimit = useCharacterLimit(180, "");
+  const selected = $derived(
+    schedules.find((i) => i.value === $formData.status),
+  );
 
-  function handleOnSubmit(e: Event) {
-    e.preventDefault();
-  }
+  $effect(() => {
+    const serviceName = service.trim().toUpperCase();
+    name = serviceName ? `${serviceName} errors` : "API errors";
 
-  const selected = $derived(incidents.find((i) => i.value === value));
+    $formData.title = name;
+    $formData.service = service;
+  });
+
+  const autoNote = $derived.by(() => {
+    const name = service.trim().toUpperCase() || "API";
+
+    if ($formData.status === "Inprogress") {
+      return "An incident is currently in progress. We will provide updates as necessary.";
+    } else if ($formData.status === "Resolved") {
+      return "The incident has been resolved.";
+    } else if ($formData.status === "Investigating") {
+      return "The incident is currently being investigated.";
+    }
+
+    return `${name} has an upcoming incident. We will provide updates as necessary.`;
+  });
+
+  const form = superForm(page.data.form, {
+    id: "create-schedule",
+    resetForm: true,
+    validators: zod4(incidentCreate),
+    onSubmit: async ({ formData }) => {
+      await new Promise((resolve) => setTimeout(resolve, 800));
+    },
+    onUpdate: async ({ form: f }) => {
+      if (f.valid) {
+        service = "";
+        name = "";
+        bioLimit.value = "";
+        open = false;
+        toast.success("Incident created successfully!");
+      } else {
+        open = false;
+        const serverMessage = f.errors._errors?.[0];
+        const finalMessage =
+          serverMessage || "Something went wrong. Please try again.";
+        toast.error(finalMessage);
+      }
+    },
+  });
+
+  const { form: formData, submitting, enhance } = form;
+
+  const isLocked = $derived(
+    $formData.status === "Inprogress" ||
+      $formData.status === "Completed" ||
+      $formData.status === "Cancelled" ||
+      $formData.status === "Scheduled",
+  );
+
+  $effect(() => {
+    $formData.note = autoNote;
+    bioLimit.value = autoNote;
+  });
 </script>
 
-{#snippet status(item: (typeof incidents)[number])}
+{#snippet status(item: (typeof schedules)[number])}
   <span class="flex items-center gap-2">
     <svg
       width="8"
@@ -54,20 +187,19 @@
 <Empty.Root>
   <Empty.Header>
     <Empty.Media variant="icon">
-      <ShieldAlert />
+      <CalendarCheck />
     </Empty.Media>
     <Empty.Title class=" text-gray-200">Let’s Get Started</Empty.Title>
     <Empty.Description class="text-gray-400">
-      Start by creating a new incident. You can also update an existing
-      incident.
+      Get started by creating an incident, and you’ll receive real-time updates.
     </Empty.Description>
   </Empty.Header>
   <Empty.Content>
     <div class="flex gap-2">
-      <Dialog.Root>
+      <Dialog.Root bind:open>
         <Dialog.Trigger
           class={cn("cursor-pointer", buttonVariants({ variant: "outline" }))}
-          >Create Incident</Dialog.Trigger
+          >Create incident</Dialog.Trigger
         >
         <Dialog.Content class="bg-zinc-900">
           <div class="flex flex-col items-center gap-2">
@@ -75,96 +207,154 @@
               class="flex size-10 shrink-0 items-center justify-center rounded-full border border-border"
               aria-hidden="true"
             >
-              <ShieldAlert class="h-10 w-10 text-white" />
+              <CalendarCheck class="h-10 w-10 text-white" />
             </div>
 
             <Dialog.Header>
               <Dialog.Title class=" text-gray-300 sm:text-center"
-                >Manage Incident</Dialog.Title
+                >Create New Incident</Dialog.Title
               >
               <Dialog.Description class="text-gray-400 sm:text-center">
-                Create or update an incident.
+                Create an incident to inform users about issues.
               </Dialog.Description>
             </Dialog.Header>
           </div>
 
-          <form onsubmit={handleOnSubmit} class="space-y-5">
+          <form method="POST" class="space-y-5" use:enhance>
             <div class="space-y-4">
               <div class="space-y-2">
-                <Label class="font-bold text-gray-300" for="{id}-logo"
-                  >Title</Label
-                >
-                <Input
-                  class=" border-zinc-700 text-white"
-                  id="{id}-logo"
-                  placeholder="Payment errors"
-                  type="text"
-                  bind:value={name}
-                  required
-                />
-              </div>
-              <div class="space-y-2">
-                <Label class="font-bold text-gray-300" for="{id}-title"
-                  >Status</Label
-                >
-                <Select.Root type="single" bind:value>
-                  <Select.Trigger
-                    id="{id}-title"
-                    class="w-full cursor-pointer border-zinc-700 text-white [&_svg:not([class*='text-'])]:text-zinc-200 [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0"
-                  >
-                    {#if selected}
-                      {@render status(selected)}
-                    {:else}
-                      Select a status
-                    {/if}
-                  </Select.Trigger>
-                  <Select.Content
-                    class="bg-zinc-800  text-white [&_*[data-select-item]]:ps-2 [&_*[data-select-item]]:pe-8 [&_*[data-select-item]>span]:start-auto [&_*[data-select-item]>span]:inset-e-2 [&_*[data-select-item]>span]:flex [&_*[data-select-item]>span]:items-center [&_*[data-select-item]>span]:gap-2 [&_*[data-select-item]>span>svg]:shrink-0"
-                  >
-                    {#each incidents as item (item.value)}
-                      <Select.Item
-                        class="cursor-pointer data-highlighted:bg-zinc-700 data-highlighted:text-white [&_svg:not([class*='text-'])]:text-gray-500"
-                        value={item.value}
+                <Form.Field {form} name="service">
+                  <Form.Control>
+                    {#snippet children({ props })}
+                      <Form.Label class="font-bold text-gray-300" for="service"
+                        >Service</Form.Label
                       >
-                        {@render status(item)}
-                      </Select.Item>
-                    {/each}
-                  </Select.Content>
-                </Select.Root>
+                      <Input
+                        class=" border-zinc-700 text-white"
+                        placeholder="API"
+                        type="text"
+                        {...props}
+                        bind:value={service}
+                      />
+                    {/snippet}
+                  </Form.Control>
+                  <Form.FieldErrors />
+                </Form.Field>
               </div>
+
               <div class="space-y-2">
-                <div class="*:not-first:mt-2">
-                  <Label class="font-bold text-gray-300" for="{id}-note"
-                    >Note</Label
-                  >
-                  <Textarea
-                    id="{id}-note"
-                    class=" border-zinc-700 text-white"
-                    bind:value={bioLimit.value}
-                    maxlength={bioLimit.maxLength}
-                    placeholder="Write a few sentences about incident..."
-                    aria-describedby="{id}-left-textarea"
-                    required
-                  />
-                  <p
-                    id="{id}-left-textarea"
-                    class="mt-2 text-right text-xs text-muted-foreground"
-                    role="status"
-                    aria-live="polite"
-                  >
-                    <span class="tabular-nums"
-                      >{bioLimit.maxLength - bioLimit.characterCount}</span
-                    >
-                    characters left
-                  </p>
-                </div>
+                <Form.Field {form} name="title">
+                  <Form.Control>
+                    {#snippet children({ props })}
+                      <Form.Label class="font-bold text-gray-300" for="title"
+                        >Title</Form.Label
+                      >
+                      <Input
+                        class=" border-zinc-700 text-white"
+                        placeholder="Scheduled maintenance for API"
+                        type="text"
+                        readonly
+                        {...props}
+                        bind:value={name}
+                      />
+                    {/snippet}
+                  </Form.Control>
+                  <Form.FieldErrors />
+                </Form.Field>
               </div>
+
+              <div class="space-y-1">
+                <Form.Field {form} name="status">
+                  <Form.Control>
+                    {#snippet children({ props })}
+                      <Form.Label class="font-bold text-gray-300" for="status"
+                        >Status</Form.Label
+                      >
+
+                      <input
+                        type="hidden"
+                        name="status"
+                        bind:value={$formData.status}
+                      />
+                      <Select.Root type="single" bind:value={$formData.status}>
+                        <Select.Trigger
+                          {...props}
+                          class="w-full cursor-pointer border-zinc-700 text-white [&_svg:not([class*='text-'])]:text-zinc-200 [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0"
+                        >
+                          {#if selected}
+                            {@render status(selected)}
+                          {:else}
+                            Select a status
+                          {/if}
+                        </Select.Trigger>
+                        <Select.Content
+                          class="bg-zinc-800  text-white [&_*[data-select-item]]:ps-2 [&_*[data-select-item]]:pe-8 [&_*[data-select-item]>span]:start-auto [&_*[data-select-item]>span]:inset-e-2 [&_*[data-select-item]>span]:flex [&_*[data-select-item]>span]:items-center [&_*[data-select-item]>span]:gap-2 [&_*[data-select-item]>span>svg]:shrink-0"
+                        >
+                          {#each schedules as item (item.value)}
+                            <Select.Item
+                              class="cursor-pointer data-highlighted:bg-zinc-700 data-highlighted:text-white [&_svg:not([class*='text-'])]:text-gray-500"
+                              value={item.value}
+                            >
+                              {@render status(item)}
+                            </Select.Item>
+                          {/each}
+                        </Select.Content>
+                      </Select.Root>
+                    {/snippet}
+                  </Form.Control>
+                  <Form.FieldErrors />
+                </Form.Field>
+              </div>
+
+              <div class="space-y-2">
+                <Form.Field {form} name="note">
+                  <Form.Control>
+                    {#snippet children({ props })}
+                      <div class="*:not-first:mt-2">
+                        <Label class="font-bold text-gray-300" for="note"
+                          >Note</Label
+                        >
+                        <Textarea
+                          {...props}
+                          id="note"
+                          class=" border-zinc-700 text-white"
+                          bind:value={bioLimit.value}
+                          maxlength={bioLimit.maxLength}
+                          placeholder="Write a few sentences about incident..."
+                          aria-describedby="{id}-left-textarea"
+                          readonly={isLocked}
+                          required
+                        />
+                        <p
+                          class="mt-2 text-right text-xs text-muted-foreground"
+                          role="status"
+                          aria-live="polite"
+                        >
+                          <span class="tabular-nums"
+                            >{bioLimit.maxLength -
+                              ($formData.note?.length || 0)}</span
+                          >
+                          characters left
+                        </p>
+                      </div>
+                    {/snippet}
+                  </Form.Control>
+                  <Form.FieldErrors />
+                </Form.Field>
+              </div>
+              <Form.Button
+                formaction="?/create"
+                class="mt-2 w-full cursor-pointer disabled:pointer-events-auto disabled:cursor-not-allowed"
+                type="submit"
+                variant="outline"
+                disabled={$submitting}
+                >{#if $submitting}
+                  <Loader2 class="size-4 animate-spin" />
+                {:else}
+                  Create
+                {/if}
+              </Form.Button>
             </div>
-            <Button
-              class="mt-2 w-full cursor-pointer"
-              type="submit"
-              variant="outline">Create</Button
-            >
           </form>
         </Dialog.Content>
       </Dialog.Root>
@@ -172,7 +362,7 @@
   </Empty.Content>
   <Button variant="link" class="text-gray-400" size="sm">
     <a
-      href="https://github.com/oddinpay/ohstatus"
+      href="https://github.com/oddinpay/oddin-status"
       target="_blank"
       rel="noopener noreferrer"
     >
