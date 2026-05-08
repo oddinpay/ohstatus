@@ -269,7 +269,7 @@ export const incidentCreate = z.object({
     .enum(["Identified", "Investigating", "Inprogress", "Resolved"], {
       message: "Status must be one of: Identified, Investigating, In Progress, Resolved",
     })
-    .default("Identified"),
+    .default("Investigating"),
 
   note: z
     .string()

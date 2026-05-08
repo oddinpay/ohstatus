@@ -75,7 +75,7 @@ export const getStatusCounts = query({
         ).length;
 
         return {
-            incidents: all.filter(s => s.status === "Inprogress").length,
+            incidents: all.filter(s => s.status === "Investigating").length,
             identified: identifiedCount,
             total: all.length
         };

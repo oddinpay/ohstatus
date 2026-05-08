@@ -94,7 +94,7 @@
   });
 
   const schedules = [
-    { class: "text-red-500", label: "Identified", value: "Identified" },
+    { class: "text-gray-500", label: "Investigating", value: "Investigating" },
   ] as const;
 
   let open = $state(false);
@@ -107,25 +107,27 @@
   );
 
   $effect(() => {
-    const serviceName = service.trim().toUpperCase();
-    name = serviceName ? `${serviceName} errors` : "API errors";
+    const serviceName = service.trim();
+    name = serviceName
+      ? `Elevated ${serviceName} errors`
+      : "Elevated API errors";
 
     $formData.title = name;
     $formData.service = service;
   });
 
   const autoNote = $derived.by(() => {
-    const name = service.trim().toUpperCase() || "API";
+    const name = service.trim().split(" ").slice(0, 2).join(" ") || "API";
 
     if ($formData.status === "Inprogress") {
       return "An incident is currently in progress. We will provide updates as necessary.";
     } else if ($formData.status === "Resolved") {
       return "The incident has been resolved.";
-    } else if ($formData.status === "Investigating") {
-      return "The incident is currently being investigated.";
+    } else if ($formData.status === "Identified") {
+      return `We have identified an issue related to ${name}. We will provide updates as necessary.`;
     }
 
-    return `${name} has an upcoming incident. We will provide updates as necessary.`;
+    return `We are currently investigating an issue related to ${name}. We will provide updates as necessary.`;
   });
 
   const form = superForm(page.data.form, {
@@ -156,9 +158,9 @@
 
   const isLocked = $derived(
     $formData.status === "Inprogress" ||
-      $formData.status === "Completed" ||
-      $formData.status === "Cancelled" ||
-      $formData.status === "Scheduled",
+      $formData.status === "Resolved" ||
+      $formData.status === "Investigating" ||
+      $formData.status === "Investigating",
   );
 
   $effect(() => {
