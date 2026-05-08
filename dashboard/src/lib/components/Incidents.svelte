@@ -159,7 +159,7 @@
   const isLocked = $derived(
     $formData.status === "Inprogress" ||
       $formData.status === "Resolved" ||
-      $formData.status === "Investigating" ||
+      $formData.status === "Identified" ||
       $formData.status === "Investigating",
   );
 
