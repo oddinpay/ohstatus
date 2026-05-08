@@ -17,51 +17,8 @@
   import { toast } from "svelte-sonner";
   import { incidentCreate } from "$lib/types/form";
   import Loader2 from "@lucide/svelte/icons/loader-2";
-  import { TimeRangeField, DateField, DateRangePicker } from "bits-ui";
-  import CalendarBlank from "phosphor-svelte/lib/CalendarBlankIcon";
-  import CaretLeft from "phosphor-svelte/lib/CaretLeftIcon";
-  import CaretRight from "phosphor-svelte/lib/CaretRightIcon";
-  import {
-    Time,
-    getLocalTimeZone,
-    toZoned,
-    toCalendarDateTime,
-  } from "@internationalized/date";
 
   const id = $props.id();
-
-  // function formatTime24(t: Time) {
-  //   if (!t) return "";
-  //   return `${String(t.hour).padStart(2, "0")}:${String(t.minute).padStart(2, "0")}`;
-  // }
-
-  function convertToUTC24(d: any, t: Time) {
-    if (!d || !t) return "";
-    const tz = getLocalTimeZone();
-    const date = toZoned(toCalendarDateTime(d, t), tz).toDate();
-
-    const h = String(date.getUTCHours()).padStart(2, "0");
-    const m = String(date.getUTCMinutes()).padStart(2, "0");
-    return `${h}:${m}`;
-  }
-
-  const timeRangeString = $derived.by(() => {
-    const startD = $formData.date?.start;
-    const startT = $formData.time?.start;
-    const endD = $formData.date?.end;
-    const endT = $formData.time?.end;
-
-    if (startD && startT && endD && endT) {
-      // const localRange = `${formatTime24(startT)} - ${formatTime24(endT)}`;
-
-      const utcStart = convertToUTC24(startD, startT);
-      const utcEnd = convertToUTC24(endD, endT);
-      const utcRange = `${utcStart} - ${utcEnd}`;
-
-      return `${utcRange}`;
-    }
-    return "";
-  });
 
   function formatDate(d: any) {
     if (!d) return "";
@@ -124,7 +81,7 @@
     } else if ($formData.status === "Resolved") {
       return "The incident has been resolved.";
     } else if ($formData.status === "Identified") {
-      return `We have identified an issue related to ${name}. We will provide updates as necessary.`;
+      return `We have identified an incident related to ${name}. We will provide updates as necessary.`;
     }
 
     return `We are currently investigating an issue related to ${name}. We will provide updates as necessary.`;
