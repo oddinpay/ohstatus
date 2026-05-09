@@ -91,6 +91,16 @@
   });
 
   $effect(() => {
+    if (open) {
+      if (statusProp === "Investigating") {
+        $formData.status = "Identified";
+      } else if (statusProp === "Identified") {
+        $formData.status = "Inprogress";
+      }
+    }
+  });
+
+  $effect(() => {
     if (isParentLocked) {
       if (statusProp === "Investigating") {
         $formData.status = "Identified";
@@ -162,11 +172,6 @@
   });
 
   const { form: formData, submitting, enhance } = form;
-  $formData.status = "Inprogress";
-
-  const isLocked = $derived(
-    $formData.status === "Inprogress" || $formData.status === "Resolved",
-  );
 
   $effect(() => {
     $formData.note = bioLimit.value;
@@ -311,7 +316,7 @@
                     maxlength={bioLimit.maxLength}
                     placeholder="Write a few sentences about incident..."
                     aria-describedby="{id}-left-textarea"
-                    readonly={isLocked}
+                    readonly
                     required
                   />
                   <p
