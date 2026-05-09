@@ -77,14 +77,21 @@
       (s) => s.status === "Inprogress",
     );
     const hasCompleted = relatedIncidents.some((s) => s.status === "Resolved");
+    const hasIdentified = relatedIncidents.some(
+      (s) => s.status === "Identified",
+    );
 
-    const groupIsActiveOrDone = hasInProgress || hasCompleted;
+    const groupIsActiveOrDone =
+      hasInProgress || hasCompleted || hasIdentified;
 
+    if (statusProp === "Investigating" && groupIsActiveOrDone) {
+      return true;
+    }
     if (statusProp === "Identified" && groupIsActiveOrDone) {
       return true;
     }
 
-    if (statusProp === "Inprogress" && hasCompleted) {
+    if (statusProp === "Resolved" && hasInProgress) {
       return true;
     }
 
