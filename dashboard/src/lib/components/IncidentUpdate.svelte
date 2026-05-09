@@ -118,8 +118,8 @@
   $effect(() => {
     const serviceName = service.trim().toUpperCase();
     name = serviceName
-      ? `Elevated ${serviceName} errors`
-      : "Elevated API errors";
+      ? `Incident ${serviceName}`
+      : "Incident API";
 
     $formData.title = name;
     $formData.service = service;
