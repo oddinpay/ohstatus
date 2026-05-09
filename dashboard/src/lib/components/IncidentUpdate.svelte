@@ -46,34 +46,20 @@
   } = $props();
 
   const visibleIncidents = $derived(() => {
-    // If locked (Resolved), only show current
     if (isParentLocked) {
       return incidents.filter((i) => i.value === statusProp);
     }
 
-    // Logic: Always show the CURRENT status AND the NEXT possible status
     if (statusProp === "Investigating") {
-      // For the first gray one: can stay Investigating or move to Identified
-      return incidents.filter(
-        (i) => i.value === "Investigating" || i.value === "Identified",
-      );
+      return incidents.filter((i) => i.value === "Identified");
+    } else if (statusProp === "Inprogress") {
+      return incidents.filter((i) => i.value === "Resolved");
+    } else if (statusProp === "Identified") {
+      return incidents.filter((i) => i.value === "Inprogress");
+    } else if (statusProp === "Resolved") {
+      return incidents.filter((i) => i.value === "Resolved");
     }
-
-    if (statusProp === "Identified") {
-      // Can stay Identified or move to In Progress
-      return incidents.filter(
-        (i) => i.value === "Identified" || i.value === "Inprogress",
-      );
-    }
-
-    if (statusProp === "Inprogress") {
-      // Can stay In Progress or move to Resolved (Identified is now hidden/passed)
-      return incidents.filter(
-        (i) => i.value === "Inprogress" || i.value === "Resolved",
-      );
-    }
-
-    return incidents.filter((i) => i.value === statusProp);
+    return incidents;
   });
 
   let open = $state(false);
