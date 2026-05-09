@@ -82,7 +82,6 @@
     );
 
     const groupIsActiveOrDone = hasInProgress || hasCompleted || hasIdentified;
-
     const groupIsActiveOrDone2 = hasInProgress || hasCompleted;
 
     if (statusProp === "Investigating" && groupIsActiveOrDone) {
