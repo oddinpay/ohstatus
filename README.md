@@ -14,6 +14,6 @@
 
 ## More about ohstatus
 
-Built for serverless environments like Cloudflare Workers and Koyeb, ohstatus ensures high availability and real-time monitoring for production workloads and critical services.
+Built for serverless platforms like Cloudflare and Koyeb, ohstatus ensures high availability and real-time monitoring for production workloads and critical services.
 
 The ohstatus dashboard runs locally, decoupled from the serverless environment. By communicating securely through Convex, your admin interface remains completely private and is never exposed to the public internet.
