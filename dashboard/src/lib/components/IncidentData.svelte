@@ -23,7 +23,7 @@
   import { createRawSnippet } from "svelte";
   import DataTableCheckbox from "$lib/components/ui/data-table/data-table-checkbox.svelte";
   import DataTableEmailButton from "$lib/components/ui/data-table/data-table-incident.svelte";
-  import DataTableActions from "$lib/components/ScheduleUpdate.svelte";
+  import DataTableActions from "$lib/components/IncidentUpdate.svelte";
   import * as Table from "$lib/components/ui/table/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
   import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
@@ -113,9 +113,18 @@
         const statusSnippet = createRawSnippet<[{ status: string }]>(
           (getStatus) => {
             const { status } = getStatus();
-            const stages = ["Identified", "Inprogress", "Resolved"];
-            const isCancelled = status === "Cancelled";
+            const stages = [
+              "Investigating",
+              "Identified",
+              "Inprogress",
+              "Resolved",
+            ];
             const themeMap: Record<string, { dot: string; ping: string }> = {
+              Investigating: {
+                dot: "bg-gray-500",
+                ping: "bg-gray-400",
+              },
+
               Identified: {
                 dot: "bg-zinc-500",
                 ping: "bg-zinc-400",
@@ -129,11 +138,6 @@
               Resolved: {
                 dot: "bg-emerald-600",
                 ping: "bg-emerald-400",
-              },
-
-              Cancelled: {
-                dot: "bg-red-500",
-                ping: "bg-red-400",
               },
 
               empty: { dot: "bg-zinc-800", ping: "hidden" },
@@ -150,15 +154,7 @@
                             let currentTheme = themeMap.empty;
                             let showPing = false;
 
-                            if (isCancelled) {
-                              if (i === 0) currentTheme = themeMap.Identified;
-
-                              if (i === 2) {
-                                currentTheme = themeMap.Cancelled;
-
-                                showPing = true;
-                              }
-                            } else {
+                            if (stages.includes(status)) {
                               const currentIndex = stages.indexOf(status);
 
                               if (status === stage) {
@@ -166,7 +162,7 @@
 
                                 showPing = true;
                               } else if (i < currentIndex) {
-                                currentTheme = themeMap.Completed;
+                                currentTheme = themeMap.Resolved;
                               }
                             }
 
@@ -181,7 +177,7 @@
                                     ${
                                       i < stages.length - 1
                                         ? `
-                                        <div class="mx-1 w-3 h-[1px] ${!isCancelled && stages.indexOf(status) > i ? "bg-emerald-600" : "bg-zinc-800"}"></div>`
+                                        <div class="mx-1 w-3 h-[1px] ${stages.indexOf(status) > i ? "bg-emerald-600" : "bg-zinc-800"}"></div>`
                                         : ""
                                     }
 
