@@ -25,7 +25,7 @@
   import { api } from "../../convex/_generated/api";
 
   const incidents = [
-    { class: "text-zinc-200", label: "Identified", value: "Identified" },
+    { class: "text-red-500", label: "Identified", value: "Identified" },
     { class: "text-yellow-500", label: "In Progress", value: "Inprogress" },
     { class: "text-emerald-600", label: "Resolved", value: "Resolved" },
   ] as const;

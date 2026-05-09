@@ -1674,10 +1674,10 @@
     }
 
     .badge.identified {
-      background: white;
-      color: #4b5563;
+      background: #ffe3e3;
+      color: #c92a2a;
       font-weight: 600;
-      border: 1px solid #cecece;
+      border: 1px solid #ffa8a8;
     }
 
     .badge.scheduled {

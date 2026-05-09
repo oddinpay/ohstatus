@@ -126,8 +126,8 @@
               },
               
               Identified: {
-                dot: "bg-zinc-200",
-                ping: "bg-zinc-100",
+                dot: "bg-red-500",
+                ping: "bg-red-400",
               },
 
               Inprogress: {
