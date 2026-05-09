@@ -46,20 +46,34 @@
   } = $props();
 
   const visibleIncidents = $derived(() => {
+    // If locked (Resolved), only show current
     if (isParentLocked) {
       return incidents.filter((i) => i.value === statusProp);
     }
 
+    // Logic: Always show the CURRENT status AND the NEXT possible status
     if (statusProp === "Investigating") {
-      return incidents.filter((i) => i.value === "Identified");
-    } else if (statusProp === "Inprogress") {
-      return incidents.filter((i) => i.value === "Resolved");
-    } else if (statusProp === "Identified") {
-      return incidents.filter((i) => i.value === "Inprogress");
-    } else if (statusProp === "Resolved") {
-      return incidents.filter((i) => i.value === "Resolved");
+      // For the first gray one: can stay Investigating or move to Identified
+      return incidents.filter(
+        (i) => i.value === "Investigating" || i.value === "Identified",
+      );
     }
-    return incidents;
+
+    if (statusProp === "Identified") {
+      // Can stay Identified or move to In Progress
+      return incidents.filter(
+        (i) => i.value === "Identified" || i.value === "Inprogress",
+      );
+    }
+
+    if (statusProp === "Inprogress") {
+      // Can stay In Progress or move to Resolved (Identified is now hidden/passed)
+      return incidents.filter(
+        (i) => i.value === "Inprogress" || i.value === "Resolved",
+      );
+    }
+
+    return incidents.filter((i) => i.value === statusProp);
   });
 
   let open = $state(false);
@@ -152,6 +166,8 @@
       bioLimit.value = "The incident has been resolved.";
     } else if ($formData.status === "Identified") {
       bioLimit.value = `We have identified an incident related to ${service}. We will provide updates as necessary.`;
+    } else if ($formData.status === "Investigating") {
+      bioLimit.value = `We are currently investigating an issue related to ${service}. We will provide updates as necessary.`;
     }
   });
 
