@@ -90,11 +90,15 @@
       return true;
     }
 
+    if (statusProp === "Inprogress" && hasCompleted) {
+      return true;
+    }
+
     if (statusProp === "Resolved" && hasInProgress) {
       return true;
     }
 
-    return statusProp === "Resolved";
+    return false;
   });
 
   $effect(() => {
