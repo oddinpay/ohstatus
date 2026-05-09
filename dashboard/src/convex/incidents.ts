@@ -5,11 +5,11 @@ import type { DataModel } from "./_generated/dataModel";
 import { TableAggregate } from "@convex-dev/aggregate";
 
 
-export const scheduleAggregate = new TableAggregate<{
+export const incidentAggregate = new TableAggregate<{
     Key: string;
     DataModel: DataModel;
     TableName: "incidents";
-}>(components.scheduleCount, {
+}>(components.incidentCount, {
     sortKey: (doc) => doc.status,
 });
 
@@ -44,7 +44,7 @@ export const post = mutation({
 
         const doc = await ctx.db.get(id);
         if (doc) {
-            await scheduleAggregate.insert(ctx, doc);
+            await incidentAggregate.insert(ctx, doc);
         }
         return id;
     },
@@ -53,14 +53,14 @@ export const post = mutation({
 
 export const count = query({
     handler: async (ctx) => {
-        return await scheduleAggregate.count(ctx);
+        return await incidentAggregate.count(ctx);
     },
 });
 
 export const getStatusCounts = query({
     handler: async (ctx) => {
 
-        const all = await ctx.db.query("schedules").collect();
+        const all = await ctx.db.query("incidents").collect();
         const groups = new Map<string, string[]>();
 
         all.forEach(s => {
@@ -105,7 +105,7 @@ export const update = mutation({
 
         const doc = await ctx.db.get(id);
         if (doc) {
-            await scheduleAggregate.insert(ctx, doc);
+            await incidentAggregate.insert(ctx, doc);
         }
         return id;
     },
@@ -119,7 +119,7 @@ export const deleteById = mutation({
         }
         const doc = await ctx.db.get(args.id);
         if (doc) {
-            await scheduleAggregate.delete(ctx, doc);
+            await incidentAggregate.delete(ctx, doc);
             await ctx.db.delete(args.id);
         }
     },
@@ -135,7 +135,7 @@ export const deleteBulk = mutation({
         for (const id of args.id) {
             const doc = await ctx.db.get(id);
             if (doc) {
-                await scheduleAggregate.delete(ctx, doc);
+                await incidentAggregate.delete(ctx, doc);
                 await ctx.db.delete(id);
             }
         }
@@ -144,11 +144,11 @@ export const deleteBulk = mutation({
 
 export const backfill = mutation({
     handler: async (ctx) => {
-        await scheduleAggregate.clear(ctx);
+        await incidentAggregate.clear(ctx);
         const existing = await ctx.db.query("incidents").collect();
         for (const doc of existing) {
             try {
-                await scheduleAggregate.insert(ctx, doc);
+                await incidentAggregate.insert(ctx, doc);
             } catch (e) {
                 return `Error backfilling incident ${doc._id}: ${e}`;
             }
