@@ -68,14 +68,18 @@ export const getStatusCounts = query({
             groups.set(s.parentId, [...existing, s.status]);
         });
 
-        const groupValues = Array.from(groups.values());
+        const identifiedCount = Array.from(groups.values()).filter(statuses => 
+            statuses.includes("Identified") && 
+            statuses.every(s => s === "Identified" || s === "Investigating")
+        ).length;
 
-        const identifiedCount = groupValues.filter(statuses =>
-            statuses.includes("Identified") && statuses.length === 1
+        const incidentCount = Array.from(groups.values()).filter(statuses => 
+            statuses.includes("Investigating") && 
+            statuses.every(s => s === "Identified" || s === "Investigating" || s === "Inprogress")
         ).length;
 
         return {
-            incidents: all.filter(s => s.status === "Investigating").length,
+            incidents: incidentCount,
             identified: identifiedCount,
             total: all.length
         };
