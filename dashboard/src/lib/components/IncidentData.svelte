@@ -124,10 +124,10 @@
                 dot: "bg-gray-500",
                 ping: "bg-gray-400",
               },
-
+              
               Identified: {
-                dot: "bg-zinc-500",
-                ping: "bg-zinc-400",
+                dot: "bg-zinc-200",
+                ping: "bg-zinc-100",
               },
 
               Inprogress: {
