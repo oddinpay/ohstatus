@@ -425,6 +425,8 @@
     activeTab = newValue;
   }
 
+  // Incidents
+
   let incidents: Incident[] = [];
 
   incidents.forEach((incident) => {
@@ -435,6 +437,8 @@
       );
     });
   });
+
+  // Maintenance
 
   let maintenances: Maintenance[] = $derived.by(() => {
     $clock;
