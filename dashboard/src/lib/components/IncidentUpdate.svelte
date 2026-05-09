@@ -93,10 +93,18 @@
 
   $effect(() => {
     if (open) {
-      if (statusProp === "Investigating") {
-        $formData.status = "Identified";
-      } else if (statusProp === "Identified") {
-        $formData.status = "Inprogress";
+      if (isParentLocked) {
+        $formData.status = statusProp;
+      } else {
+        if (statusProp === "Investigating") {
+          $formData.status = "Identified";
+        } else if (statusProp === "Identified") {
+          $formData.status = "Inprogress";
+        } else if (statusProp === "Inprogress") {
+          $formData.status = "Resolved";
+        } else {
+          $formData.status = statusProp;
+        }
       }
     }
   });
