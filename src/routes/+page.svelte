@@ -1635,7 +1635,8 @@
     }
 
     .status-entry {
-      margin-bottom: 25px;
+      margin-top: 20px;
+      margin-bottom: 20px;
     }
 
     .time {
