@@ -21,6 +21,7 @@
   import { browser } from "$app/environment";
   import NotIncidents from "$lib/components/NotIncidents.svelte";
   import Incidents from "$lib/components/Incidents.svelte";
+  import IncidentsData from "$lib/components/IncidentData.svelte";
 
   let currentTab = "tab-2";
   let requestID: number;
@@ -28,12 +29,12 @@
 
   const statusCounts = useQuery(api.incidents.getStatusCounts, {});
 
-  const scheduleCount = useQuery(api.schedules.count, {});
+  const incidentCount = useQuery(api.incidents.count, {});
   let timer: ReturnType<typeof setTimeout>;
 
   $effect(() => {
-    if (scheduleCount.data !== undefined) {
-      totalCount = scheduleCount.data;
+    if (incidentCount.data !== undefined) {
+      totalCount = incidentCount.data;
     } else {
       totalCount = 0;
     }
@@ -210,16 +211,16 @@
                 class="flex items-center hover:opacity-95 justify-center min-h-50"
                 value="tab-2"
               >
-                {#if scheduleCount.isLoading}
+                {#if incidentCount.isLoading}
                   <div class="container pb-20">
                     {#each animations as anim}
                       <div id="canvas-{anim.id}" class="circle-container"></div>
                     {/each}
                   </div>
-                {:else if scheduleCount.error}
+                {:else if incidentCount.error}
                   <NotIncidents />
                 {:else if totalCount > 0}
-                  <Incidents />
+                  <IncidentsData />
                 {:else}
                   <NotIncidents />
                 {/if}
