@@ -393,7 +393,7 @@
 
       <Input
         id="table-search"
-        placeholder="Filter schedules..."
+        placeholder="Filter incidents..."
         value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
         oninput={(e) =>
           table.getColumn("name")?.setFilterValue(e.currentTarget.value)}
