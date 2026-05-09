@@ -81,13 +81,14 @@
       (s) => s.status === "Identified",
     );
 
-    const groupIsActiveOrDone =
-      hasInProgress || hasCompleted || hasIdentified;
+    const groupIsActiveOrDone = hasInProgress || hasCompleted || hasIdentified;
+
+    const groupIsActiveOrDone2 = hasInProgress || hasCompleted;
 
     if (statusProp === "Investigating" && groupIsActiveOrDone) {
       return true;
     }
-    if (statusProp === "Identified" && groupIsActiveOrDone) {
+    if (statusProp === "Identified" && groupIsActiveOrDone2) {
       return true;
     }
 
