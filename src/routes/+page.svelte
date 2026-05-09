@@ -1658,7 +1658,7 @@
     .incident-card {
       background: #f9fafb;
       color: black;
-      padding: 25px;
+      padding: 20px;
       border-radius: 8px;
       margin-bottom: 20px;
       box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
