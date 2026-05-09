@@ -25,6 +25,7 @@
 
   const query = useQuery(api.site.get);
   const schedulesQuery = useQuery(api.schedules.get);
+  const incidentsQuery = useQuery(api.incidents.get);
 
   let signin = "https://oddinpay.com/signin";
   let signup = "https://oddinpay.com/signup";
@@ -427,15 +428,112 @@
 
   // Incidents
 
-  let incidents: Incident[] = [];
+  let incidents: Incident[] = $derived.by(() => {
+    $clock;
 
-  incidents.forEach((incident) => {
-    incident.entries.sort((a, b) => {
-      return (
-        (statusPriority.get(a.status) ?? Infinity) -
-        (statusPriority.get(b.status) ?? Infinity)
+    const rawData = incidentsQuery.data;
+
+    if (!rawData) return [];
+    const grouped = new Map<string, Incident>();
+
+    rawData.forEach((inci) => {
+      const statusKey = inci.status as keyof typeof Indicators;
+      const indicator = Indicators[statusKey];
+      const groupId = inci.parentId;
+
+      if (!grouped.has(groupId)) {
+        grouped.set(groupId, {
+          title: inci.title,
+          entries: [],
+        });
+      }
+
+      const date = parseAbsoluteToLocal(
+        new Date(inci._creationTime).toISOString(),
       );
+
+      const formatter = new Intl.DateTimeFormat("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: false,
+        timeZone: getLocalTimeZone(),
+      });
+
+      const formatcurrentTime = formatter
+        .format(date.toDate())
+        .replace(/(\d{4}),/, "$1");
+
+      const groupRecords = rawData.filter((r) => r.parentId === groupId);
+
+      const hasAdvancedStatus = groupRecords.some((r) => {
+        const s = r.status?.toLowerCase();
+        return s === "completed" || s === "cancelled";
+      });
+
+      let displayTime = formatcurrentTime;
+      const isScheduled = inci.status?.toLowerCase() === "scheduled";
+
+      grouped.get(groupId)!.entries.push({
+        time: displayTime,
+        status: indicator as IncidentEntry["status"],
+        description: inci.note,
+      });
     });
+
+    const finalMaintenanceList = Array.from(grouped.values());
+
+    finalMaintenanceList.forEach((m) => {
+      const hasInvestigating = m.entries.some(
+        (e) => e.status === Indicators.Investigating,
+      );
+
+      const hasInProgress = m.entries.some(
+        (e) => e.status === Indicators.Inprogress,
+      );
+      const hasResolved = m.entries.some(
+        (e) => e.status === Indicators.Resolved,
+      );
+      const hasIdentified = m.entries.some(
+        (e) => e.status === Indicators.Identified,
+      );
+
+      m.entries = m.entries
+        .filter((e) => {
+          if (!hasInvestigating) return false;
+
+          if (hasResolved && !hasInProgress) return false;
+
+          if (e.status === Indicators.Identified) {
+            const wasScheduled = m.entries.some(
+              (entry) => entry.status === Indicators.Investigating,
+            );
+            if (!wasScheduled) return false;
+          }
+
+          const isScheduledWhileInProgress =
+            hasInProgress &&
+            !hasIdentified &&
+            !hasResolved &&
+            e.status === Indicators.Investigating;
+
+          const isCompletedWhileCancelled =
+            hasIdentified &&
+            (e.status === Indicators.Resolved ||
+              e.status === Indicators.Inprogress);
+
+          return !isScheduledWhileInProgress && !isCompletedWhileCancelled;
+        })
+        .sort(
+          (a, b) =>
+            (statusPriority.get(a.status) ?? Infinity) -
+            (statusPriority.get(b.status) ?? Infinity),
+        );
+    });
+
+    return finalMaintenanceList.filter((m) => m.entries.length > 0);
   });
 
   // Maintenance
@@ -1249,23 +1347,25 @@
                         </p>
                       {/if}
                       {#each incidents as incident}
-                        <div class="incident-card mt-10">
-                          <h2>{incident.title}</h2>
-                          {#each incident.entries as entry}
-                            <div class="status-entry">
-                              <span class="time font-bold">{entry.time}</span>
-                              <span class="badge mt-1 {entry.status.badge}">
-                                {entry.status.statusLabel}
-                              </span>
-                              <p
-                                class="mt-2 text-gray-600"
-                                style="font-size: 16px"
-                              >
-                                {entry.description}
-                              </p>
-                            </div>
-                          {/each}
-                        </div>
+                        {#if incident.entries.some((entry) => entry.status === Indicators.Resolved)}
+                          <div class="incident-card mt-10">
+                            <h2>{incident.title}</h2>
+                            {#each incident.entries as entry}
+                              <div class="status-entry">
+                                <span class="time font-bold">{entry.time}</span>
+                                <span class="badge mt-1 {entry.status.badge}">
+                                  {entry.status.statusLabel}
+                                </span>
+                                <p
+                                  class="mt-2 text-gray-600"
+                                  style="font-size: 16px"
+                                >
+                                  {entry.description}
+                                </p>
+                              </div>
+                            {/each}
+                          </div>
+                        {/if}
                       {/each}
 
                       {#each maintenances as maintenance}
@@ -1558,7 +1658,7 @@
     .incident-card {
       background: #f9fafb;
       color: black;
-      padding: 30px;
+      padding: 25px;
       border-radius: 8px;
       margin-bottom: 20px;
       box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
