@@ -466,15 +466,7 @@
         .format(date.toDate())
         .replace(/(\d{4}),/, "$1");
 
-      const groupRecords = rawData.filter((r) => r.parentId === groupId);
-
-      const hasAdvancedStatus = groupRecords.some((r) => {
-        const s = r.status?.toLowerCase();
-        return s === "completed" || s === "cancelled";
-      });
-
       let displayTime = formatcurrentTime;
-      const isScheduled = inci.status?.toLowerCase() === "scheduled";
 
       grouped.get(groupId)!.entries.push({
         time: displayTime,
@@ -502,29 +494,7 @@
 
       m.entries = m.entries
         .filter((e) => {
-          if (!hasInvestigating) return false;
-
-          if (hasResolved && !hasInProgress) return false;
-
-          if (e.status === Indicators.Identified) {
-            const wasScheduled = m.entries.some(
-              (entry) => entry.status === Indicators.Investigating,
-            );
-            if (!wasScheduled) return false;
-          }
-
-          const isScheduledWhileInProgress =
-            hasInProgress &&
-            !hasIdentified &&
-            !hasResolved &&
-            e.status === Indicators.Investigating;
-
-          const isCompletedWhileCancelled =
-            hasIdentified &&
-            (e.status === Indicators.Resolved ||
-              e.status === Indicators.Inprogress);
-
-          return !isScheduledWhileInProgress && !isCompletedWhileCancelled;
+          return true;
         })
         .sort(
           (a, b) =>

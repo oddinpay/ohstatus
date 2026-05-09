@@ -170,8 +170,8 @@ export const scheduleCreate = z.object({
     .max(50, "Service must not exceed 50 characters"),
 
   status: z
-    .enum(["Scheduled", "Inprogress", "Completed", "Cancelled"], {
-      message: "Status must be one of: Scheduled, In Progress, Completed, Cancelled",
+    .enum(["Scheduled"], {
+      message: "Status must be set to Scheduled",
     })
     .default("Scheduled"),
 
@@ -211,8 +211,7 @@ export const scheduleCreate2 = z.object({
   status: z
     .enum(["Scheduled", "Inprogress", "Completed", "Cancelled"], {
       message: "Status must be one of: Scheduled, In Progress, Completed, Cancelled",
-    })
-    .default("Scheduled"),
+    }),
 
   note: z
     .string()
@@ -239,8 +238,7 @@ export const scheduleUpdate = z.object({
   status: z
     .enum(["Inprogress", "Completed", "Cancelled"], {
       message: "Status must be one of: In Progress, Completed, Cancelled",
-    })
-    .default("Inprogress"),
+    }),
 
   note: z
     .string()
@@ -266,8 +264,8 @@ export const incidentCreate = z.object({
     .max(50, "Service must not exceed 50 characters"),
 
   status: z
-    .enum([ "Investigating", "Identified", "Inprogress", "Resolved"], {
-      message: "Status must be one of: Identified, Investigating, In Progress, Resolved",
+    .enum(["Investigating"], {
+      message: "Status must be set to Investigating",
     })
     .default("Investigating"),
 
@@ -298,9 +296,8 @@ export const incidentCreate2 = z.object({
 
   status: z
     .enum(["Investigating", "Identified", "Inprogress", "Resolved"], {
-      message: "Status must be one of: Identified, Investigating, In Progress, Resolved",
-    })
-    .default("Identified"),
+      message: "Status must be one of: Investigating, Identified, In Progress, Resolved",
+    }),
 
   note: z
     .string()
@@ -314,7 +311,7 @@ export const incidentUpdate = z.object({
   parentId: z
     .string()
     .trim()
-    .startsWith("sc_", { message: "Parent ID must start with 'sc_'" }),
+    .startsWith("in_", { message: "Parent ID must start with 'in_'" }),
 
   service: z
     .string()
@@ -324,9 +321,9 @@ export const incidentUpdate = z.object({
     .optional(),
 
   status: z
-    .enum(["Investigating", "Inprogress", "Resolved"], {
-      message: "Status must be one of: Investigating, In Progress, Resolved",
-    }).default("Investigating"),
+    .enum(["Identified", "Inprogress", "Resolved"], {
+      message: "Status must be one of: Identified, In Progress, Resolved",
+    }),
 
   note: z
     .string()
