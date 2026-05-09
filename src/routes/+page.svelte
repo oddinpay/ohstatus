@@ -1146,7 +1146,7 @@
                           {:else}
                             {#each incidents as incident}
                               {#if !incident.entries.some((entry) => entry.status === Indicators.Resolved)}
-                                <div class="incident-card">
+                                <div class="incident-card flex flex-col gap-2">
                                   {#each incident.entries as entry}
                                     <div class="status-entry">
                                       <span class="time font-bold"
