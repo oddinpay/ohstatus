@@ -97,8 +97,6 @@
     if (statusProp === "Resolved" && hasInProgress) {
       return true;
     }
-
-    return false;
   });
 
   $effect(() => {
