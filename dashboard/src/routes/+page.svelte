@@ -221,7 +221,7 @@
   </div>
 {:else}
   <h1>Please sign in</h1>
-  <button onclick={() => signIn("google")}> Sign in with Google </button>
+  <button class="bg-blue-500 hover:bg-blue-700 active:scale-95 text-white font-bold py-2 px-4 rounded" onclick={() => signIn("google")}> Sign in with Google </button>
 {/if}
 
 <svelte:head>
