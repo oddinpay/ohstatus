@@ -13,14 +13,9 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint ."
   },
-  "dependencies": {
-    "@auth/core": "^0.34.3",
-    "@convex-dev/aggregate": "^0.2.1",
-    "@convex-dev/auth": "^0.0.92",
-    "@mmailaender/convex-auth-svelte": "^0.1.3",
-    "typeid-js": "^1.2.0"
-  },
+  
   "devDependencies": {
+    "typeid-js": "^1.2.0",
     "@fontsource-variable/inter": "^5.2.8",
     "@internationalized/date": "^3.10.0",
     "@lucide/svelte": "^0.575.0",
@@ -39,8 +34,11 @@
     "@types/node": "^25.6.0",
     "bits-ui": "^2.16.2",
     "clsx": "^2.1.1",
+    "@auth/core": "^0.37.4",
     "convex": "^1.32.0",
     "convex-svelte": "^0.0.12",
+    "@convex-dev/auth": "^0.0.87",
+		"@mmailaender/convex-auth-svelte": "^0.1.3",
     "eslint-config-prettier": "^10.1.8",
     "formsnap": "^2.0.1",
     "lucide-svelte": "^0.545.0",

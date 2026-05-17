@@ -3,9 +3,14 @@
   import "@fontsource-variable/inter";
   import { PUBLIC_CONVEX_URL } from "$env/static/public";
   import { setupConvex } from "convex-svelte";
-  let { children } = $props();
-  setupConvex(PUBLIC_CONVEX_URL);
+  import { setupConvexAuth } from "@mmailaender/convex-auth-svelte/sveltekit";
   import { Toaster } from "svelte-sonner";
+
+  // Import data from +layout.server.ts
+  let { children, data } = $props();
+
+  setupConvex(PUBLIC_CONVEX_URL);
+  setupConvexAuth({ getServerState: () => data.authState });
 </script>
 
 <Toaster closeButton position="top-center" />
