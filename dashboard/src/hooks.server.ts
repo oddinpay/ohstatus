@@ -6,7 +6,4 @@ import { createConvexAuthHooks } from "@mmailaender/convex-auth-svelte/sveltekit
 const { handleAuth } = createConvexAuthHooks();
 
 // Apply hooks in sequence
-export const handle = sequence(
-  handleAuth, // This handles all POST requests to /api/auth automatically
-  // Your other custom handlers...
-);
+export const handle = sequence(handleAuth);
