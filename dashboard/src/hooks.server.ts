@@ -7,5 +7,6 @@ const { handleAuth } = createConvexAuthHooks();
 
 // Apply hooks in sequence
 export const handle = sequence(
-  handleAuth,
+  handleAuth, // This handles all POST requests to /api/auth automatically
+  // Your other custom handlers...
 );
