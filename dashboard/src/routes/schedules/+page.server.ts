@@ -6,8 +6,7 @@ import { setError, superValidate } from "sveltekit-superforms";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../convex/_generated/api";
 import { env } from "$env/dynamic/private";
-import { typeid } from 'typeid-js';
-
+import { typeid } from "typeid-js";
 
 export const load: PageServerLoad = async (event) => {
   const form = await superValidate(event, zod4(scheduleCreate));
@@ -31,14 +30,8 @@ export const actions: Actions = {
 
     try {
       const convex = getConvexClient();
-      const apiKey = env.API_KEY;
-
-      if (!apiKey) {
-        return setError(form, "", "API_KEY environment variable is not set");
-      }
 
       await convex.mutation(api.schedules.post, {
-        apiKey,
         parentId: typeid("sc").toString(),
         title: form.data.title,
         service: form.data.service,
@@ -60,14 +53,8 @@ export const actions: Actions = {
 
     try {
       const convex = getConvexClient();
-      const apiKey = env.API_KEY;
-
-      if (!apiKey) {
-        return setError(form, "", "API_KEY environment variable is not set");
-      }
 
       await convex.mutation(api.schedules.update, {
-        apiKey,
         parentId: form.data.parentId,
         service: form.data.service as string,
         status: form.data.status,
@@ -100,7 +87,6 @@ export const actions: Actions = {
       }
 
       await convex.mutation(api.schedules.deleteById, {
-        apiKey,
         id: formData.get("_id") as any,
       });
 
@@ -130,7 +116,6 @@ export const actions: Actions = {
       const ids = JSON.parse(rawIdData as string);
 
       await convex.mutation(api.schedules.deleteBulk, {
-        apiKey,
         id: ids,
       });
 

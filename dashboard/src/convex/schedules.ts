@@ -3,7 +3,7 @@ import { v } from "convex/values";
 import { components } from "./_generated/api";
 import type { DataModel } from "./_generated/dataModel";
 import { TableAggregate } from "@convex-dev/aggregate";
-
+import { getAuthUserId } from "@convex-dev/auth/server";
 
 export const scheduleAggregate = new TableAggregate<{
   Key: string;
@@ -13,16 +13,20 @@ export const scheduleAggregate = new TableAggregate<{
   sortKey: (doc) => doc.status,
 });
 
-
 export const get = query({
   handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+
+    if (userId === null) {
+      throw new Error("Unauthorized");
+    }
+
     return await ctx.db.query("schedules").collect();
   },
 });
 
 export const post = mutation({
   args: {
-    apiKey: v.string(),
     parentId: v.string(),
     title: v.optional(v.string()),
     service: v.string(),
@@ -32,7 +36,9 @@ export const post = mutation({
     time: v.string(),
   },
   handler: async (ctx, args) => {
-    if (args.apiKey !== process.env.API_KEY) {
+    const userId = await getAuthUserId(ctx);
+
+    if (userId === null) {
       throw new Error("Unauthorized");
     }
 
@@ -54,35 +60,43 @@ export const post = mutation({
   },
 });
 
-
 export const count = query({
   handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+
+    if (userId === null) {
+      throw new Error("Unauthorized");
+    }
     return await scheduleAggregate.count(ctx);
   },
 });
 
 export const getStatusCounts = query({
   handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+
+    if (userId === null) {
+      throw new Error("Unauthorized");
+    }
 
     const all = await ctx.db.query("schedules").collect();
     const groups = new Map<string, string[]>();
 
-    all.forEach(s => {
+    all.forEach((s) => {
       const existing = groups.get(s.parentId) || [];
       groups.set(s.parentId, [...existing, s.status]);
     });
 
     const groupValues = Array.from(groups.values());
 
-    const scheduledCount = groupValues.filter(statuses =>
-      statuses.includes("Scheduled") && statuses.length === 1
+    const scheduledCount = groupValues.filter(
+      (statuses) => statuses.includes("Scheduled") && statuses.length === 1,
     ).length;
 
-
-    const inprogressCount = groupValues.filter(statuses => {
+    const inprogressCount = groupValues.filter((statuses) => {
       const hasInprogress = statuses.includes("Inprogress");
-      const onlyAllowedStatuses = statuses.every(s =>
-        s === "Inprogress" || s === "Scheduled"
+      const onlyAllowedStatuses = statuses.every(
+        (s) => s === "Inprogress" || s === "Scheduled",
       );
       return hasInprogress && onlyAllowedStatuses;
     }).length;
@@ -90,21 +104,22 @@ export const getStatusCounts = query({
     return {
       inprogress: inprogressCount,
       scheduled: scheduledCount,
-      total: all.length
+      total: all.length,
     };
-  }
+  },
 });
 
 export const update = mutation({
   args: {
-    apiKey: v.string(),
     parentId: v.string(),
     service: v.string(),
     status: v.string(),
     note: v.string(),
   },
   handler: async (ctx, args) => {
-    if (args.apiKey !== process.env.API_KEY) {
+    const userId = await getAuthUserId(ctx);
+
+    if (userId === null) {
       throw new Error("Unauthorized");
     }
 
@@ -127,9 +142,11 @@ export const update = mutation({
 });
 
 export const deleteById = mutation({
-  args: { id: v.id("schedules"), apiKey: v.string() },
+  args: { id: v.id("schedules") },
   handler: async (ctx, args) => {
-    if (args.apiKey !== process.env.API_KEY) {
+    const userId = await getAuthUserId(ctx);
+
+    if (userId === null) {
       throw new Error("Unauthorized");
     }
     const doc = await ctx.db.get(args.id);
@@ -140,11 +157,12 @@ export const deleteById = mutation({
   },
 });
 
-
 export const deleteBulk = mutation({
-  args: { id: v.array(v.id("schedules")), apiKey: v.string() },
+  args: { id: v.array(v.id("schedules")) },
   handler: async (ctx, args) => {
-    if (args.apiKey !== process.env.API_KEY) {
+    const userId = await getAuthUserId(ctx);
+
+    if (userId === null) {
       throw new Error("Unauthorized");
     }
     for (const id of args.id) {
@@ -159,6 +177,12 @@ export const deleteBulk = mutation({
 
 export const backfill = mutation({
   handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+
+    if (userId === null) {
+      throw new Error("Unauthorized");
+    }
+
     await scheduleAggregate.clear(ctx);
     const existing = await ctx.db.query("schedules").collect();
     for (const doc of existing) {
@@ -174,7 +198,13 @@ export const backfill = mutation({
 
 export const cleanup = mutation({
   handler: async (ctx) => {
-    const ninetyDaysAgo = Date.now() - (90 * 24 * 60 * 60 * 1000);
+    const userId = await getAuthUserId(ctx);
+
+    if (userId === null) {
+      throw new Error("Unauthorized");
+    }
+
+    const ninetyDaysAgo = Date.now() - 90 * 24 * 60 * 60 * 1000;
 
     const oldItems = await ctx.db
       .query("schedules")
