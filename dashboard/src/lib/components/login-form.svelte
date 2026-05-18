@@ -59,7 +59,7 @@
       </form>
     </Card.Content>
   </Card.Root>
-  <FieldDescription class="px-6 text-center">
+  <FieldDescription class="px-6 text-center [&>a:hover]:text-gray-200">
     By clicking continue, you agree to our <a
       href="https://oddinpay.com/privacy">Privacy Policy</a
     >.
