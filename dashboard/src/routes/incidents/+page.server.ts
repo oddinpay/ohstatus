@@ -30,8 +30,14 @@ export const actions: Actions = {
 
     try {
       const convex = getConvexClient();
+      const apiKey = env.API_KEY;
+
+      if (!apiKey) {
+        return setError(form, "", "API_KEY environment variable is not set");
+      }
 
       await convex.mutation(api.incidents.post, {
+        apiKey,
         parentId: typeid("in").toString(),
         title: form.data.title,
         service: form.data.service,
@@ -58,6 +64,7 @@ export const actions: Actions = {
       }
 
       await convex.mutation(api.incidents.update, {
+        apiKey,
         parentId: form.data.parentId,
         service: form.data.service as string,
         status: form.data.status,
@@ -90,6 +97,7 @@ export const actions: Actions = {
       }
 
       await convex.mutation(api.incidents.deleteById, {
+        apiKey,
         id: formData.get("_id") as any,
       });
 
@@ -119,6 +127,7 @@ export const actions: Actions = {
       const ids = JSON.parse(rawIdData as string);
 
       await convex.mutation(api.incidents.deleteBulk, {
+        apiKey,
         id: ids,
       });
 

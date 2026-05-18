@@ -3,7 +3,6 @@ import { v } from "convex/values";
 import { components } from "./_generated/api";
 import type { DataModel } from "./_generated/dataModel";
 import { TableAggregate } from "@convex-dev/aggregate";
-import { getAuthUserId } from "@convex-dev/auth/server";
 
 export const incidentAggregate = new TableAggregate<{
   Key: string;
@@ -15,18 +14,13 @@ export const incidentAggregate = new TableAggregate<{
 
 export const get = query({
   handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
-      throw new Error("Unauthorized");
-    }
-
     return await ctx.db.query("incidents").collect();
   },
 });
 
 export const post = mutation({
   args: {
+    apiKey: v.string(),
     parentId: v.string(),
     title: v.optional(v.string()),
     service: v.string(),
@@ -34,9 +28,7 @@ export const post = mutation({
     note: v.string(),
   },
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
+    if (args.apiKey !== process.env.API_KEY) {
       throw new Error("Unauthorized");
     }
 
@@ -58,24 +50,12 @@ export const post = mutation({
 
 export const count = query({
   handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
-      throw new Error("Unauthorized");
-    }
-
     return await incidentAggregate.count(ctx);
   },
 });
 
 export const getStatusCounts = query({
   handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
-      throw new Error("Unauthorized");
-    }
-
     const all = await ctx.db.query("incidents").collect();
     const groups = new Map<string, string[]>();
 
@@ -109,15 +89,14 @@ export const getStatusCounts = query({
 
 export const update = mutation({
   args: {
+    apiKey: v.string(),
     parentId: v.string(),
     service: v.string(),
     status: v.string(),
     note: v.string(),
   },
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
+    if (args.apiKey !== process.env.API_KEY) {
       throw new Error("Unauthorized");
     }
 
@@ -138,14 +117,11 @@ export const update = mutation({
 });
 
 export const deleteById = mutation({
-  args: { id: v.id("incidents") },
+  args: { id: v.id("incidents"), apiKey: v.string() },
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
+    if (args.apiKey !== process.env.API_KEY) {
       throw new Error("Unauthorized");
     }
-
     const doc = await ctx.db.get(args.id);
     if (doc) {
       await incidentAggregate.delete(ctx, doc);
@@ -155,11 +131,9 @@ export const deleteById = mutation({
 });
 
 export const deleteBulk = mutation({
-  args: { id: v.array(v.id("incidents")) },
+  args: { id: v.array(v.id("incidents")), apiKey: v.string() },
   handler: async (ctx, args) => {
-    const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
+    if (args.apiKey !== process.env.API_KEY) {
       throw new Error("Unauthorized");
     }
     for (const id of args.id) {
@@ -174,12 +148,6 @@ export const deleteBulk = mutation({
 
 export const backfill = mutation({
   handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
-      throw new Error("Unauthorized");
-    }
-
     await incidentAggregate.clear(ctx);
     const existing = await ctx.db.query("incidents").collect();
     for (const doc of existing) {
@@ -195,12 +163,6 @@ export const backfill = mutation({
 
 export const cleanup = mutation({
   handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
-      throw new Error("Unauthorized");
-    }
-
     const ninetyDaysAgo = Date.now() - 90 * 24 * 60 * 60 * 1000;
 
     const oldItems = await ctx.db
