@@ -228,17 +228,67 @@
     class="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10"
   >
     <div class="flex w-full max-w-sm flex-col gap-6">
-      <a
-        href="https://oddinpay.com"
-        class="flex items-center gap-2 self-center font-medium"
-      >
-        <div
-          class="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md"
-        >
-          <GalleryVerticalEndIcon class="size-4" />
-        </div>
-        Oddinpay LLC.
-      </a>
+      <div class="flex gap-2 justify-center">
+        <a href="https://www.oddinpay.com" class="flex items-center gap-2 font-medium">
+          <div
+            class="bg-black text-primary-foreground flex size-6 items-center justify-center rounded-md"
+          >
+            <svg
+              zoomAndPan="magnify"
+              viewBox="0 0 650.85864 666.63075"
+              width="16"
+              height="16"
+              preserveAspectRatio="xMidYMid"
+              version="1.2"
+              id="svg4"
+              aria-label="oddinpay"
+              xmlns="http://www.w3.org/2000/svg"
+              class="logo-left cursor-pointer hover:opacity-50 hover:transition-opacity duration-300 ease-in-out"
+            >
+              <defs id="defs2">
+                <clipPath id="eadc04b7e5">
+                  <path
+                    d="m 167.24219,166 h 433.5 v 436 h -433.5 z m 0,0"
+                    id="path1"
+                  />
+                </clipPath>
+                <clipPath id="b780403934">
+                  <path
+                    d="m 384.34766,166.21875 c 66.63671,-1.25391 119.3125,8.78906 158.02343,30.11719 38.71485,21.33203 58.03125,52.50781 57.94922,93.53125 l -0.36328,179.95312 c -0.082,41.02344 -19.52344,72.92578 -58.32812,95.71094 -38.80079,22.78906 -91.51954,34.80859 -158.15625,36.05859 -66.63672,1.25391 -119.3125,-8.78906 -158.02735,-30.11718 -38.71484,-21.33204 -58.03125,-52.31641 -57.94922,-92.94922 l 0.36328,-180.53516 c 0.082,-41.02344 19.52344,-72.92578 58.32813,-95.71094 38.80078,-22.78906 91.51953,-34.80859 158.16016,-36.05859 z m -0.0977,47.01953 c -40.11719,0.75391 -70.72656,7.71484 -91.83203,20.87891 -21.78516,13.5664 -32.70313,32.34765 -32.75,56.34375 l -0.38672,191.5625 c -0.0469,23.99218 10.79297,42.17187 32.52734,54.53515 21.05469,12.76172 51.64063,18.76563 91.75782,18.01172 39.4375,-0.74219 70.05078,-7.89453 91.83593,-21.46094 21.78516,-13.17968 32.69922,-31.76562 32.7461,-55.76171 l 0.38672,-191.5625 c 0.0469,-23.99219 -10.79297,-42.36719 -32.52735,-55.11329 -21.73047,-12.36328 -52.3164,-18.17578 -91.75781,-17.43359 z m 0,0"
+                    id="path2"
+                  />
+                </clipPath>
+              </defs>
+              <g
+                id="60d4efa817"
+                transform="matrix(1.6691556,0,0,1.7097494,-315.37322,-329.57326)"
+              >
+                <g
+                  clip-rule="nonzero"
+                  clip-path="url(#eadc04b7e5)"
+                  id="g4"
+                  style="fill:#ffffff"
+                  transform="matrix(0.90090244,0,0,0.89512785,38.04437,44.067555)"
+                >
+                  <g
+                    clip-rule="evenodd"
+                    clip-path="url(#b780403934)"
+                    id="g3"
+                    style="fill:#ffffff"
+                  >
+                    <path
+                      style="fill:#ffffff;fill-opacity:1;fill-rule:nonzero;stroke:none"
+                      d="m 600.40234,602.84375 0.89453,-446.02734 -433.88281,8.14843 -0.89453,446.02735 z m 0,0"
+                      id="path3"
+                    />
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </div>
+          ODDINPAY LLC.
+        </a>
+      </div>
       <LoginForm />
     </div>
   </div>
