@@ -23,6 +23,8 @@
   import { env } from "$env/dynamic/public";
   import Skeleton from "$lib/components/ui/skeleton/skeleton.svelte";
   import { useAuth } from "@mmailaender/convex-auth-svelte/sveltekit";
+  import LoginForm from "$lib/components/login-form.svelte";
+  import GalleryVerticalEndIcon from "@lucide/svelte/icons/gallery-vertical-end";
 
   let baseUrl = env.PUBLIC_PAGE_URL
     ? env.PUBLIC_PAGE_URL
@@ -220,8 +222,21 @@
     </div>
   </div>
 {:else}
-  <h1>Please sign in</h1>
-  <button class="bg-blue-500 hover:bg-blue-700 active:scale-95 text-white font-bold py-2 px-4 rounded" onclick={() => signIn("google")}> Sign in with Google </button>
+  <div
+    class="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10"
+  >
+    <div class="flex w-full max-w-sm flex-col gap-6">
+      <a href="##" class="flex items-center gap-2 self-center font-medium">
+        <div
+          class="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md"
+        >
+          <GalleryVerticalEndIcon class="size-4" />
+        </div>
+        Oddinpay LLC.
+      </a>
+      <LoginForm />
+    </div>
+  </div>
 {/if}
 
 <svelte:head>
