@@ -43,7 +43,10 @@ export const actions: Actions = {
         protocol: form.data.protocol,
       });
     } catch (error) {
-      return setError(form, "", "A monitor already exists");
+      return setError(
+        form,
+        error instanceof Error ? error.message : "Failed to create monitor",
+      );
     }
 
     return { form };
@@ -70,7 +73,10 @@ export const actions: Actions = {
         protocol: form.data.protocol,
       });
     } catch (error) {
-      return setError(form, "", "Failed to update");
+      return setError(
+        form,
+        error instanceof Error ? error.message : "Failed to update monitor",
+      );
     }
 
     return { form };
