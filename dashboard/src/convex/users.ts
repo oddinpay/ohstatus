@@ -9,7 +9,17 @@ export const get = query({
       throw new Error("Unauthorized");
     }
 
-    const users = await ctx.db.query("users").collect();
-    return users.map((user) => ({ ...user }));
+    const currentUser = await ctx.db.get(userId);
+
+    if (currentUser === null) {
+      throw new Error("User record not found");
+    }
+
+    return {
+      id: currentUser._id,
+      name: currentUser.name,
+      email: currentUser.email,
+      image: currentUser.image,
+    };
   },
 });

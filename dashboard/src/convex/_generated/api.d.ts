@@ -15,6 +15,7 @@ import type * as incidents from "../incidents.js";
 import type * as schedules from "../schedules.js";
 import type * as site from "../site.js";
 import type * as status from "../status.js";
+import type * as users from "../users.js";
 
 import type {
   ApiFromModules,
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   schedules: typeof schedules;
   site: typeof site;
   status: typeof status;
+  users: typeof users;
 }>;
 
 /**

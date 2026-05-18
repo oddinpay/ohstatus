@@ -24,7 +24,7 @@
   import { useQuery } from "convex-svelte";
   import { api } from "../../../../convex/_generated/api";
 
-  const users = useQuery(api.users.get, {});
+  const user = useQuery(api.users.get, {});
 
   function handleClick() {
     window.open("https://github.com/oddinpay/ohstatus", "_blank", "noreferrer");
@@ -41,22 +41,20 @@
       >
         <Avatar>
           <AvatarImage src="" alt="Profile image" />
-          <AvatarFallback>KK</AvatarFallback>
+          <AvatarFallback>{user.data?.name?.charAt(0) ?? "G"}</AvatarFallback>
         </Avatar>
       </Button>
     {/snippet}
   </DropdownMenuTrigger>
   <DropdownMenuContent class="max-w-64 bg-zinc-700" align="end">
-    {#each users.data as user}
-      <DropdownMenuLabel class="flex min-w-0  flex-col">
-        <span class="truncate text-sm font-medium text-zinc-100"
-          >{user.name}</span
-        >
-        <span class="truncate text-xs font-normal text-zinc-300">
-          {user.email}
-        </span>
-      </DropdownMenuLabel>
-    {/each}
+    <DropdownMenuLabel class="flex min-w-0  flex-col">
+      <span class="truncate text-sm font-medium text-zinc-100"
+        >{user.data?.name ?? "Guest"}</span
+      >
+      <span class="truncate text-xs font-normal text-zinc-300">
+        {user.data?.email ?? "guest@example.com"}
+      </span>
+    </DropdownMenuLabel>
     <DropdownMenuSeparator class="bg-zinc-600" />
     <!-- <DropdownMenuGroup>
 			<DropdownMenuSeparator class="bg-zinc-600" />
