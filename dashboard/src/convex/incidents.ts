@@ -3,7 +3,6 @@ import { v } from "convex/values";
 import { components } from "./_generated/api";
 import type { DataModel } from "./_generated/dataModel";
 import { TableAggregate } from "@convex-dev/aggregate";
-import { getAuthUserId } from "@convex-dev/auth/server";
 
 export const incidentAggregate = new TableAggregate<{
   Key: string;
