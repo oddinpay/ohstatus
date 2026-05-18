@@ -43,7 +43,7 @@ export const actions: Actions = {
         protocol: form.data.protocol,
       });
     } catch (error) {
-      return setError(form, "", "A site already exists");
+      return setError(form, "", "A monitor already exists");
     }
 
     return { form };
