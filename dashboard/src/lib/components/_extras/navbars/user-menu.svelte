@@ -21,6 +21,11 @@
     DropdownMenuTrigger,
   } from "$lib/components/ui/dropdowns";
 
+  import { useQuery } from "convex-svelte";
+  import { api } from "../../../../convex/_generated/api";
+
+  const users = useQuery(api.users.get, {});
+
   function handleClick() {
     window.open("https://github.com/oddinpay/ohstatus", "_blank", "noreferrer");
   }
@@ -42,14 +47,16 @@
     {/snippet}
   </DropdownMenuTrigger>
   <DropdownMenuContent class="max-w-64 bg-zinc-700" align="end">
-    <DropdownMenuLabel class="flex min-w-0  flex-col">
-      <span class="truncate text-sm font-medium text-zinc-100"
-        >Keith Kennedy</span
-      >
-      <span class="truncate text-xs font-normal text-zinc-300">
-        k.kennedy@originui-svelte.com
-      </span>
-    </DropdownMenuLabel>
+    {#each users.data as user}
+      <DropdownMenuLabel class="flex min-w-0  flex-col">
+        <span class="truncate text-sm font-medium text-zinc-100"
+          >{user.name}</span
+        >
+        <span class="truncate text-xs font-normal text-zinc-300">
+          {user.email}
+        </span>
+      </DropdownMenuLabel>
+    {/each}
     <DropdownMenuSeparator class="bg-zinc-600" />
     <!-- <DropdownMenuGroup>
 			<DropdownMenuSeparator class="bg-zinc-600" />
