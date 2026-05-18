@@ -47,7 +47,10 @@ export const actions: Actions = {
         note: form.data.note,
       });
     } catch (error) {
-      return setError(form, "", "Failed to create schedule");
+      return setError(
+        form,
+        error instanceof Error ? error.message : "Failed to create schedule",
+      );
     }
 
     return { form };
@@ -73,7 +76,10 @@ export const actions: Actions = {
         note: form.data.note as string,
       });
     } catch (error) {
-      return setError(form, "", "Failed to update");
+      return setError(
+        form,
+        error instanceof Error ? error.message : "Failed to update schedule",
+      );
     }
 
     return { form };
