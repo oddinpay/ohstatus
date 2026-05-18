@@ -20,7 +20,9 @@
 <div class={cn("flex flex-col gap-6", className)} {...restProps}>
   <Card.Root>
     <Card.Header class="text-center">
-      <FieldSeparator class="*:data-[slot=field-separator-content]:bg-card">
+      <FieldSeparator
+        class="*:data-[slot=field-separator-content]:bg-transparent *:data-[slot=field-separator-content]:text-gray-300"
+      >
         Welcome back!
       </FieldSeparator>
     </Card.Header>

@@ -225,13 +225,13 @@
   </div>
 {:else}
   <div
-    class="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10"
+    class="bg-black flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10"
   >
     <div class="flex w-full max-w-sm flex-col gap-6">
-      <div class="flex gap-2 justify-center">
+      <div class="flex gap-2 justify-center text-white">
         <a href="https://www.oddinpay.com" class="flex items-center gap-2 font-medium">
           <div
-            class="bg-black text-primary-foreground flex size-6 items-center justify-center rounded-md"
+            class="bg-zinc-600 text-primary-foreground flex size-6 items-center justify-center rounded-md"
           >
             <svg
               zoomAndPan="magnify"
