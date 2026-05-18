@@ -15,12 +15,6 @@ export const incidentAggregate = new TableAggregate<{
 
 export const get = query({
   handler: async (ctx) => {
-    const userId = await getAuthUserId(ctx);
-
-    if (userId === null) {
-      throw new Error("Unauthorized");
-    }
-
     return await ctx.db.query("incidents").collect();
   },
 });
