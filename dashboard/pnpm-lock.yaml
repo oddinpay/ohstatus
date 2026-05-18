@@ -21,8 +21,8 @@ importers:
         specifier: ^3.10.0
         version: 3.12.1
       '@lucide/svelte':
-        specifier: ^0.575.0
-        version: 0.575.0(svelte@5.55.7)
+        specifier: ^1.3.0
+        version: 1.3.0(svelte@5.55.7)
       '@melt-ui/pp':
         specifier: ^0.3.2
         version: 0.3.2(@melt-ui/svelte@0.86.6(svelte@5.55.7))(svelte@5.55.7)
@@ -107,6 +107,9 @@ importers:
       svelte-infinite-loading:
         specifier: ^1.4.0
         version: 1.4.0
+      svelte-loading-spinners:
+        specifier: ^0.3.6
+        version: 0.3.6
       svelte-sonner:
         specifier: ^1.0.5
         version: 1.1.1(svelte@5.55.7)
@@ -607,8 +610,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@lucide/svelte@0.575.0':
-    resolution: {integrity: sha512-FEFp/0McZwsjBqh1Dn8H+UBm1yHFQYk+utuVMFDw57155+wz2XMoc1pw027ylCPzs+bi14UEXYKbekFhuJKtnw==}
+  '@lucide/svelte@1.3.0':
+    resolution: {integrity: sha512-ZRjfWKklbD9Sjhnb6d7v8A3zSGwVHNTM8kOiObSUIiF4B2rU4zskWV7ysp5tY0wOPl7ttj2bXGQvAd6qOCVhIA==}
     peerDependencies:
       svelte: ^5
 
@@ -2156,6 +2159,9 @@ packages:
   svelte-infinite-loading@1.4.0:
     resolution: {integrity: sha512-Jo+f/yr/HmZQuIiiKKzAHVFXdAUWHW2RBbrcQTil8JVk1sCm/riy7KTJVzjBgQvHasrFQYKF84zvtc9/Y4lFYg==}
 
+  svelte-loading-spinners@0.3.6:
+    resolution: {integrity: sha512-mthHQ2TwiwzTWzbFry3CBnVEfzqPOD9WkVw84OfSYzHRq6N9wgQ+yv37u81uPeuLU/ZOIPqhujpXquB1aol5ZQ==}
+
   svelte-parse-markup@0.1.5:
     resolution: {integrity: sha512-T6mqZrySltPCDwfKXWQ6zehipVLk4GWfH1zCMGgRtLlOIFPuw58ZxVYxVvotMJgJaurKi1i14viB2GIRKXeJTQ==}
     peerDependencies:
@@ -2770,7 +2776,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@lucide/svelte@0.575.0(svelte@5.55.7)':
+  '@lucide/svelte@1.3.0(svelte@5.55.7)':
     dependencies:
       svelte: 5.55.7
 
@@ -4107,6 +4113,8 @@ snapshots:
       - picomatch
 
   svelte-infinite-loading@1.4.0: {}
+
+  svelte-loading-spinners@0.3.6: {}
 
   svelte-parse-markup@0.1.5(svelte@5.55.7):
     dependencies:

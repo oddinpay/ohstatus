@@ -25,6 +25,7 @@
   import { useAuth } from "@mmailaender/convex-auth-svelte/sveltekit";
   import LoginForm from "$lib/components/login-form.svelte";
   import GalleryVerticalEndIcon from "@lucide/svelte/icons/gallery-vertical-end";
+  import { SyncLoader } from "svelte-loading-spinners";
 
   let baseUrl = env.PUBLIC_PAGE_URL
     ? env.PUBLIC_PAGE_URL
@@ -38,7 +39,6 @@
 
   const isAuthenticated = $derived(useAuth().isAuthenticated);
   const isLoading = $derived(useAuth().isLoading);
-  const { signIn, signOut } = useAuth();
 
   $effect(() => {
     if (monitorCount.data !== undefined) {
@@ -56,7 +56,9 @@
 </script>
 
 {#if isLoading}
-  <p>Loading authentication state...</p>
+  <div class="fixed inset-x-0 top-10 z-50 flex items-center justify-center">
+    <SyncLoader size="60" color="#27db48" unit="px" duration="1s" />
+  </div>
 {:else if isAuthenticated}
   <div
     class="flex min-h-screen items-start justify-center overflow-hidden bg-black"
@@ -226,7 +228,10 @@
     class="bg-muted flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10"
   >
     <div class="flex w-full max-w-sm flex-col gap-6">
-      <a href="https://oddinpay.com" class="flex items-center gap-2 self-center font-medium">
+      <a
+        href="https://oddinpay.com"
+        class="flex items-center gap-2 self-center font-medium"
+      >
         <div
           class="bg-primary text-primary-foreground flex size-6 items-center justify-center rounded-md"
         >
