@@ -6,12 +6,12 @@ export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
     Google({
       authorization: {
         params: {
-          hd: "oddinpay.com",
+          hd: process.env.DOMAIN,
         },
       },
 
       profile(profile) {
-        const allowedDomain = "@oddinpay.com";
+        const allowedDomain = `@${process.env.DOMAIN}`;
 
         if (!profile.email || !profile.email.endsWith(allowedDomain)) {
           throw new Error("Unauthorized domain");
