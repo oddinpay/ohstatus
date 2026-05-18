@@ -31,7 +31,7 @@
         <FieldGroup>
           <Field>
             <Button
-              class="cursor-pointer"
+              class="cursor-pointer active:scale-98 active:duration-75"
               onclick={() => signIn("google")}
               variant="outline"
               type="button"
