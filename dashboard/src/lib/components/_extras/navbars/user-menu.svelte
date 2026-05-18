@@ -40,7 +40,7 @@
         {...props}
       >
         <Avatar>
-          <AvatarImage src="" alt="Profile image" />
+          <AvatarImage src={user.data?.image ?? ""} alt="Profile image" />
           <AvatarFallback>{user.data?.name?.charAt(0) ?? "G"}</AvatarFallback>
         </Avatar>
       </Button>

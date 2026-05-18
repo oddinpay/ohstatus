@@ -42,7 +42,7 @@ const protectRoutes: Handle = async ({ event, resolve }) => {
 
   response.headers.set(
     "Content-Security-Policy",
-    `form-action 'self'; frame-ancestors 'self'; base-uri 'self'; upgrade-insecure-requests; object-src 'none';`,
+    `form-action 'self'; frame-ancestors 'self'; base-uri 'self'; upgrade-insecure-requests; object-src 'none'; img-src 'self' https://lh3.googleusercontent.com;`,
   );
 
   return response;
