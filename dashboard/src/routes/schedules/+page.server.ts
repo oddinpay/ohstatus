@@ -16,9 +16,9 @@ export const load: PageServerLoad = async (event) => {
 };
 
 const getConvexClient = () => {
-  const url = env.PUBLIC_CONVEX_URL;
+  const url = env.CONVEX_CLOUD_URL;
   if (!url) {
-    throw new Error("PUBLIC_CONVEX_URL environment variable is not set");
+    throw new Error("CONVEX_CLOUD_URL environment variable is not set");
   }
   return new ConvexHttpClient(url);
 };

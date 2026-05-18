@@ -6,8 +6,7 @@ import { setError, superValidate } from "sveltekit-superforms";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../convex/_generated/api";
 import { env } from "$env/dynamic/private";
-import { typeid } from 'typeid-js';
-
+import { typeid } from "typeid-js";
 
 export const load: PageServerLoad = async (event) => {
   const form = await superValidate(event, zod4(incidentCreate));
@@ -17,9 +16,9 @@ export const load: PageServerLoad = async (event) => {
 };
 
 const getConvexClient = () => {
-  const url = env.PUBLIC_CONVEX_URL;
+  const url = env.CONVEX_CLOUD_URL;
   if (!url) {
-    throw new Error("PUBLIC_CONVEX_URL environment variable is not set");
+    throw new Error("CONVEX_CLOUD_URL environment variable is not set");
   }
   return new ConvexHttpClient(url);
 };
