@@ -1,14 +1,18 @@
-import adapter from "@sveltejs/adapter-node";
+// import adapter from "@sveltejs/adapter-node";
+import adapter from "@jesterkit/exe-sveltekit";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import { preprocessMeltUI, sequence } from "@melt-ui/pp";
 
-const adapterOptions = { precompress: true };
+// const adapterOptions = { precompress: true };
 
 const config = {
   extensions: [".svelte", ".svx", ".md"],
   preprocess: sequence([vitePreprocess(), preprocessMeltUI()]),
   kit: {
-    adapter: adapter(adapterOptions),
+    adapter: adapter({
+      binaryName: "ohstatus",
+    }),
+
     alias: {
       $assets: "./src/lib/assets",
       $data: "./src/lib/data",
