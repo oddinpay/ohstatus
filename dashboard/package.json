@@ -11,7 +11,8 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "format": "prettier --write .",
-    "lint": "prettier --check . && eslint ."
+    "lint": "prettier --check . && eslint .",
+    "start": "PORT=5174 ./dist/ohstatus"
   },
   "devDependencies": {
     "@auth/core": "^0.37.4",
@@ -38,6 +39,7 @@
     "clsx": "^2.1.1",
     "convex": "^1.32.0",
     "convex-svelte": "^0.0.12",
+    "cross-env": "^10.1.0",
     "eslint-config-prettier": "^10.1.8",
     "formsnap": "^2.0.1",
     "lucide-svelte": "^0.545.0",
