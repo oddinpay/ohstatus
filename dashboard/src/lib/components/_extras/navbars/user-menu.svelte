@@ -5,7 +5,7 @@
   const { signOut } = useAuth();
 
   import LogOutIcon from "@lucide/svelte/icons/log-out";
-  import { Unplug, BookOpenText } from "lucide-svelte";
+  import { BookOpenText } from "lucide-svelte";
   import {
     Avatar,
     AvatarFallback,
