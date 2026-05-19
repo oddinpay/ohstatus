@@ -23,43 +23,44 @@
 
   import { useQuery } from "convex-svelte";
   import { api } from "../../../../convex/_generated/api";
-  import { Shimmer } from "@shimmer-from-structure/svelte";
+  import "@aejkatappaja/phantom-ui";
 
   const user = useQuery(api.users.get, {});
+
+  const loading = $derived(!user.data);
 
   function handleClick() {
     window.open("https://github.com/oddinpay/ohstatus", "_blank", "noreferrer");
   }
 </script>
 
-<DropdownMenu>
-  <DropdownMenuTrigger>
-    {#snippet child({ props })}
-      <Button
-        variant="ghost"
-        class="h-auto cursor-pointer p-0 hover:bg-transparent hover:opacity-80"
-        {...props}
-      >
-        <Shimmer loading={user.isLoading}>
+<phantom-ui {loading}>
+  <DropdownMenu>
+    <DropdownMenuTrigger>
+      {#snippet child({ props })}
+        <Button
+          variant="ghost"
+          class="h-auto cursor-pointer rounded-full p-0 hover:bg-transparent hover:opacity-80"
+          {...props}
+        >
           <Avatar>
-            <AvatarImage src={user.data?.image ?? ""} alt="Profile image" />
-            <AvatarFallback>{user.data?.name?.charAt(0) ?? "G"}</AvatarFallback>
+            <AvatarImage src={user.data?.image} alt="Profile image" />
+            <AvatarFallback>{user.data?.name?.charAt(0)}</AvatarFallback>
           </Avatar>
-        </Shimmer>
-      </Button>
-    {/snippet}
-  </DropdownMenuTrigger>
-  <DropdownMenuContent class="max-w-64 bg-zinc-700" align="end">
-    <DropdownMenuLabel class="flex min-w-0  flex-col">
-      <span class="truncate text-sm font-medium text-zinc-100"
-        >{user.data?.name ?? "Guest"}</span
-      >
-      <span class="truncate text-xs font-normal text-zinc-300">
-        {user.data?.email ?? "guest@example.com"}
-      </span>
-    </DropdownMenuLabel>
-    <DropdownMenuSeparator class="bg-zinc-600" />
-    <!-- <DropdownMenuGroup>
+        </Button>
+      {/snippet}
+    </DropdownMenuTrigger>
+    <DropdownMenuContent class="max-w-64 bg-zinc-700" align="end">
+      <DropdownMenuLabel class="flex min-w-0  flex-col">
+        <span class="truncate text-sm font-medium text-zinc-100"
+          >{user.data?.name}</span
+        >
+        <span class="truncate text-xs font-normal text-zinc-300">
+          {user.data?.email}
+        </span>
+      </DropdownMenuLabel>
+      <DropdownMenuSeparator class="bg-zinc-600" />
+      <!-- <DropdownMenuGroup>
 			<DropdownMenuSeparator class="bg-zinc-600" />
 			<DropdownMenuItem
 				onclick={() => goto('/connect')}
@@ -69,25 +70,26 @@
 				<span>Connect</span>
 			</DropdownMenuItem>
 		</DropdownMenuGroup> -->
-    <DropdownMenuGroup>
+      <DropdownMenuGroup>
+        <DropdownMenuSeparator class="bg-zinc-600" />
+        <DropdownMenuItem
+          onclick={() => {
+            handleClick();
+          }}
+          class="cursor-pointer text-zinc-100 focus:bg-zinc-600 focus:text-white"
+        >
+          <BookOpenText size={16} class="opacity-80" aria-hidden="true" />
+          <span>Docs</span>
+        </DropdownMenuItem>
+      </DropdownMenuGroup>
       <DropdownMenuSeparator class="bg-zinc-600" />
       <DropdownMenuItem
-        onclick={() => {
-          handleClick();
-        }}
+        onclick={() => signOut()}
         class="cursor-pointer text-zinc-100 focus:bg-zinc-600 focus:text-white"
       >
-        <BookOpenText size={16} class="opacity-80" aria-hidden="true" />
-        <span>Docs</span>
+        <LogOutIcon size={16} class="opacity-80" aria-hidden="true" />
+        <span>Sign out</span>
       </DropdownMenuItem>
-    </DropdownMenuGroup>
-    <DropdownMenuSeparator class="bg-zinc-600" />
-    <DropdownMenuItem
-      onclick={() => signOut()}
-      class="cursor-pointer text-zinc-100 focus:bg-zinc-600 focus:text-white"
-    >
-      <LogOutIcon size={16} class="opacity-80" aria-hidden="true" />
-      <span>Sign out</span>
-    </DropdownMenuItem>
-  </DropdownMenuContent>
-</DropdownMenu>
+    </DropdownMenuContent>
+  </DropdownMenu>
+</phantom-ui>
