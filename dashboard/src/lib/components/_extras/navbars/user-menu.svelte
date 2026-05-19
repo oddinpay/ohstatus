@@ -23,6 +23,7 @@
 
   import { useQuery } from "convex-svelte";
   import { api } from "../../../../convex/_generated/api";
+  import { Shimmer } from "@shimmer-from-structure/svelte";
 
   const user = useQuery(api.users.get, {});
 
@@ -39,10 +40,12 @@
         class="h-auto cursor-pointer p-0 hover:bg-transparent hover:opacity-80"
         {...props}
       >
-        <Avatar>
-          <AvatarImage src={user.data?.image ?? ""} alt="Profile image" />
-          <AvatarFallback>{user.data?.name?.charAt(0) ?? "G"}</AvatarFallback>
-        </Avatar>
+        <Shimmer loading={user.isLoading}>
+          <Avatar>
+            <AvatarImage src={user.data?.image ?? ""} alt="Profile image" />
+            <AvatarFallback>{user.data?.name?.charAt(0) ?? "G"}</AvatarFallback>
+          </Avatar>
+        </Shimmer>
       </Button>
     {/snippet}
   </DropdownMenuTrigger>

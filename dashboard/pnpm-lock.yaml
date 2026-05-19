@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      '@shimmer-from-structure/svelte':
+        specifier: ^2.4.6
+        version: 2.4.6(svelte@5.55.7)
     devDependencies:
       '@auth/core':
         specifier: ^0.37.4
@@ -89,9 +93,6 @@ importers:
       formsnap:
         specifier: ^2.0.1
         version: 2.0.1(svelte@5.55.7)(sveltekit-superforms@2.30.1(@sveltejs/kit@2.60.1(@sveltejs/vite-plugin-svelte@7.1.2(svelte@5.55.7)(vite@8.0.13(@types/node@25.8.0)(esbuild@0.27.0)(jiti@2.7.0)))(svelte@5.55.7)(typescript@5.9.3)(vite@8.0.13(@types/node@25.8.0)(esbuild@0.27.0)(jiti@2.7.0)))(@types/json-schema@7.0.15)(svelte@5.55.7)(typescript@5.9.3))
-      lucide-svelte:
-        specifier: ^0.545.0
-        version: 0.545.0(svelte@5.55.7)
       phosphor-svelte:
         specifier: ^3.1.0
         version: 3.1.0(svelte@5.55.7)(vite@8.0.13(@types/node@25.8.0)(esbuild@0.27.0)(jiti@2.7.0))
@@ -1137,6 +1138,14 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@shimmer-from-structure/core@2.4.6':
+    resolution: {integrity: sha512-g0pC2rNtSCUdOwgfTS02x47TR8J07Rl2l1Fn4wL07LjBpg6lMvZf/NlkFdSwYxl/cvmpOL3KdpFacNLi9nocuQ==}
+
+  '@shimmer-from-structure/svelte@2.4.6':
+    resolution: {integrity: sha512-ULNt9b2i1iPGEf7hyREY/m3jFG7yl3WxXkFSMXVateWWMoQPW06Lj64qWmCRIZG+yjcXd7IKBrR6uGOpE3RDxg==}
+    peerDependencies:
+      svelte: ^5.53.5
+
   '@sideway/address@4.1.5':
     resolution: {integrity: sha512-IqO/DUQHUkPeixNQ8n0JA6102hT9CmaljNTPmQ1u8MEhBo/R4Q8eKLN/vGZxuebwOroDB4cbpjheD4+/sKFK4Q==}
 
@@ -1848,12 +1857,6 @@ packages:
   lucia@3.2.2:
     resolution: {integrity: sha512-P1FlFBGCMPMXu+EGdVD9W4Mjm0DqsusmKgO7Xc33mI5X1bklmsQb0hfzPhXomQr9waWIBDsiOjvr1e6BTaUqpA==}
     deprecated: This package has been deprecated. Please see https://lucia-auth.com/lucia-v3/migrate.
-
-  lucide-svelte@0.545.0:
-    resolution: {integrity: sha512-lVza6hIAf1abADTU1ThyNp+M3bQZtzTGQ9EQZ2xo3n9ftkd4QcWbDB2ekP2MqRLTJpeLXX5gaFEgFZtbWCnyqg==}
-    deprecated: Package deprecated. Please use @lucide/svelte instead.
-    peerDependencies:
-      svelte: ^3 || ^4 || ^5.0.0-next.42
 
   lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
@@ -3156,6 +3159,13 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.60.4':
     optional: true
 
+  '@shimmer-from-structure/core@2.4.6': {}
+
+  '@shimmer-from-structure/svelte@2.4.6(svelte@5.55.7)':
+    dependencies:
+      '@shimmer-from-structure/core': 2.4.6
+      svelte: 5.55.7
+
   '@sideway/address@4.1.5':
     dependencies:
       '@hapi/hoek': 9.3.0
@@ -3829,10 +3839,6 @@ snapshots:
     dependencies:
       '@oslojs/crypto': 1.0.1
       '@oslojs/encoding': 1.1.0
-
-  lucide-svelte@0.545.0(svelte@5.55.7):
-    dependencies:
-      svelte: 5.55.7
 
   lz-string@1.5.0: {}
 
