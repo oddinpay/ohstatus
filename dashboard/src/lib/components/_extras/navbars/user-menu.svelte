@@ -1,9 +1,6 @@
 <script lang="ts">
   import Button from "$lib/components/ui/button.svelte";
   import { useAuth } from "@mmailaender/convex-auth-svelte/sveltekit";
-
-  const { signOut } = useAuth();
-
   import LogOutIcon from "@lucide/svelte/icons/log-out";
   import { BookOpenText } from "lucide-svelte";
   import {
@@ -26,7 +23,7 @@
   import "@aejkatappaja/phantom-ui";
 
   const user = useQuery(api.users.get, {});
-
+  const { signOut } = useAuth();
   const loading = $derived(!user.data);
 
   function handleClick() {
