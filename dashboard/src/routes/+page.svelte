@@ -229,7 +229,10 @@
   >
     <div class="flex w-full max-w-sm flex-col gap-6">
       <div class="flex gap-2 justify-center text-white">
-        <a href="https://www.oddinpay.com" class="flex items-center gap-2 font-medium">
+        <a
+          href="https://www.oddinpay.com"
+          class="flex items-center gap-2 font-medium"
+        >
           <div
             class="bg-zinc-600 text-primary-foreground flex size-6 items-center justify-center rounded-md"
           >
