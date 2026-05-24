@@ -8,7 +8,7 @@
 - Clean and simple UI – easy to navigate and user-friendly.
 - Supports `HTTPS`, `HTTP`, `TCP`, `DNS` and `API` checks.
 - Incident management – from **detection to resolution**, all in one place.
-- Schedule management 
+- Create Schedules
 - Alerts **Email**.
 - Real-time API **(SSE).**
 - Lightweight **(~140 KB memory per monitor)**.
