@@ -49,7 +49,7 @@
     >
       <Bell />
     </Dialog.Trigger>
-    <Dialog.Content class="sm:max-w-100">
+    <Dialog.Content class="sm:max-w-100 ">
       <Dialog.Header>
         <Dialog.Title>Subscribe to alerts</Dialog.Title>
         <Dialog.Description>
@@ -59,10 +59,10 @@
       </Dialog.Header>
       <div class="grid gap-4">
         <div class="grid gap-3">
-          <Label for="email-1">Email</Label>
+          <Label for="email">Email</Label>
           <Input
             required
-            id="email-1"
+            id="email"
             name="email"
             type="email"
             placeholder="satoshi@example.com"
