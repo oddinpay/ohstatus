@@ -76,7 +76,7 @@
         >
           Close
         </Dialog.Close>
-        <Button type="submit">Subscribe</Button>
+        <Button class="cursor-pointer" type="submit">Subscribe</Button>
       </Dialog.Footer>
     </Dialog.Content>
   </form>
