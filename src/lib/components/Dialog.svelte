@@ -3,41 +3,80 @@
   import * as Dialog from "$lib/components/ui/dialog/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
   import { Label } from "$lib/components/ui/label/index.js";
+  import { Bell } from "lucide-svelte";
+
+  let showCompletionDialog = $state(false);
+
+  $effect(() => {
+    if (showCompletionDialog) {
+      document.documentElement.style.setProperty(
+        "overflow-x",
+        "visible",
+        "important",
+      );
+      document.documentElement.style.setProperty("scrollbar-gutter", "stable");
+
+      const scrollY = window.scrollY;
+      document.body.classList.add("modal-open");
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+    } else {
+      document.documentElement.style.removeProperty("scrollbar-gutter");
+      document.documentElement.style.setProperty(
+        "overflow-x",
+        "hidden",
+        "important",
+      );
+
+      const scrollY = document.body.style.top;
+      if (document.body.classList.contains("modal-open")) {
+        document.body.classList.remove("modal-open");
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
+    }
+  });
 </script>
 
-<Dialog.Root>
+<Dialog.Root bind:open={showCompletionDialog}>
   <form>
     <Dialog.Trigger
       type="button"
-      class={buttonVariants({ variant: "outline" })}
+      class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
     >
-      Open Dialog
+      <Bell />
     </Dialog.Trigger>
-    <Dialog.Content class="sm:max-w-80">
+    <Dialog.Content class="sm:max-w-100">
       <Dialog.Header>
-        <Dialog.Title>Edit profile</Dialog.Title>
+        <Dialog.Title>Subscribe to alerts</Dialog.Title>
         <Dialog.Description>
-          Make changes to your profile here. Click save when you&apos;re done.
+          Get email notifications whenever Oddinpay creates, updates, or
+          resolves an incident.
         </Dialog.Description>
       </Dialog.Header>
       <div class="grid gap-4">
         <div class="grid gap-3">
-          <Label for="name-1">Name</Label>
-          <Input id="name-1" name="name" defaultValue="Pedro Duarte" />
-        </div>
-        <div class="grid gap-3">
-          <Label for="username-1">Username</Label>
-          <Input id="username-1" name="username" defaultValue="@peduarte" />
+          <Label for="email-1">Email</Label>
+          <Input
+            required
+            id="email-1"
+            name="email"
+            type="email"
+            placeholder="satoshi@example.com"
+          />
         </div>
       </div>
       <Dialog.Footer>
         <Dialog.Close
           type="button"
-          class={buttonVariants({ variant: "outline" })}
+          class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
         >
-          Cancel
+          Close
         </Dialog.Close>
-        <Button type="submit">Save changes</Button>
+        <Button type="submit">Subscribe</Button>
       </Dialog.Footer>
     </Dialog.Content>
   </form>

@@ -490,7 +490,6 @@ p {
 
 html,
 body {
-  scrollbar-gutter: stable;
   font-feature-settings:
     "rlig" 1,
     "calt" 1;

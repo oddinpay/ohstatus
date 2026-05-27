@@ -893,40 +893,45 @@
                 <div class="relative left-1/2 -translate-x-1/2 w-screen"></div>
               </div>
 
-              <Dialog />
               <Tabs
                 value={activeTab}
                 class="items-left p-5"
                 onValueChange={handleChange}
               >
-                <TabsList
-                  class="border-border text-foreground h-auto gap-2 rounded-none border-b bg-transparent px-0 py-1"
-                >
-                  {#each tabsOrder as t, i}
-                    <TabsTrigger
-                      value={t}
-                      class={`cursor-pointer hover:bg-accent hover:text-foreground transition-colors duration-150 ease-in-out data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 after:transform after:scale-x-0 after:transition-transform after:duration-200 after:ease-in-out data-[state=active]:after:scale-x-100 data-[state=active]:after:bg-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none ${
-                        direction === "left"
-                          ? "after:origin-left"
-                          : "after:origin-right"
-                      }`}
-                    >
-                      {#if i === 0}
-                        <span
-                          class={activeTab === t
-                            ? "text-black font-semibold"
-                            : "text-gray-500 font-semibold"}>Live status</span
-                        >
-                      {:else if i === 1}
-                        <span
-                          class={activeTab === t
-                            ? "text-black font-semibold"
-                            : "text-zinc-500 font-semibold"}>History</span
-                        >
-                      {/if}
-                    </TabsTrigger>
-                  {/each}
-                </TabsList>
+                <div class="flex items-center justify-between w-full">
+                  <TabsList
+                    class="border-border text-foreground h-auto gap-2 rounded-none border-b bg-transparent px-0 py-1"
+                  >
+                    {#each tabsOrder as t, i}
+                      <TabsTrigger
+                        value={t}
+                        class={`cursor-pointer hover:bg-accent hover:text-foreground transition-colors duration-150 ease-in-out data-[state=active]:hover:bg-accent relative after:absolute after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5 after:transform after:scale-x-0 after:transition-transform after:duration-200 after:ease-in-out data-[state=active]:after:scale-x-100 data-[state=active]:after:bg-primary data-[state=active]:bg-transparent data-[state=active]:shadow-none ${
+                          direction === "left"
+                            ? "after:origin-left"
+                            : "after:origin-right"
+                        }`}
+                      >
+                        {#if i === 0}
+                          <span
+                            class={activeTab === t
+                              ? "text-black font-semibold"
+                              : "text-gray-500 font-semibold"}>Live status</span
+                          >
+                        {:else if i === 1}
+                          <span
+                            class={activeTab === t
+                              ? "text-black font-semibold"
+                              : "text-zinc-500 font-semibold"}>History</span
+                          >
+                        {/if}
+                      </TabsTrigger>
+                    {/each}
+                  </TabsList>
+
+                  <div class="ml-auto">
+                    <Dialog />
+                  </div>
+                </div>
 
                 {#each tabsOrder as t, i}
                   <TabsContent value={t}>
