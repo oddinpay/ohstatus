@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-
+@source "../node_modules/@friendofsvelte/progress/dist";
 @custom-variant dark (&:is(.dark *));
 
 :root {
@@ -454,4 +454,8 @@ input[type="text"] {
 ::-webkit-selection {
   background-color: #ffff;
   color: black;
+}
+
+.progress-bar-inner {
+  background: linear-gradient(90deg, #c0c0c0 0%, #ffffff 50%, #c0c0c0 100%);
 }
