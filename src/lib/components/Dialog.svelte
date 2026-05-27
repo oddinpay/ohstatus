@@ -58,7 +58,7 @@
         </Dialog.Description>
       </Dialog.Header>
       <div class="grid gap-4">
-        <div class="grid gap-3 mt-1">
+        <div class="grid gap-3 mt-0.5">
           <Label for="email">Email</Label>
           <Input
             required
