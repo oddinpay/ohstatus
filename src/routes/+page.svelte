@@ -22,6 +22,7 @@
     getLocalTimeZone,
     parseAbsoluteToLocal,
   } from "@internationalized/date";
+  import Dialog from "$lib/components/Dialog.svelte";
 
   const query = useQuery(api.site.get);
   const schedulesQuery = useQuery(api.schedules.get);
@@ -892,6 +893,7 @@
                 <div class="relative left-1/2 -translate-x-1/2 w-screen"></div>
               </div>
 
+              <Dialog />
               <Tabs
                 value={activeTab}
                 class="items-left p-5"
@@ -925,6 +927,7 @@
                     </TabsTrigger>
                   {/each}
                 </TabsList>
+
                 {#each tabsOrder as t, i}
                   <TabsContent value={t}>
                     {#if i === 0}
