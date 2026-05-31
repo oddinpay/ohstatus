@@ -9,7 +9,6 @@
   import { page } from "$app/state";
   import { zod4 } from "sveltekit-superforms/adapters";
   import { subscriberCreate } from "$lib/types/form";
-  import { fade } from "svelte/transition";
 
   let showCompletionDialog = $state(false);
   let sucess = $state(false);
