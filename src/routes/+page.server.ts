@@ -5,6 +5,7 @@ import { setError, superValidate } from "sveltekit-superforms";
 import type { PageServerLoad } from "./[...catchall]/$types";
 import { subscribers } from "$lib/schema";
 import { drizzle } from "drizzle-orm/d1";
+import { eq } from "drizzle-orm";
 
 export const load: PageServerLoad = async (event) => {
   const form = await superValidate(event, zod4(subscriberCreate));
@@ -19,12 +20,23 @@ export const actions: Actions = {
     if (!form.valid) return fail(400, { form });
 
     const db = drizzle(e.platform!.env.ohstatus);
+    const { email } = form.data;
+
+    const existing = await db
+      .select()
+      .from(subscribers)
+      .where(eq(subscribers.email, email))
+      .get();
+
+    if (existing) {
+      return setError(form, "", "Email is already subscribed.");
+    }
 
     try {
       await db
         .insert(subscribers)
         .values({
-          email: form.data.email,
+          email: email,
         })
         .onConflictDoNothing();
     } catch (error) {
