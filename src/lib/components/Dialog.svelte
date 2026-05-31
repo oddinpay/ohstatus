@@ -9,6 +9,7 @@
   import { page } from "$app/state";
   import { zod4 } from "sveltekit-superforms/adapters";
   import { subscriberCreate } from "$lib/types/form";
+  import { fade, fly } from "svelte/transition";
 
   let showCompletionDialog = $state(false);
   let sucess = $state(false);
@@ -75,70 +76,83 @@
     <Bell />
   </Dialog.Trigger>
 
-  {#if sucess}
-    <Dialog.Content class="sm:max-w-100">
-      <Dialog.Header>
-        <Dialog.Title>Subscription successful</Dialog.Title>
-        <Dialog.Description class="mt-2 text-gray-500">
-          You have successfully subscribed to alerts. You will receive email
-          notifications whenever Oddinpay creates, updates, or resolves an
-          incident.
-        </Dialog.Description>
-      </Dialog.Header>
-      <Dialog.Footer>
-        <button
-          class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
-          onclick={() => (showCompletionDialog = false)}
+  <Dialog.Content class="sm:max-w-100 overflow-hidden">
+    <div class="grid relative">
+      {#if sucess}
+        <div
+          class="col-start-1 row-start-1 flex flex-col gap-4"
+          in:fly={{ y: 10, duration: 300, delay: 150 }}
+          out:fade={{ duration: 150 }}
         >
-          Close
-        </button>
-      </Dialog.Footer>
-    </Dialog.Content>
-  {:else}
-    <Dialog.Content class="sm:max-w-100">
-      <Dialog.Header>
-        <Dialog.Title>Subscribe to alerts</Dialog.Title>
-        <Dialog.Description class="mt-2 text-gray-500">
-          Get email notifications whenever Oddinpay creates, updates, or
-          resolves an incident.
-        </Dialog.Description>
-      </Dialog.Header>
-      <form method="POST" use:enhance>
-        <div class="grid gap-3">
-          <div class="grid gap-2 mt-0.5">
-            <Form.Field {form} name="email">
-              <Form.Control>
-                {#snippet children({ props })}
-                  <Form.Label for="email">Email</Form.Label>
-                  <Input
-                    placeholder="satoshi@example.com"
-                    type="email"
-                    autocomplete="email"
-                    {...props}
-                    bind:value={$formData.email}
-                  />
-                {/snippet}
-              </Form.Control>
-              <Form.FieldErrors />
-            </Form.Field>
-          </div>
-
+          <Dialog.Header>
+            <Dialog.Title>Subscription successful</Dialog.Title>
+            <Dialog.Description class="mt-2 text-gray-500">
+              You have successfully subscribed to alerts. You will receive email
+              notifications whenever Oddinpay creates, updates, or resolves an
+              incident.
+            </Dialog.Description>
+          </Dialog.Header>
           <Dialog.Footer>
-            <Form.Button
-              formaction="?/create"
-              class="w-full flex items-center justify-center bg-black text-white transition-[background-color,transform,opacity] duration-200 ease-out hover:bg-zinc-700 hover:text-white active:scale-[0.98] disabled:pointer-events-auto disabled:cursor-not-allowed cursor-pointer"
-              type="submit"
-              variant="outline"
-              disabled={$submitting}
-              >{#if $submitting}
-                <Loader2 class="size-4 animate-spin" />
-              {:else}
-                Subscribe
-              {/if}
-            </Form.Button>
+            <button
+              class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
+              onclick={() => (showCompletionDialog = false)}
+            >
+              Close
+            </button>
           </Dialog.Footer>
         </div>
-      </form>
-    </Dialog.Content>
-  {/if}
+      {:else}
+        <div
+          class="col-start-1 row-start-1 flex flex-col gap-4"
+          in:fly={{ y: -10, duration: 300, delay: 150 }}
+          out:fade={{ duration: 150 }}
+        >
+          <Dialog.Header>
+            <Dialog.Title>Subscribe to alerts</Dialog.Title>
+            <Dialog.Description class="mt-2 text-gray-500">
+              Get email notifications whenever Oddinpay creates, updates, or
+              resolves an incident.
+            </Dialog.Description>
+          </Dialog.Header>
+          <form method="POST" use:enhance>
+            <div class="grid gap-3">
+              <div class="grid gap-2 mt-0.5">
+                <Form.Field {form} name="email">
+                  <Form.Control>
+                    {#snippet children({ props })}
+                      <Form.Label for="email">Email</Form.Label>
+                      <Input
+                        placeholder="satoshi@example.com"
+                        type="email"
+                        autocomplete="email"
+                        {...props}
+                        bind:value={$formData.email}
+                      />
+                    {/snippet}
+                  </Form.Control>
+                  <Form.FieldErrors />
+                </Form.Field>
+              </div>
+
+              <Dialog.Footer>
+                <Form.Button
+                  formaction="?/create"
+                  class="w-full flex items-center justify-center bg-black text-white transition-[background-color,transform,opacity] duration-200 ease-out hover:bg-zinc-700 hover:text-white active:scale-[0.98] disabled:pointer-events-auto disabled:cursor-not-allowed cursor-pointer"
+                  type="submit"
+                  variant="outline"
+                  disabled={$submitting}
+                >
+                  {#if $submitting}
+                    <Loader2 class="size-4 animate-spin" />
+                  {:else}
+                    Subscribe
+                  {/if}
+                </Form.Button>
+              </Dialog.Footer>
+            </div>
+          </form>
+        </div>
+      {/if}
+    </div>
+  </Dialog.Content>
 </Dialog.Root>
