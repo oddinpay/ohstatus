@@ -109,14 +109,15 @@
             type="button"
             class="{buttonVariants({
               variant: 'outline',
-            })} cursor-pointer bg-black font-white  "
+            })} cursor-pointer bg-black font-white disabled:pointer-events-auto disabled:cursor-not-allowed"
+            disabled={$submitting}
           >
             Close
           </Dialog.Close>
 
           <Form.Button
             formaction="?/create"
-            class="cursor-pointer disabled:pointer-events-auto disabled:cursor-not-allowed"
+            class="w-full cursor-pointer disabled:pointer-events-auto disabled:cursor-not-allowed"
             type="submit"
             variant="outline"
             disabled={$submitting}
