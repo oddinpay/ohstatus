@@ -65,12 +65,6 @@
   });
 
   const { form: formData, submitting, enhance } = form;
-
-  $effect(() => {
-    if (!showCompletionDialog) {
-      isSuccess = false;
-    }
-  });
 </script>
 
 <Dialog.Root bind:open={showCompletionDialog}>
