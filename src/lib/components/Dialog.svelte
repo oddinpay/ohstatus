@@ -49,7 +49,7 @@
   const form = superForm(page.data.form, {
     id: "create-subscriber",
     resetForm: true,
-    // validators: zod4(subscriberCreate),
+    validators: zod4(subscriberCreate),
     onSubmit: async () => {
       await new Promise((resolve) => setTimeout(resolve, 800));
     },
