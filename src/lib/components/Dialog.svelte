@@ -11,6 +11,7 @@
   import { subscriberCreate } from "$lib/types/form";
 
   let showCompletionDialog = $state(false);
+  let sucess = $state(false);
 
   $effect(() => {
     if (showCompletionDialog) {
@@ -54,8 +55,10 @@
     },
     onUpdate: async ({ form: f }) => {
       if (f.valid) {
+        sucess = true;
         showCompletionDialog = false;
       } else {
+        sucess = false;
         showCompletionDialog = true;
       }
     },
@@ -71,6 +74,28 @@
   >
     <Bell />
   </Dialog.Trigger>
+
+  {#if sucess}
+    <Dialog.Content class="sm:max-w-100">
+      <Dialog.Header>
+        <Dialog.Title>Subscription successful</Dialog.Title>
+        <Dialog.Description>
+          You have successfully subscribed to alerts. You will receive email
+          notifications whenever Oddinpay creates, updates, or resolves an
+          incident.
+        </Dialog.Description>
+      </Dialog.Header>
+      <Dialog.Footer>
+        <!-- svelte-ignore event_directive_deprecated -->
+        <button
+          class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
+          on:click={() => (showCompletionDialog = false)}
+        >
+          Close
+        </button>
+      </Dialog.Footer>
+    </Dialog.Content>
+  {/if}
   <Dialog.Content class="sm:max-w-100">
     <Dialog.Header>
       <Dialog.Title>Subscribe to alerts</Dialog.Title>
