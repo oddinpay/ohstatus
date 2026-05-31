@@ -115,4 +115,5 @@
         </Dialog.Footer>
       </div>
     </form>
- 
+  </Dialog.Content>
+</Dialog.Root>
