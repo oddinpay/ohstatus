@@ -3,6 +3,8 @@ import { subscriberCreate } from "$lib/types/form";
 import { fail, type Actions } from "@sveltejs/kit";
 import { setError, superValidate } from "sveltekit-superforms";
 import type { PageServerLoad } from "./[...catchall]/$types";
+import { subscribers } from "$lib/schema";
+import { drizzle } from "drizzle-orm/d1";
 
 export const load: PageServerLoad = async (event) => {
   const form = await superValidate(event, zod4(subscriberCreate));
@@ -16,7 +18,15 @@ export const actions: Actions = {
     const form = await superValidate(e, zod4(subscriberCreate));
     if (!form.valid) return fail(400, { form });
 
+    const db = drizzle(e.platform!.env.ohstatus);
+
     try {
+      await db
+        .insert(subscribers)
+        .values({
+          email: form.data.email,
+        })
+        .onConflictDoNothing();
     } catch (error) {
       return setError(form, "", "Failed to create subscriber");
     }

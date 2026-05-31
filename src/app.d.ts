@@ -2,6 +2,11 @@
 // for information about these interfaces
 declare global {
   namespace App {
+    interface Platform {
+      env: {
+        ohstatus: D1Database;
+      };
+    }
     // interface Error {}
     // interface Locals {}
     // interface PageData {}
