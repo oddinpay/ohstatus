@@ -109,7 +109,7 @@
             type="button"
             class="{buttonVariants({
               variant: 'outline',
-            })} cursor-pointer bg-black text-white disabled:pointer-events-auto disabled:cursor-not-allowed"
+            })} cursor-pointer bg-black text-white hover:bg-gray-800 hover:text-white  disabled:pointer-events-auto disabled:cursor-not-allowed"
             disabled={$submitting}
           >
             Close
