@@ -13,38 +13,38 @@
   let showCompletionDialog = $state(false);
   let email = $state("");
 
-  // $effect(() => {
-  //   if (showCompletionDialog) {
-  //     document.documentElement.style.setProperty(
-  //       "overflow-x",
-  //       "visible",
-  //       "important",
-  //     );
-  //     document.documentElement.style.setProperty("scrollbar-gutter", "stable");
+  $effect(() => {
+    if (showCompletionDialog) {
+      document.documentElement.style.setProperty(
+        "overflow-x",
+        "visible",
+        "important",
+      );
+      document.documentElement.style.setProperty("scrollbar-gutter", "stable");
 
-  //     const scrollY = window.scrollY;
-  //     document.body.classList.add("modal-open");
-  //     document.body.style.position = "fixed";
-  //     document.body.style.top = `-${scrollY}px`;
-  //     document.body.style.width = "100%";
-  //   } else {
-  //     document.documentElement.style.removeProperty("scrollbar-gutter");
-  //     document.documentElement.style.setProperty(
-  //       "overflow-x",
-  //       "hidden",
-  //       "important",
-  //     );
+      const scrollY = window.scrollY;
+      document.body.classList.add("modal-open");
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = "100%";
+    } else {
+      document.documentElement.style.removeProperty("scrollbar-gutter");
+      document.documentElement.style.setProperty(
+        "overflow-x",
+        "hidden",
+        "important",
+      );
 
-  //     const scrollY = document.body.style.top;
-  //     if (document.body.classList.contains("modal-open")) {
-  //       document.body.classList.remove("modal-open");
-  //       document.body.style.position = "";
-  //       document.body.style.top = "";
-  //       document.body.style.width = "";
-  //       window.scrollTo(0, parseInt(scrollY || "0") * -1);
-  //     }
-  //   }
-  // });
+      const scrollY = document.body.style.top;
+      if (document.body.classList.contains("modal-open")) {
+        document.body.classList.remove("modal-open");
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.width = "";
+        window.scrollTo(0, parseInt(scrollY || "0") * -1);
+      }
+    }
+  });
 
   const form = superForm(page.data.form, {
     id: "create-subscriber",
@@ -70,13 +70,13 @@
 </script>
 
 <Dialog.Root bind:open={showCompletionDialog}>
+  <Dialog.Trigger
+    type="button"
+    class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
+  >
+    <Bell />
+  </Dialog.Trigger>
   <form method="POST" use:enhance>
-    <Dialog.Trigger
-      type="button"
-      class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
-    >
-      <Bell />
-    </Dialog.Trigger>
     <Dialog.Content class="sm:max-w-100">
       <Dialog.Header>
         <Dialog.Title>Subscribe to alerts</Dialog.Title>
