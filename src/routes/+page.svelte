@@ -929,7 +929,7 @@
                   </TabsList>
 
                   <div class="ml-auto">
-                    <Dialog />
+                    <!-- <Dialog /> -->
                   </div>
                 </div>
 
