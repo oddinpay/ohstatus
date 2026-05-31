@@ -76,7 +76,7 @@
     <Bell />
   </Dialog.Trigger>
 
-  <Dialog.Content class="sm:max-w-100 min-h-62.5 relative">
+  <Dialog.Content class="sm:max-w-100 min-h-50 relative">
     {#if sucess}
       <div in:fade={{ delay: 150, duration: 250 }}>
         <Dialog.Header>
