@@ -80,8 +80,8 @@
       </Dialog.Description>
     </Dialog.Header>
     <form method="POST" use:enhance>
-      <div class="grid gap-4">
-        <div class="grid gap-3 mt-0.5">
+      <div class="grid gap-3">
+        <div class="grid gap-2 mt-0.5">
           <Form.Field {form} name="email">
             <Form.Control>
               {#snippet children({ props })}
