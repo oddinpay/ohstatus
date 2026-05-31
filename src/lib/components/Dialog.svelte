@@ -106,7 +106,13 @@
         <Dialog.Footer>
           <Form.Button
             formaction="?/create"
-            class="w-full flex items-center bg-black text-white hover:bg-black/90 active:scale-98 hover:text-white justify-center cursor-pointer disabled:pointer-events-auto disabled:cursor-not-allowed"
+            class="w-full flex items-center justify-center 
+       bg-black text-white 
+       transition-[background-color,transform,opacity] duration-200 ease-out
+       hover:bg-zinc-800 
+       active:scale-[0.98] 
+       disabled:opacity-70 disabled:scale-100 disabled:pointer-events-none
+       cursor-pointer"
             type="submit"
             variant="outline"
             disabled={$submitting}
