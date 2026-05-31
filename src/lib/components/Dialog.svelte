@@ -86,10 +86,12 @@
         </Dialog.Description>
       </Dialog.Header>
       <Dialog.Footer>
-        <!-- svelte-ignore event_directive_deprecated -->
         <button
           class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
-          on:click={() => (showCompletionDialog = false)}
+          onclick={() => {
+            showCompletionDialog = false;
+            sucess = false;
+          }}
         >
           Close
         </button>
