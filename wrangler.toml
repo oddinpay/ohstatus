@@ -27,4 +27,4 @@ head_sampling_rate = 1
 binding = "ohstatus"
 database_name = "ohstatus"
 database_id = "4c859b9c-cfef-48a1-b2b2-737e589ff53c"
-migrations_dir = "drizzle/migrations"
+migrations_dir = "drizzle"
