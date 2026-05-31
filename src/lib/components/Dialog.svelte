@@ -81,8 +81,8 @@
         <Dialog.Header>
           <Dialog.Title>Subscribed!</Dialog.Title>
           <Dialog.Description class="mt-2 text-gray-500">
-            Get email notifications whenever Oddinpay creates, updates, or
-            resolves an incident.
+            You will receive email notifications whenever Oddinpay creates,
+            updates, or resolves an incident.
           </Dialog.Description>
         </Dialog.Header>
 
