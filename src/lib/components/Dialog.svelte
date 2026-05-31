@@ -54,6 +54,7 @@
       await new Promise((resolve) => setTimeout(resolve, 800));
     },
     onUpdate: async ({ form: f }) => {
+      console.log(f.errors);
       if (f.valid) {
         email = "";
         showCompletionDialog = false;
