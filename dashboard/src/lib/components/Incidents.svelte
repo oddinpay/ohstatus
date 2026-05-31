@@ -91,7 +91,7 @@
     id: "create-schedule",
     resetForm: true,
     validators: zod4(incidentCreate),
-    onSubmit: async ({ formData }) => {
+    onSubmit: async () => {
       await new Promise((resolve) => setTimeout(resolve, 800));
     },
     onUpdate: async ({ form: f }) => {
