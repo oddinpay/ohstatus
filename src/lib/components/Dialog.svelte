@@ -78,21 +78,23 @@
   {#if sucess}
     <Dialog.Content class="sm:max-w-100">
       <Dialog.Header>
-        <Dialog.Title>Subscription successful</Dialog.Title>
+        <Dialog.Title>Subscribed!</Dialog.Title>
         <Dialog.Description class="mt-2 text-gray-500">
-          You have successfully subscribed to alerts. You will receive email
-          notifications whenever Oddinpay creates, updates, or resolves an
-          incident.
+          Get email notifications whenever Oddinpay creates, updates, or
+          resolves an incident.
         </Dialog.Description>
       </Dialog.Header>
-      <Dialog.Footer>
-        <button
-          class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
-          onclick={() => (showCompletionDialog = false)}
-        >
-          Close
-        </button>
-      </Dialog.Footer>
+      <div class="grid gap-3">
+        <Dialog.Footer>
+          <Form.Button
+            class="w-full flex items-center justify-center bg-black text-white transition-[background-color,transform,opacity] duration-200 ease-out hover:bg-zinc-700 hover:text-white active:scale-[0.98] disabled:pointer-events-auto disabled:cursor-not-allowed cursor-pointer"
+            variant="outline"
+            onclick={() => (showCompletionDialog = false)}
+          >
+            Close
+          </Form.Button>
+        </Dialog.Footer>
+      </div>
     </Dialog.Content>
   {:else}
     <Dialog.Content class="sm:max-w-100">
