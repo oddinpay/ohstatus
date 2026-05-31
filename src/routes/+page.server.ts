@@ -29,7 +29,7 @@ export const actions: Actions = {
       .get();
 
     if (existing) {
-      return setError(form, "", "This email is already subscribed.");
+      return setError(form, "email", "This email is already subscribed.");
     }
 
     try {
