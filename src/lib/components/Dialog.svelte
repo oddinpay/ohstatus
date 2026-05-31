@@ -9,7 +9,7 @@
   import { page } from "$app/state";
   import { zod4 } from "sveltekit-superforms/adapters";
   import { subscriberCreate } from "$lib/types/form";
-  import { fade, fly } from "svelte/transition";
+  import { fade } from "svelte/transition";
 
   let showCompletionDialog = $state(false);
   let sucess = $state(false);
@@ -81,7 +81,6 @@
       {#if sucess}
         <div
           class="col-start-1 row-start-1 flex flex-col gap-4"
-          in:fly={{ y: 10, duration: 300, delay: 150 }}
           out:fade={{ duration: 150 }}
         >
           <Dialog.Header>
@@ -104,7 +103,6 @@
       {:else}
         <div
           class="col-start-1 row-start-1 flex flex-col gap-4"
-          in:fly={{ y: -10, duration: 300, delay: 150 }}
           out:fade={{ duration: 150 }}
         >
           <Dialog.Header>
