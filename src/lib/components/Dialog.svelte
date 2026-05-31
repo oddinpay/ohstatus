@@ -86,7 +86,7 @@
           </Dialog.Description>
         </Dialog.Header>
 
-        <div class="grid gap-3 mt-4">
+        <div class="grid gap-3">
           <svg
             class="w-20 h-20 mx-auto"
             xmlns="http://www.w3.org/2000/svg"
@@ -99,9 +99,7 @@
               clip-rule="evenodd"
             />
           </svg>
-        </div>
 
-        <div class="grid gap-3">
           <Dialog.Footer>
             <Form.Button
               class="w-full flex items-center justify-center bg-black text-white transition-[background-color,transform,opacity] duration-200 ease-out hover:bg-zinc-700 hover:text-white active:scale-[0.98] disabled:pointer-events-auto disabled:cursor-not-allowed cursor-pointer"
