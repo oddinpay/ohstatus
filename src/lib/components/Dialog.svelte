@@ -58,7 +58,7 @@
         email = "";
         showCompletionDialog = false;
       } else {
-        showCompletionDialog = false;
+        showCompletionDialog = true;
         const serverMessage = f.errors._errors?.[0];
         const finalMessage =
           serverMessage || "Something went wrong. Please try again.";
