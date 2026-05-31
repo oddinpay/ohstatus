@@ -9,6 +9,7 @@
   import { page } from "$app/state";
   import { zod4 } from "sveltekit-superforms/adapters";
   import { subscriberCreate } from "$lib/types/form";
+  import { fade } from "svelte/transition";
 
   let showCompletionDialog = $state(false);
   let sucess = $state(false);
@@ -76,26 +77,28 @@
   </Dialog.Trigger>
 
   {#if sucess}
-    <Dialog.Content class="sm:max-w-100">
-      <Dialog.Header>
-        <Dialog.Title>Subscribed!</Dialog.Title>
-        <Dialog.Description class="mt-2 text-gray-500">
-          Get email notifications whenever Oddinpay creates, updates, or
-          resolves an incident.
-        </Dialog.Description>
-      </Dialog.Header>
-      <div class="grid gap-3">
-        <Dialog.Footer>
-          <Form.Button
-            class="w-full flex items-center justify-center bg-black text-white transition-[background-color,transform,opacity] duration-200 ease-out hover:bg-zinc-700 hover:text-white active:scale-[0.98] disabled:pointer-events-auto disabled:cursor-not-allowed cursor-pointer"
-            variant="outline"
-            onclick={() => (showCompletionDialog = false)}
-          >
-            Close
-          </Form.Button>
-        </Dialog.Footer>
-      </div>
-    </Dialog.Content>
+    <div transition:fade>
+      <Dialog.Content class="sm:max-w-100">
+        <Dialog.Header>
+          <Dialog.Title>Subscribed!</Dialog.Title>
+          <Dialog.Description class="mt-2 text-gray-500">
+            Get email notifications whenever Oddinpay creates, updates, or
+            resolves an incident.
+          </Dialog.Description>
+        </Dialog.Header>
+        <div class="grid gap-3">
+          <Dialog.Footer>
+            <Form.Button
+              class="w-full flex items-center justify-center bg-black text-white transition-[background-color,transform,opacity] duration-200 ease-out hover:bg-zinc-700 hover:text-white active:scale-[0.98] disabled:pointer-events-auto disabled:cursor-not-allowed cursor-pointer"
+              variant="outline"
+              onclick={() => (showCompletionDialog = false)}
+            >
+              Close
+            </Form.Button>
+          </Dialog.Footer>
+        </div>
+      </Dialog.Content>
+    </div>
   {:else}
     <Dialog.Content class="sm:max-w-100">
       <Dialog.Header>
