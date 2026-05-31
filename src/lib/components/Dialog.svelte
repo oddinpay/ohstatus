@@ -109,7 +109,7 @@
             class="w-full flex items-center justify-center 
        bg-black text-white 
        transition-[background-color,transform,opacity] duration-200 ease-out
-       hover:bg-zinc-800 
+       hover:bg-zinc-700 
        active:scale-[0.98] 
        disabled:opacity-70 disabled:scale-100 disabled:pointer-events-none
        cursor-pointer"
