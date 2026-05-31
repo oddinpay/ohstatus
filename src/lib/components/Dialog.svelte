@@ -87,7 +87,7 @@
 
       <div class="grid gap-3">
         <svg
-          class="w-20 fade-in h-20 mx-auto"
+          class="w-20 h-20 mx-auto"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 24 24"
         >
@@ -158,21 +158,3 @@
     </Dialog.Content>
   {/if}
 </Dialog.Root>
-
-<svelte:head>
-  <style>
-    .fade-in {
-      animation-name: fade-in;
-    }
-
-    @keyframes fade-in {
-      from {
-        opacity: 0;
-      }
-
-      to {
-        opacity: 1;
-      }
-    }
-  </style>
-</svelte:head>
