@@ -81,7 +81,7 @@
       {#if sucess}
         <div
           class="col-start-1 row-start-1 flex flex-col gap-4"
-          out:fade={{ duration: 150 }}
+          in:fade={{ duration: 150 }}
         >
           <Dialog.Header>
             <Dialog.Title>Subscription successful</Dialog.Title>
