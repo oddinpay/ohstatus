@@ -117,7 +117,7 @@
 
           <Form.Button
             formaction="?/create"
-            class="w-full cursor-pointer disabled:pointer-events-auto disabled:cursor-not-allowed"
+            class="w-full flex items-center justify-center cursor-pointer disabled:pointer-events-auto disabled:cursor-not-allowed"
             type="submit"
             variant="outline"
             disabled={$submitting}
