@@ -56,17 +56,21 @@
     onUpdate: async ({ form: f }) => {
       if (f.valid) {
         isSuccess = true;
-        setTimeout(() => {
-          showCompletionDialog = false;
-          isSuccess = false;
-        }, 1500);
+        showCompletionDialog = true;
       } else {
+        isSuccess = false;
         showCompletionDialog = true;
       }
     },
   });
 
   const { form: formData, submitting, enhance } = form;
+
+  $effect(() => {
+    if (!showCompletionDialog) {
+      isSuccess = false;
+    }
+  });
 </script>
 
 <Dialog.Root bind:open={showCompletionDialog}>
