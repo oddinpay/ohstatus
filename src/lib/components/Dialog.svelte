@@ -76,15 +76,15 @@
   >
     <Bell />
   </Dialog.Trigger>
-  <form method="POST" use:enhance>
-    <Dialog.Content class="sm:max-w-100">
-      <Dialog.Header>
-        <Dialog.Title>Subscribe to alerts</Dialog.Title>
-        <Dialog.Description>
-          Get email notifications whenever Oddinpay creates, updates, or
-          resolves an incident.
-        </Dialog.Description>
-      </Dialog.Header>
+  <Dialog.Content class="sm:max-w-100">
+    <Dialog.Header>
+      <Dialog.Title>Subscribe to alerts</Dialog.Title>
+      <Dialog.Description>
+        Get email notifications whenever Oddinpay creates, updates, or resolves
+        an incident.
+      </Dialog.Description>
+    </Dialog.Header>
+    <form method="POST" use:enhance>
       <div class="grid gap-4">
         <div class="grid gap-3 mt-0.5">
           <Form.Field {form} name="email">
@@ -126,7 +126,7 @@
             {/if}
           </Form.Button>
         </Dialog.Footer>
-      </div></Dialog.Content
-    >
-  </form>
+      </div>
+    </form>
+  </Dialog.Content>
 </Dialog.Root>
