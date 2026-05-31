@@ -56,9 +56,9 @@
     onUpdate: async ({ form: f }) => {
       if (f.valid) {
         email = "";
-        showCompletionDialog = false;
+        // showCompletionDialog = false;
       } else {
-        showCompletionDialog = false;
+        // showCompletionDialog = false;
         const serverMessage = f.errors._errors?.[0];
         const finalMessage =
           serverMessage || "Something went wrong. Please try again.";
