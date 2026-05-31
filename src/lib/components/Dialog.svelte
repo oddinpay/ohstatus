@@ -107,7 +107,9 @@
         <Dialog.Footer>
           <Dialog.Close
             type="button"
-            class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
+            class="{buttonVariants({
+              variant: 'outline',
+            })} cursor-pointer bg-black font-white  "
           >
             Close
           </Dialog.Close>
