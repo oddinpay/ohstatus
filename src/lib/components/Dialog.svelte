@@ -11,7 +11,6 @@
   import { subscriberCreate } from "$lib/types/form";
 
   let showCompletionDialog = $state(false);
-  let email = $state("");
 
   $effect(() => {
     if (showCompletionDialog) {
@@ -56,7 +55,6 @@
     onUpdate: async ({ form: f }) => {
       console.log(f.errors);
       if (f.valid) {
-        email = "";
         showCompletionDialog = false;
       } else {
         showCompletionDialog = true;
@@ -97,7 +95,7 @@
                   type="email"
                   autocomplete="email"
                   {...props}
-                  bind:value={email}
+                  bind:value={$formData.email}
                 />
               {/snippet}
             </Form.Control>
