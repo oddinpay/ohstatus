@@ -29,7 +29,7 @@ export const actions: Actions = {
       .get();
 
     if (existing) {
-      return setError(form, "", "Email is already subscribed.");
+      return setError(form, "", "This email is already subscribed.");
     }
 
     try {
@@ -40,7 +40,7 @@ export const actions: Actions = {
         })
         .onConflictDoNothing();
     } catch (error) {
-      return setError(form, "", "Failed to create subscriber");
+      return setError(form, "", "Failed to subscribe. Please try again later.");
     }
 
     return { form };
