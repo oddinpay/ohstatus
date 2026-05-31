@@ -92,7 +92,6 @@
               {#snippet children({ props })}
                 <Form.Label for="email">Email</Form.Label>
                 <Input
-                  class=" border-zinc-700 text-white"
                   placeholder="satoshi@example.com"
                   type="email"
                   autocomplete="email"
