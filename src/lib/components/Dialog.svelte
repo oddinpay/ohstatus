@@ -76,42 +76,40 @@
   </Dialog.Trigger>
 
   {#if sucess}
-    <div class="fade-in">
-      <Dialog.Content class="sm:max-w-100">
-        <Dialog.Header>
-          <Dialog.Title>Subscribed!</Dialog.Title>
-          <Dialog.Description class="mt-2 text-gray-500">
-            You will receive email notifications whenever Oddinpay creates,
-            updates, or resolves an incident.
-          </Dialog.Description>
-        </Dialog.Header>
+    <Dialog.Content class="sm:max-w-100">
+      <Dialog.Header>
+        <Dialog.Title>Subscribed!</Dialog.Title>
+        <Dialog.Description class="mt-2 text-gray-500">
+          You will receive email notifications whenever Oddinpay creates,
+          updates, or resolves an incident.
+        </Dialog.Description>
+      </Dialog.Header>
 
-        <div class="grid gap-3">
-          <svg
-            class="w-20 h-20 mx-auto"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
+      <div class="grid gap-3">
+        <svg
+          class="w-20 fade-in h-20 mx-auto"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+        >
+          <path
+            fill="#21ba45"
+            fill-rule="evenodd"
+            d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10m-5.97-3.03a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l2.235-2.235L14.97 8.97a.75.75 0 0 1 1.06 0"
+            clip-rule="evenodd"
+          />
+        </svg>
+
+        <Dialog.Footer>
+          <Form.Button
+            class="w-full flex items-center justify-center bg-black text-white transition-[background-color,transform,opacity] duration-200 ease-out hover:bg-zinc-700 hover:text-white active:scale-[0.98] disabled:pointer-events-auto disabled:cursor-not-allowed cursor-pointer"
+            variant="outline"
+            onclick={() => (showCompletionDialog = false)}
           >
-            <path
-              fill="#21ba45"
-              fill-rule="evenodd"
-              d="M22 12c0 5.523-4.477 10-10 10S2 17.523 2 12S6.477 2 12 2s10 4.477 10 10m-5.97-3.03a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l2.235-2.235L14.97 8.97a.75.75 0 0 1 1.06 0"
-              clip-rule="evenodd"
-            />
-          </svg>
-
-          <Dialog.Footer>
-            <Form.Button
-              class="w-full flex items-center justify-center bg-black text-white transition-[background-color,transform,opacity] duration-200 ease-out hover:bg-zinc-700 hover:text-white active:scale-[0.98] disabled:pointer-events-auto disabled:cursor-not-allowed cursor-pointer"
-              variant="outline"
-              onclick={() => (showCompletionDialog = false)}
-            >
-              Close
-            </Form.Button>
-          </Dialog.Footer>
-        </div>
-      </Dialog.Content>
-    </div>
+            Close
+          </Form.Button>
+        </Dialog.Footer>
+      </div>
+    </Dialog.Content>
   {:else}
     <Dialog.Content class="sm:max-w-100">
       <Dialog.Header>
