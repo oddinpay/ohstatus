@@ -3,6 +3,7 @@
   import * as Dialog from "$lib/components/ui/dialog/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
   import { Bell } from "lucide-svelte";
+  import Loader2 from "@lucide/svelte/icons/loader-2";
   import * as Form from "$lib/components/ui/form/index.js";
   import { superForm } from "sveltekit-superforms";
   import { page } from "$app/state";
@@ -111,7 +112,19 @@
           >
             Close
           </Dialog.Close>
-          <Button class="cursor-pointer" type="submit">Subscribe</Button>
+
+          <Form.Button
+            formaction="?/create"
+            class="cursor-pointer disabled:pointer-events-auto disabled:cursor-not-allowed"
+            type="submit"
+            variant="outline"
+            disabled={$submitting}
+            >{#if $submitting}
+              <Loader2 class="size-4 animate-spin" />
+            {:else}
+              Subscribe
+            {/if}
+          </Form.Button>
         </Dialog.Footer>
       </div></Dialog.Content
     >
