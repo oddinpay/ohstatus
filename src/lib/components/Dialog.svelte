@@ -88,10 +88,7 @@
       <Dialog.Footer>
         <button
           class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
-          onclick={() => {
-            showCompletionDialog = false;
-            sucess = false;
-          }}
+          onclick={() => (showCompletionDialog = false)}
         >
           Close
         </button>
