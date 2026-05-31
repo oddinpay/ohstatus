@@ -2,10 +2,15 @@
   import { Button, buttonVariants } from "$lib/components/ui/button/index.js";
   import * as Dialog from "$lib/components/ui/dialog/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
-  import { Label } from "$lib/components/ui/label/index.js";
   import { Bell } from "lucide-svelte";
+  import * as Form from "$lib/components/ui/form/index.js";
+  import { superForm } from "sveltekit-superforms";
+  import { page } from "$app/state";
+  import { zod4 } from "sveltekit-superforms/adapters";
+  import { subscriberCreate } from "$lib/types/form";
 
   let showCompletionDialog = $state(false);
+  let email = $state("");
 
   $effect(() => {
     if (showCompletionDialog) {
@@ -39,10 +44,32 @@
       }
     }
   });
+
+  const form = superForm(page.data.form, {
+    id: "create-subscriber",
+    resetForm: true,
+    validators: zod4(subscriberCreate),
+    onSubmit: async ({ formData }) => {
+      await new Promise((resolve) => setTimeout(resolve, 800));
+    },
+    onUpdate: async ({ form: f }) => {
+      if (f.valid) {
+        email = "";
+        showCompletionDialog = false;
+      } else {
+        showCompletionDialog = false;
+        const serverMessage = f.errors._errors?.[0];
+        const finalMessage =
+          serverMessage || "Something went wrong. Please try again.";
+      }
+    },
+  });
+
+  const { form: formData, submitting, enhance } = form;
 </script>
 
 <Dialog.Root bind:open={showCompletionDialog}>
-  <form>
+  <form method="POST" use:enhance>
     <Dialog.Trigger
       type="button"
       class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
@@ -59,25 +86,34 @@
       </Dialog.Header>
       <div class="grid gap-4">
         <div class="grid gap-3 mt-0.5">
-          <Label for="email">Email</Label>
-          <Input
-            required
-            id="email"
-            name="email"
-            type="email"
-            placeholder="satoshi@example.com"
-          />
+          <Form.Field {form} name="email">
+            <Form.Control>
+              {#snippet children({ props })}
+                <Form.Label for="email">Email</Form.Label>
+                <Input
+                  class=" border-zinc-700 text-white"
+                  placeholder="satoshi@example.com"
+                  type="email"
+                  autocomplete="email"
+                  {...props}
+                  bind:value={email}
+                />
+              {/snippet}
+            </Form.Control>
+            <Form.FieldErrors />
+          </Form.Field>
         </div>
-      </div>
-      <Dialog.Footer>
-        <Dialog.Close
-          type="button"
-          class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
-        >
-          Close
-        </Dialog.Close>
-        <Button class="cursor-pointer" type="submit">Subscribe</Button>
-      </Dialog.Footer>
-    </Dialog.Content>
+
+        <Dialog.Footer>
+          <Dialog.Close
+            type="button"
+            class="{buttonVariants({ variant: 'outline' })} cursor-pointer"
+          >
+            Close
+          </Dialog.Close>
+          <Button class="cursor-pointer" type="submit">Subscribe</Button>
+        </Dialog.Footer>
+      </div></Dialog.Content
+    >
   </form>
 </Dialog.Root>

@@ -1,5 +1,4 @@
-import { date, z } from "zod/v4";
-
+import { z } from "zod/v4";
 
 export const formSchema = z.object({
   title: z
@@ -100,8 +99,6 @@ export const formUpdate = z.object({
     }),
 });
 
-
-
 export const monitorCreate = z.object({
   _id: z.string().trim().optional(),
   name: z
@@ -154,14 +151,14 @@ export const monitorUpdate = z.object({
     .optional(),
 });
 
-
 export const scheduleCreate = z.object({
   _id: z.string().trim().optional(),
   title: z
     .string()
     .trim()
     .min(1, "Title must be at least 1 character long")
-    .max(50, "Title must not exceed 50 characters").optional(),
+    .max(50, "Title must not exceed 50 characters")
+    .optional(),
 
   service: z
     .string()
@@ -181,18 +178,18 @@ export const scheduleCreate = z.object({
     .min(1, "Note must be at least 1 character long")
     .max(180, "Note must not exceed 180 characters"),
 
-  date: z.any()
+  date: z
+    .any()
     .refine((val) => val !== undefined && val !== null && val !== "", {
       message: "Date is required and cannot be empty",
     }),
 
-  time: z.any()
+  time: z
+    .any()
     .refine((val) => val !== undefined && val !== null && val !== "", {
       message: "Time is required and cannot be empty",
     }),
-
 });
-
 
 export const scheduleCreate2 = z.object({
   _id: z.string().trim().optional(),
@@ -200,7 +197,8 @@ export const scheduleCreate2 = z.object({
     .string()
     .trim()
     .min(1, "Title must be at least 1 character long")
-    .max(50, "Title must not exceed 50 characters").optional(),
+    .max(50, "Title must not exceed 50 characters")
+    .optional(),
 
   service: z
     .string()
@@ -208,20 +206,17 @@ export const scheduleCreate2 = z.object({
     .min(1, "Service must be at least 1 character long")
     .max(50, "Service must not exceed 50 characters"),
 
-  status: z
-    .enum(["Scheduled", "Inprogress", "Completed", "Cancelled"], {
-      message: "Status must be one of: Scheduled, In Progress, Completed, Cancelled",
-    }),
+  status: z.enum(["Scheduled", "Inprogress", "Completed", "Cancelled"], {
+    message:
+      "Status must be one of: Scheduled, In Progress, Completed, Cancelled",
+  }),
 
   note: z
     .string()
     .trim()
     .min(1, "Note must be at least 1 character long")
     .max(180, "Note must not exceed 180 characters"),
-
 });
-
-
 
 export const scheduleUpdate = z.object({
   parentId: z
@@ -235,10 +230,9 @@ export const scheduleUpdate = z.object({
     .max(50, "Service must not exceed 50 characters")
     .optional(),
 
-  status: z
-    .enum(["Inprogress", "Completed", "Cancelled"], {
-      message: "Status must be one of: In Progress, Completed, Cancelled",
-    }),
+  status: z.enum(["Inprogress", "Completed", "Cancelled"], {
+    message: "Status must be one of: In Progress, Completed, Cancelled",
+  }),
 
   note: z
     .string()
@@ -248,14 +242,14 @@ export const scheduleUpdate = z.object({
     .optional(),
 });
 
-
 export const incidentCreate = z.object({
   _id: z.string().trim().optional(),
   title: z
     .string()
     .trim()
     .min(1, "Title must be at least 1 character long")
-    .max(50, "Title must not exceed 50 characters").optional(),
+    .max(50, "Title must not exceed 50 characters")
+    .optional(),
 
   service: z
     .string()
@@ -273,10 +267,8 @@ export const incidentCreate = z.object({
     .string()
     .trim()
     .min(1, "Note must be at least 1 character long")
-    .max(180, "Note must not exceed 180 characters")
-
+    .max(180, "Note must not exceed 180 characters"),
 });
-
 
 export const incidentCreate2 = z.object({
   _id: z.string().trim().optional(),
@@ -284,7 +276,8 @@ export const incidentCreate2 = z.object({
     .string()
     .trim()
     .min(1, "Title must be at least 1 character long")
-    .max(50, "Title must not exceed 50 characters").optional(),
+    .max(50, "Title must not exceed 50 characters")
+    .optional(),
 
   service: z
     .string()
@@ -292,19 +285,16 @@ export const incidentCreate2 = z.object({
     .min(1, "Service must be at least 1 character long")
     .max(50, "Service must not exceed 50 characters"),
 
-  
-
-  status: z
-    .enum(["Investigating", "Identified", "Inprogress", "Resolved"], {
-      message: "Status must be one of: Investigating, Identified, In Progress, Resolved",
-    }),
+  status: z.enum(["Investigating", "Identified", "Inprogress", "Resolved"], {
+    message:
+      "Status must be one of: Investigating, Identified, In Progress, Resolved",
+  }),
 
   note: z
     .string()
     .trim()
     .min(1, "Note must be at least 1 character long")
     .max(180, "Note must not exceed 180 characters"),
-
 });
 
 export const incidentUpdate = z.object({
@@ -320,10 +310,9 @@ export const incidentUpdate = z.object({
     .max(50, "Service must not exceed 50 characters")
     .optional(),
 
-  status: z
-    .enum(["Identified", "Inprogress", "Resolved"], {
-      message: "Status must be one of: Identified, In Progress, Resolved",
-    }),
+  status: z.enum(["Identified", "Inprogress", "Resolved"], {
+    message: "Status must be one of: Identified, In Progress, Resolved",
+  }),
 
   note: z
     .string()
@@ -332,4 +321,3 @@ export const incidentUpdate = z.object({
     .max(180, "Note must not exceed 180 characters")
     .optional(),
 });
-
