@@ -76,9 +76,9 @@
     <Bell />
   </Dialog.Trigger>
 
-  {#if sucess}
-    <div transition:fade>
-      <Dialog.Content class="sm:max-w-100">
+  <Dialog.Content class="sm:max-w-100">
+    {#if sucess}
+      <div in:fade={{ duration: 300, delay: 150 }} out:fade={{ duration: 150 }}>
         <Dialog.Header>
           <Dialog.Title>Subscribed!</Dialog.Title>
           <Dialog.Description class="mt-2 text-gray-500">
@@ -86,7 +86,7 @@
             resolves an incident.
           </Dialog.Description>
         </Dialog.Header>
-        <div class="grid gap-3">
+        <div class="grid gap-3 mt-4">
           <Dialog.Footer>
             <Form.Button
               class="w-full flex items-center justify-center bg-black text-white transition-[background-color,transform,opacity] duration-200 ease-out hover:bg-zinc-700 hover:text-white active:scale-[0.98] disabled:pointer-events-auto disabled:cursor-not-allowed cursor-pointer"
@@ -97,53 +97,54 @@
             </Form.Button>
           </Dialog.Footer>
         </div>
-      </Dialog.Content>
-    </div>
-  {:else}
-    <Dialog.Content class="sm:max-w-100">
-      <Dialog.Header>
-        <Dialog.Title>Subscribe to alerts</Dialog.Title>
-        <Dialog.Description class="mt-2 text-gray-500">
-          Get email notifications whenever Oddinpay creates, updates, or
-          resolves an incident.
-        </Dialog.Description>
-      </Dialog.Header>
-      <form method="POST" use:enhance>
-        <div class="grid gap-3">
-          <div class="grid gap-2 mt-0.5">
-            <Form.Field {form} name="email">
-              <Form.Control>
-                {#snippet children({ props })}
-                  <Form.Label for="email">Email</Form.Label>
-                  <Input
-                    placeholder="satoshi@example.com"
-                    type="email"
-                    autocomplete="email"
-                    {...props}
-                    bind:value={$formData.email}
-                  />
-                {/snippet}
-              </Form.Control>
-              <Form.FieldErrors />
-            </Form.Field>
-          </div>
+      </div>
+    {:else}
+      <div in:fade={{ duration: 300, delay: 150 }} out:fade={{ duration: 150 }}>
+        <Dialog.Header>
+          <Dialog.Title>Subscribe to alerts</Dialog.Title>
+          <Dialog.Description class="mt-2 text-gray-500">
+            Get email notifications whenever Oddinpay creates, updates, or
+            resolves an incident.
+          </Dialog.Description>
+        </Dialog.Header>
+        <form method="POST" use:enhance class="mt-4">
+          <div class="grid gap-3">
+            <div class="grid gap-2 mt-0.5">
+              <Form.Field {form} name="email">
+                <Form.Control>
+                  {#snippet children({ props })}
+                    <Form.Label for="email">Email</Form.Label>
+                    <Input
+                      placeholder="satoshi@example.com"
+                      type="email"
+                      autocomplete="email"
+                      {...props}
+                      bind:value={$formData.email}
+                    />
+                  {/snippet}
+                </Form.Control>
+                <Form.FieldErrors />
+              </Form.Field>
+            </div>
 
-          <Dialog.Footer>
-            <Form.Button
-              formaction="?/create"
-              class="w-full flex items-center justify-center bg-black text-white transition-[background-color,transform,opacity] duration-200 ease-out hover:bg-zinc-700 hover:text-white active:scale-[0.98] disabled:pointer-events-auto disabled:cursor-not-allowed cursor-pointer"
-              type="submit"
-              variant="outline"
-              disabled={$submitting}
-              >{#if $submitting}
-                <Loader2 class="size-4 animate-spin" />
-              {:else}
-                Subscribe
-              {/if}
-            </Form.Button>
-          </Dialog.Footer>
-        </div>
-      </form>
-    </Dialog.Content>
-  {/if}
+            <Dialog.Footer>
+              <Form.Button
+                formaction="?/create"
+                class="w-full flex items-center justify-center bg-black text-white transition-[background-color,transform,opacity] duration-200 ease-out hover:bg-zinc-700 hover:text-white active:scale-[0.98] disabled:pointer-events-auto disabled:cursor-not-allowed cursor-pointer"
+                type="submit"
+                variant="outline"
+                disabled={$submitting}
+              >
+                {#if $submitting}
+                  <Loader2 class="size-4 animate-spin" />
+                {:else}
+                  Subscribe
+                {/if}
+              </Form.Button>
+            </Dialog.Footer>
+          </div>
+        </form>
+      </div>
+    {/if}
+  </Dialog.Content>
 </Dialog.Root>
