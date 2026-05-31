@@ -1,7 +1,7 @@
 {
   "version": "6",
   "dialect": "sqlite",
-  "id": "64d51b1b-fda0-4cce-aa22-3e2f207f0bdc",
+  "id": "5015c481-a91a-4acc-b3b0-5e53068bc6f0",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "subscribers": {
@@ -13,6 +13,14 @@
           "primaryKey": true,
           "notNull": true,
           "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(unixepoch())"
         }
       },
       "indexes": {},
