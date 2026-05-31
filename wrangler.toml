@@ -26,5 +26,5 @@ head_sampling_rate = 1
 [[d1_databases]]
 binding = "ohstatus"
 database_name = "ohstatus"
-database_id = "4c859b9c-cfef-48a1-b2b2-737e589ff53c"
+database_id = "f888f235-8e3f-458a-8ac1-9c5e5fae925d"
 migrations_dir = "drizzle"
