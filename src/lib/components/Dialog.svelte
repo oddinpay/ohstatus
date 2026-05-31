@@ -2,7 +2,7 @@
   import { buttonVariants } from "$lib/components/ui/button/index.js";
   import * as Dialog from "$lib/components/ui/dialog/index.js";
   import { Input } from "$lib/components/ui/input/index.js";
-  import { Bell, Check } from "lucide-svelte";
+  import { Bell } from "lucide-svelte";
   import Loader2 from "@lucide/svelte/icons/loader-2";
   import * as Form from "$lib/components/ui/form/index.js";
   import { superForm } from "sveltekit-superforms";
