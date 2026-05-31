@@ -40,7 +40,11 @@ export const actions: Actions = {
         })
         .onConflictDoNothing();
     } catch (error) {
-      return setError(form, "", "Failed to subscribe. Please try again later.");
+      return setError(
+        form,
+        "email",
+        "Failed to subscribe. Please try again later.",
+      );
     }
 
     return { form };
