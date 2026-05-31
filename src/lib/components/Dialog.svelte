@@ -105,16 +105,6 @@
         </div>
 
         <Dialog.Footer>
-          <Dialog.Close
-            type="button"
-            class="{buttonVariants({
-              variant: 'outline',
-            })} cursor-pointer bg-black text-white hover:bg-gray-800 hover:text-white  disabled:pointer-events-auto disabled:cursor-not-allowed"
-            disabled={$submitting}
-          >
-            Close
-          </Dialog.Close>
-
           <Form.Button
             formaction="?/create"
             class="w-full flex items-center justify-center cursor-pointer disabled:pointer-events-auto disabled:cursor-not-allowed"
