@@ -76,7 +76,7 @@
   </Dialog.Trigger>
 
   {#if sucess}
-    <div>
+    <div class="fade-in">
       <Dialog.Content class="sm:max-w-100">
         <Dialog.Header>
           <Dialog.Title>Subscribed!</Dialog.Title>
@@ -160,3 +160,21 @@
     </Dialog.Content>
   {/if}
 </Dialog.Root>
+
+<svelte:head>
+  <style>
+    .fade-in {
+      animation-name: fade-in;
+    }
+
+    @keyframes fade-in {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+  </style>
+</svelte:head>
