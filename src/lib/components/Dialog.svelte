@@ -9,7 +9,6 @@
   import { page } from "$app/state";
   import { zod4 } from "sveltekit-superforms/adapters";
   import { subscriberCreate } from "$lib/types/form";
-  import { fade } from "svelte/transition";
 
   let showCompletionDialog = $state(false);
   let sucess = $state(false);
@@ -87,7 +86,7 @@
           </Dialog.Description>
         </Dialog.Header>
 
-        <div transition:fade class="grid gap-3">
+        <div class="grid gap-3">
           <svg
             class="w-20 h-20 mx-auto"
             xmlns="http://www.w3.org/2000/svg"
