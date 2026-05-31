@@ -99,7 +99,7 @@
         </div>
       </div>
     {:else}
-      <div in:fade={{ duration: 300, delay: 150 }} out:fade={{ duration: 150 }}>
+      <div out:fade={{ duration: 150 }}>
         <Dialog.Header>
           <Dialog.Title>Subscribe to alerts</Dialog.Title>
           <Dialog.Description class="mt-2 text-gray-500">
