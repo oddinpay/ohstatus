@@ -35,7 +35,8 @@
     "prod": "pnpm run build && wrangler deploy"
   },
   "dependencies": {
-    "@tanstack/table-core": "^8.21.3"
+    "@tanstack/table-core": "^8.21.3",
+    "drizzle-orm": "^0.45.2"
   },
   "devDependencies": {
     "@convex-dev/aggregate": "^0.2.1",
@@ -60,6 +61,7 @@
     "cookie": "^1.1.1",
     "date-fns": "^4.1.0",
     "default-passive-events": "^4.0.0",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-svelte": "^3.15.2",

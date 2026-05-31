@@ -3,6 +3,7 @@ main = ".svelte-kit/cloudflare/_worker.js"
 compatibility_date = "2025-11-17"
 compatibility_flags = ["nodejs_compat"]
 
+
 workers_dev = false
 preview_urls = false
 
@@ -21,3 +22,9 @@ head_sampling_rate = 1
 [observability.traces]
 enabled = true
 head_sampling_rate = 1
+
+[[d1_databases]]
+binding = "ohstatus"
+database_name = "ohstatus"
+database_id = "4c859b9c-cfef-48a1-b2b2-737e589ff53c"
+migrations_dir = "drizzle/migrations"
