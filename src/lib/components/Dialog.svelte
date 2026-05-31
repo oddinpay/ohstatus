@@ -79,7 +79,7 @@
     <Dialog.Content class="sm:max-w-100">
       <Dialog.Header>
         <Dialog.Title>Subscription successful</Dialog.Title>
-        <Dialog.Description class="mt-2 text-gray-400">
+        <Dialog.Description class="mt-2 text-gray-500">
           You have successfully subscribed to alerts. You will receive email
           notifications whenever Oddinpay creates, updates, or resolves an
           incident.
@@ -98,7 +98,7 @@
     <Dialog.Content class="sm:max-w-100">
       <Dialog.Header>
         <Dialog.Title>Subscribe to alerts</Dialog.Title>
-        <Dialog.Description class="mt-2 text-gray-400">
+        <Dialog.Description class="mt-2 text-gray-500">
           Get email notifications whenever Oddinpay creates, updates, or
           resolves an incident.
         </Dialog.Description>
