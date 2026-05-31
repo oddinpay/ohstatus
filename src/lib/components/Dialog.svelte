@@ -50,7 +50,7 @@
     id: "create-subscriber",
     resetForm: true,
     validators: zod4(subscriberCreate),
-    onSubmit: async ({ formData }) => {
+    onSubmit: async () => {
       await new Promise((resolve) => setTimeout(resolve, 800));
     },
     onUpdate: async ({ form: f }) => {
