@@ -431,7 +431,7 @@
           <Table.Row>
             {#each columns as _}
               <Table.Head
-                class="text-white border-b border-zinc-700  cursor-pointer hover:bg-zinc-800 [&:has([role=checkbox])]:ps-3"
+                class="text-white border-b border-zinc-700  cursor-pointer hover:bg-zinc-800 has-[[role=checkbox]]:ps-3"
               >
                 <Skeleton class="h-8 w-full bg-zinc-700/50" />
               </Table.Head>
@@ -442,7 +442,7 @@
             <Table.Row>
               {#each headerGroup.headers as header (header.id)}
                 <Table.Head
-                  class="text-white border-b border-zinc-700  cursor-pointer hover:bg-zinc-800 [&:has([role=checkbox])]:ps-3"
+                  class="text-white border-b border-zinc-700  cursor-pointer hover:bg-zinc-800 has-[[role=checkbox]]:ps-3"
                 >
                   {#if !header.isPlaceholder}
                     <FlexRender
@@ -463,7 +463,7 @@
             <Table.Row>
               {#each columns as _}
                 <Table.Cell
-                  class="text-white border-b border-zinc-700 cursor-pointer hover:bg-zinc-800 [&:has([role=checkbox])]:ps-3"
+                  class="text-white border-b border-zinc-700 cursor-pointer hover:bg-zinc-800 has-[[role=checkbox]]:ps-3"
                 >
                   <Skeleton class="h-8 w-full bg-zinc-700/50" />
                 </Table.Cell>
@@ -488,7 +488,7 @@
           >
             {#each row.getVisibleCells() as cell (cell.id)}
               <Table.Cell
-                class="text-white border-b border-zinc-700 cursor-pointer hover:bg-zinc-800 [&:has([role=checkbox])]:ps-3"
+                class="text-white border-b border-zinc-700 cursor-pointer hover:bg-zinc-800 has-[[role=checkbox]]:ps-3"
               >
                 <FlexRender
                   content={cell.column.columnDef.cell}
