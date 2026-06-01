@@ -100,11 +100,11 @@
             cx="26"
             cy="26"
             r="25"
-            fill="#21ba45"
+            fill="none"
           />
           <path
             class="checkmark__check2 animate-check2"
-            fill="#21ba45"
+            fill="none"
             d="M14.1 27.2l7.1 7.2 16.7-16.8"
           />
         </svg>
