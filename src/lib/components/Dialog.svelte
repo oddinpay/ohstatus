@@ -189,7 +189,7 @@
       border-radius: 50%;
       display: block;
       stroke-width: 3;
-      stroke: #086623;
+      stroke: #21ba45;
       stroke-miterlimit: 10;
       width: 80px;
       height: 80px;
@@ -200,7 +200,7 @@
       stroke-dashoffset: 166;
       stroke-width: 3;
       stroke-miterlimit: 10;
-      stroke: #086623;
+      stroke: #21ba45;
       fill: none;
       will-change: transform;
     }
