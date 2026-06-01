@@ -191,8 +191,8 @@
       stroke-width: 3;
       stroke: #086623;
       stroke-miterlimit: 10;
-      width: 120px;
-      height: 120px;
+      width: 80px;
+      height: 80px;
     }
 
     .checkmark__circle2 {
