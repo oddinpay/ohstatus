@@ -100,11 +100,11 @@
             cx="26"
             cy="26"
             r="25"
-            fill="none"
+            fill="#21ba45"
           />
           <path
             class="checkmark__check2 animate-check2"
-            fill="none"
+            fill="#21ba45"
             d="M14.1 27.2l7.1 7.2 16.7-16.8"
           />
         </svg>
@@ -191,8 +191,8 @@
       stroke-width: 3;
       stroke: #21ba45;
       stroke-miterlimit: 10;
-      width: 80px;
-      height: 80px;
+      width: 70px;
+      height: 70px;
     }
 
     .checkmark__circle2 {
