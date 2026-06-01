@@ -212,8 +212,6 @@
       will-change: transform;
     }
 
-    /* --- Added missing Keyframes --- */
-
     @keyframes stroke-circle {
       100% {
         stroke-dashoffset: 0;
@@ -236,8 +234,6 @@
         transform: scale(1.1);
       }
     }
-
-    /* --- Your existing animation classes --- */
 
     .animate-circle2 {
       animation: stroke-circle 1s cubic-bezier(0.65, 0, 0.45, 1) forwards;
