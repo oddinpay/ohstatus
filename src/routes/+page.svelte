@@ -1397,10 +1397,10 @@
 
 <svelte:head>
   {#if page.url.hostname === "status.oddinpay.com"}
-    <title>Status • OddinPay</title>
+    <title>Status • Oddinpay</title>
     <meta
       name="description"
-      content="Real-time and historical data on OddinPay system performance."
+      content="Real-time and historical data on Oddinpay system performance."
     />
   {:else}
     {#each query.data as site}
