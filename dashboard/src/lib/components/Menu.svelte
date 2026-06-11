@@ -144,7 +144,7 @@
                 >
                 <Input
                   class="border-zinc-700 bg-transparent text-white"
-                  placeholder="OddinPay system performance."
+                  placeholder="Oddinpay system performance."
                   type="text"
                   {...props}
                   bind:value={$formData.description}
