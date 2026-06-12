@@ -15,7 +15,11 @@ const isProtectedRoute = createRouteMatcher([
   "/alerts",
 ]);
 
-const { handleAuth, isAuthenticated } = createConvexAuthHooks();
+const { handleAuth, isAuthenticated } = createConvexAuthHooks({
+  cookieConfig: {
+    maxAge: 60 * 60 * 24 * 7,
+  },
+});
 
 const handleDevTools: Handle = async ({ event, resolve }) => {
   if (
