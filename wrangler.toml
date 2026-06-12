@@ -30,10 +30,6 @@ database_id = "f888f235-8e3f-458a-8ac1-9c5e5fae925d"
 migrations_dir = "drizzle"
 
 
-# [[durable_objects.bindings]]
-# name = "SUBSCRIBERS"
-# class_name = "Subscribers"
-
-# [[migrations]]
-# tag = "v1"
-# new_classes = ["Subscribers"]
+[[queues.producers]]
+binding = "SUBSCRIBERS_QUEUE"
+queue = "subscribers-queue"
