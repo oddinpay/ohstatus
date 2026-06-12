@@ -52,4 +52,4 @@ const protectRoutes: Handle = async ({ event, resolve }) => {
   return response;
 };
 
-export const handle = sequence(handleDevTools, handleAuth, protectRoutes);
+export const handle = sequence(handleAuth, protectRoutes, handleDevTools);
