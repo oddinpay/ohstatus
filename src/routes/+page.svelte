@@ -647,7 +647,7 @@
           <span class="block w-5 h-0.5 bg-current"></span>
         </button>
 
-        <div class="oddin-status hover:opacity-50">
+        <div class="ohstatus hover:opacity-50">
           {#if page.url.hostname === "status.oddinpay.com"}
             <a href={slug} target="_blank" rel="noopener noreferrer">
               {logo}

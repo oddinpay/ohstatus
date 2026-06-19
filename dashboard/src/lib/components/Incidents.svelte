@@ -321,7 +321,7 @@
   </Empty.Content>
   <Button variant="link" class="text-gray-400" size="sm">
     <a
-      href="https://github.com/oddinpay/oddin-status"
+      href="https://github.com/oddinpay/ohstatus"
       target="_blank"
       rel="noopener noreferrer"
     >
