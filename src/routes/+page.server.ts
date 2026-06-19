@@ -39,7 +39,7 @@ export const actions: Actions = {
         const { waitUntil } = await import("cloudflare:workers");
 
         const sendEmailTask = emailQueue.send({
-          to: email,
+          email: email,
         });
 
         waitUntil(sendEmailTask);
