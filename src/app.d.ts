@@ -1,10 +1,13 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 // for information about these interfaces
+import type { Queue } from "@cloudflare/workers-types";
+
 declare global {
   namespace App {
     interface Platform {
       env: {
         ohstatus: D1Database;
+        SUBSCRIBERS_QUEUE: Queue;
       };
     }
     // interface Error {}

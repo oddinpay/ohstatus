@@ -33,6 +33,15 @@ export const actions: Actions = {
     }
 
     try {
+      const emailQueue = e.platform?.env?.SUBSCRIBERS_QUEUE;
+      const { waitUntil } = await import("cloudflare:workers");
+
+      const sendEmailTask = emailQueue.send({
+        to: email,
+      });
+
+      waitUntil(sendEmailTask);
+
       await db
         .insert(subscribers)
         .values({
