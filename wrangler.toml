@@ -32,4 +32,4 @@ migrations_dir = "drizzle"
 
 [[queues.producers]]
 binding = "SUBSCRIBERS_QUEUE"
-queue = "subscribers-queue"
+queue = "sync-subscribers"
