@@ -19,12 +19,12 @@ const config = {
     vitePreprocess(),
     mdsvex({
       extensions: [".svx", ".md"],
-      layout: {
-        status: path.join(
-          dirname,
-          "./src/lib/components/layout/_status.svelte",
-        ),
-      },
+      // layout: {
+      //   status: path.join(
+      //     dirname,
+      //     "./src/lib/components/layout/_status.svelte",
+      //   ),
+      // },
     }),
   ],
   kit: {
