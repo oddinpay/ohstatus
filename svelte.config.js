@@ -1,6 +1,11 @@
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
 import cf from "@sveltejs/adapter-cloudflare";
 
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+path.resolve(fileURLToPath(import.meta.url), "../");
+
 /** @type {import('@sveltejs/kit').Config} */
 const adapterOptions = {
   precompress: true,
