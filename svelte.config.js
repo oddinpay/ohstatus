@@ -1,10 +1,10 @@
-import { mdsvex } from "mdsvex";
+// import { mdsvex } from "mdsvex";
 import cf from "@sveltejs/adapter-cloudflare";
-import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
+// import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+// import path from "node:path";
+// import { fileURLToPath } from "node:url";
 
-const dirname = path.resolve(fileURLToPath(import.meta.url), "../");
+// const dirname = path.resolve(fileURLToPath(import.meta.url), "../");
 
 /** @type {import('@sveltejs/kit').Config} */
 
@@ -15,15 +15,15 @@ const config = {
   // for more information about preprocessors
 
   extensions: [".svelte", ".svx", ".md"],
-  preprocess: [
-    vitePreprocess(),
-    mdsvex({
-      extensions: [".svx", ".md"],
-      layout: {
-        status: path.join(dirname),
-      },
-    }),
-  ],
+  // preprocess: [
+  //   vitePreprocess(),
+  //   mdsvex({
+  //     extensions: [".svx", ".md"],
+  //     layout: {
+  //       status: path.join(dirname),
+  //     },
+  //   }),
+  // ],
   kit: {
     // adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
     // If your environment is not supported, or you settled on a specific environment, switch out the adapter.
