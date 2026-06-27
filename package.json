@@ -39,7 +39,6 @@
     "drizzle-orm": "^0.45.2"
   },
   "devDependencies": {
-    "@better-svelte-email/server": "^2.1.1",
     "@cloudflare/workers-types": "^4.20260619.1",
     "@convex-dev/aggregate": "^0.2.1",
     "@eslint/compat": "^1.4.1",

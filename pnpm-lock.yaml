@@ -15,9 +15,6 @@ importers:
         specifier: ^0.45.2
         version: 0.45.2(@cloudflare/workers-types@4.20260619.1)
     devDependencies:
-      '@better-svelte-email/server':
-        specifier: ^2.1.1
-        version: 2.1.1(svelte@5.54.0)
       '@cloudflare/workers-types':
         specifier: ^4.20260619.1
         version: 4.20260619.1

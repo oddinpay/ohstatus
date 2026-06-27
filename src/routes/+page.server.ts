@@ -6,7 +6,8 @@ import type { PageServerLoad } from "./[...catchall]/$types";
 import { subscribers } from "$lib/schema";
 import { drizzle } from "drizzle-orm/d1";
 import { eq } from "drizzle-orm";
-import { Renderer } from "@better-svelte-email/server";
+import Renderer from "better-svelte-email/render";
+
 import Status from "$lib/emails/status.svelte";
 
 export const load: PageServerLoad = async (event) => {
