@@ -4,6 +4,10 @@ import cf from "@sveltejs/adapter-cloudflare";
 /** @type {import('@sveltejs/kit').Config} */
 const adapterOptions = {
   precompress: true,
+  routes: {
+    include: ["/*"],
+    exclude: ["<all>"],
+  },
 };
 
 const config = {
