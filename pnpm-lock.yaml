@@ -15,6 +15,9 @@ importers:
         specifier: ^0.45.2
         version: 0.45.2(@cloudflare/workers-types@4.20260619.1)
     devDependencies:
+      '@better-svelte-email/components':
+        specifier: ^2.1.1
+        version: 2.1.1(@sveltejs/kit@2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)
       '@better-svelte-email/server':
         specifier: ^2.1.1
         version: 2.1.1(svelte@5.54.0)
@@ -204,6 +207,15 @@ packages:
   '@babel/runtime@7.29.2':
     resolution: {integrity: sha512-JiDShH45zKHWyGe4ZNVRrCjBz8Nh9TMmZG1kh4QTK8hCBTWBi8Da+i7s1fJw7/lYpM4ccepSNfqzZ/QvABBi5g==}
     engines: {node: '>=6.9.0'}
+
+  '@better-svelte-email/components@2.1.1':
+    resolution: {integrity: sha512-1YDr3h/9yBQKUei7oZwT2I0ZTHFcA4SOdRh6MCng1gHHJsOHCGppwKpE3cteabkYo51Gr4JG3iInt3dpCq9V7g==}
+    peerDependencies:
+      '@sveltejs/kit': '>=2'
+      svelte: '>=5.14.3'
+    peerDependenciesMeta:
+      '@sveltejs/kit':
+        optional: true
 
   '@better-svelte-email/server@2.1.1':
     resolution: {integrity: sha512-j7t7ROnyI65RHd+59Hq9i5lNalj/ueKZC07DF4DQX4T90mh1kdvquenQD0nyC10DSMGBKjEXQmdW3eWcV5+xSA==}
@@ -3340,6 +3352,12 @@ snapshots:
 
   '@babel/runtime@7.29.2':
     optional: true
+
+  '@better-svelte-email/components@2.1.1(@sveltejs/kit@2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)':
+    dependencies:
+      svelte: 5.54.0
+    optionalDependencies:
+      '@sveltejs/kit': 2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3))
 
   '@better-svelte-email/server@2.1.1(svelte@5.54.0)':
     dependencies:
