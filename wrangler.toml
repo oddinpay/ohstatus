@@ -7,9 +7,9 @@ compatibility_flags = ["nodejs_compat"]
 workers_dev = false
 preview_urls = false
 
-# [assets]
-# binding = "ASSETS"
-# directory = ".svelte-kit/cloudflare"
+[assets]
+binding = "ASSETS"
+directory = ".svelte-kit/cloudflare"
 
 [observability]
 enabled = true
