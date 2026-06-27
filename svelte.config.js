@@ -1,10 +1,10 @@
 import { mdsvex } from "mdsvex";
 import cf from "@sveltejs/adapter-cloudflare";
 import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
-// import path from "node:path";
-// import { fileURLToPath } from "node:url";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
 
-// const dirname = path.resolve(fileURLToPath(import.meta.url), "../");
+const dirname = path.resolve(fileURLToPath(import.meta.url), "../");
 
 /** @type {import('@sveltejs/kit').Config} */
 
@@ -19,12 +19,12 @@ const config = {
     vitePreprocess(),
     mdsvex({
       extensions: [".svx", ".md"],
-      //   layout: {
-      //     status: path.join(
-      //       dirname,
-      //       "./src/lib/components/layout/_status.svelte",
-      //     ),
-      //   },
+      layout: {
+        status: path.join(
+          dirname,
+          "./src/lib/components/layout/_status.svelte",
+        ),
+      },
     }),
   ],
   kit: {
