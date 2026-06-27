@@ -7,7 +7,7 @@ import { subscribers } from "$lib/schema";
 import { drizzle } from "drizzle-orm/d1";
 import { eq } from "drizzle-orm";
 import { Renderer } from "@better-svelte-email/server";
-import Status from "$lib/emails/status.svelte";
+// import Status from "$lib/emails/status.svelte";
 
 export const load: PageServerLoad = async (event) => {
   const form = await superValidate(event, zod4(subscriberCreate));
@@ -43,13 +43,13 @@ export const actions: Actions = {
         const { waitUntil } = await import("cloudflare:workers");
 
         const username = email.split("@")[0];
-        const html = await render(Status, { props: { username } });
+        // const html = await render(Status, { props: { username } });
 
         const sendEmailTask = emailQueue.send({
           from: "Oddinpay <hello@oddinpay.com>",
           email: email,
           subject: "You have successfully subscribed to oddin status.",
-          template: html,
+          // template: html,
         });
 
         waitUntil(sendEmailTask);
