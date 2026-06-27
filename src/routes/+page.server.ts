@@ -16,6 +16,8 @@ export const load: PageServerLoad = async (event) => {
   };
 };
 
+const { render } = new Renderer();
+
 export const actions: Actions = {
   create: async (e) => {
     const form = await superValidate(e, zod4(subscriberCreate));
@@ -39,8 +41,6 @@ export const actions: Actions = {
 
       if (emailQueue) {
         const { waitUntil } = await import("cloudflare:workers");
-
-        const { render } = new Renderer();
 
         const username = email.split("@")[0];
         const html = await render(Status, { props: { username } });
