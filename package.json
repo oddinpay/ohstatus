@@ -36,7 +36,8 @@
   },
   "dependencies": {
     "@tanstack/table-core": "^8.21.3",
-    "drizzle-orm": "^0.45.2"
+    "drizzle-orm": "^0.45.2",
+    "resend": "^6.16.0"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260619.1",
