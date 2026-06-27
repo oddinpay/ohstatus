@@ -6,11 +6,6 @@ import path from "path";
 export default defineConfig({
   plugins: [tailwindcss(), sveltekit()],
 
-  ssr: {
-    target: "webworker",
-    noExternal: true,
-  },
-
   resolve: {
     alias: {
       $lib: path.resolve("./src/lib"),
