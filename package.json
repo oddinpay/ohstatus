@@ -36,8 +36,7 @@
   },
   "dependencies": {
     "@tanstack/table-core": "^8.21.3",
-    "drizzle-orm": "^0.45.2",
-    "resend": "^6.16.0"
+    "drizzle-orm": "^0.45.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260619.1",
@@ -47,7 +46,8 @@
     "@fontsource-variable/inter": "^5.2.8",
     "@internationalized/date": "^3.12.0",
     "@lucide/svelte": "^1.16.0",
-    "@sveltejs/adapter-cloudflare": "^7.2.9",
+    "@sveltejs/adapter-cloudflare": "^7.2.8",
+    "@sveltejs/adapter-node": "^5.5.4",
     "@sveltejs/kit": "^2.55.0",
     "@sveltejs/package": "^2.5.7",
     "@sveltejs/vite-plugin-svelte": "^7.0.0",
@@ -55,7 +55,6 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^22.19.15",
-    "better-svelte-email": "^1.4.0",
     "bits-ui": "^2.16.3",
     "clsx": "^2.1.1",
     "convex": "^1.33.1",
