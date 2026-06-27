@@ -22,7 +22,7 @@
   let { username = "Guest" }: Props = $props();
 
   // svelte-ignore state_referenced_locally
-  const previewText = `Hello ${username}, you have successfully subscribed to Oddin status updates!`;
+  const previewText = `Hello ${username}, you have successfully subscribed to oddin status updates!`;
 </script>
 
 <Html>
@@ -53,7 +53,7 @@
       <Section class="py-2">
         <Heading as="h1" class="text-3xl font-semibold">Subscribed!</Heading>
 
-        <Section class="py-2 flex justify-center">
+        <Section class="py-2 text-center">
           <img
             src="https://cdn.oddinpay.com/success.png"
             alt="Status"
