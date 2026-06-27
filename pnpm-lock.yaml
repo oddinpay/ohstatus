@@ -14,6 +14,9 @@ importers:
       drizzle-orm:
         specifier: ^0.45.2
         version: 0.45.2(@cloudflare/workers-types@4.20260619.1)
+      resend:
+        specifier: ^6.16.0
+        version: 6.16.0
     devDependencies:
       '@cloudflare/workers-types':
         specifier: ^4.20260619.1
@@ -126,9 +129,6 @@ importers:
       publint:
         specifier: ^0.3.18
         version: 0.3.18
-      resend:
-        specifier: ^6.16.0
-        version: 6.16.0
       svelte:
         specifier: ^5.54.0
         version: 5.54.0
