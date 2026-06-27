@@ -13,7 +13,7 @@
     Row,
     Section,
     Text,
-  } from "better-svelte-email";
+  } from "@better-svelte-email/components";
 
   interface Props {
     username?: string;
