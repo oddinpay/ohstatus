@@ -18,6 +18,12 @@ importers:
         specifier: ^6.16.0
         version: 6.16.0
     devDependencies:
+      '@better-svelte-email/components':
+        specifier: ^2.1.1
+        version: 2.1.1(@sveltejs/kit@2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)
+      '@better-svelte-email/server':
+        specifier: ^2.1.1
+        version: 2.1.1(svelte@5.54.0)
       '@cloudflare/workers-types':
         specifier: ^4.20260619.1
         version: 4.20260619.1
@@ -66,9 +72,6 @@ importers:
       '@types/node':
         specifier: ^22.19.15
         version: 22.19.15
-      better-svelte-email:
-        specifier: ^2.1.1
-        version: 2.1.1(@sveltejs/kit@2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)
       bits-ui:
         specifier: ^2.16.3
         version: 2.16.3(@internationalized/date@3.12.0)(@sveltejs/kit@2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)
@@ -207,15 +210,6 @@ packages:
 
   '@better-svelte-email/components@2.1.1':
     resolution: {integrity: sha512-1YDr3h/9yBQKUei7oZwT2I0ZTHFcA4SOdRh6MCng1gHHJsOHCGppwKpE3cteabkYo51Gr4JG3iInt3dpCq9V7g==}
-    peerDependencies:
-      '@sveltejs/kit': '>=2'
-      svelte: '>=5.14.3'
-    peerDependenciesMeta:
-      '@sveltejs/kit':
-        optional: true
-
-  '@better-svelte-email/preview@2.1.1':
-    resolution: {integrity: sha512-QUwopBWYn+Lxk7+KEAbmeMALE36Y4eyTnAlfmnJhLhHUZBzfZz2jmcgjEOlPsLbdYI33hKFdbYOYXASUzF76Tg==}
     peerDependencies:
       '@sveltejs/kit': '>=2'
       svelte: '>=5.14.3'
@@ -1979,9 +1973,6 @@ packages:
     resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
     engines: {node: 18 || 20 || >=22}
 
-  better-svelte-email@2.1.1:
-    resolution: {integrity: sha512-gdDYtkRQ+aor1zNUfhQlXbr0/C2y3R32NnXMNDUyUT7LwUlPD+8tkV/fCClIS7cY2XthSiGYf2y6wheVKTIaqg==}
-
   bits-ui@2.16.3:
     resolution: {integrity: sha512-5hJ5dEhf5yPzkRFcxzgQHScGodeo0gK0MUUXrdLlRHWaBOBGZiacWLG96j/wwFatKwZvouw7q+sn14i0fx3RIg==}
     engines: {node: '>=20'}
@@ -2872,11 +2863,6 @@ packages:
     engines: {node: '>=14'}
     hasBin: true
 
-  prettier@3.9.0:
-    resolution: {integrity: sha512-LjIqSIC5VYLzs9WedVmJ2ljNAGnU+DteIClbahu4L/DBeWjZ6iT/k1lAYyu9JUh+1xINxWadaPw/Pl63y/agAw==}
-    engines: {node: '>=14'}
-    hasBin: true
-
   prism-svelte@0.4.7:
     resolution: {integrity: sha512-yABh19CYbM24V7aS7TuPYRNMqthxwbvx6FF/Rw920YbyBWO3tnyPIqRMgHuSVsLmuHkkBS1Akyof463FVdkeDQ==}
 
@@ -3388,17 +3374,6 @@ snapshots:
       svelte: 5.54.0
     optionalDependencies:
       '@sveltejs/kit': 2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3))
-
-  '@better-svelte-email/preview@2.1.1(@sveltejs/kit@2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)':
-    dependencies:
-      '@better-svelte-email/server': 2.1.1(svelte@5.54.0)
-      prettier: 3.9.0
-      resend: 6.16.0
-      svelte: 5.54.0
-    optionalDependencies:
-      '@sveltejs/kit': 2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3))
-    transitivePeerDependencies:
-      - '@react-email/render'
 
   '@better-svelte-email/server@2.1.1(svelte@5.54.0)':
     dependencies:
@@ -4623,16 +4598,6 @@ snapshots:
 
   balanced-match@4.0.4: {}
 
-  better-svelte-email@2.1.1(@sveltejs/kit@2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0):
-    dependencies:
-      '@better-svelte-email/components': 2.1.1(@sveltejs/kit@2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)
-      '@better-svelte-email/preview': 2.1.1(@sveltejs/kit@2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)
-      '@better-svelte-email/server': 2.1.1(svelte@5.54.0)
-    transitivePeerDependencies:
-      - '@react-email/render'
-      - '@sveltejs/kit'
-      - svelte
-
   bits-ui@2.16.3(@internationalized/date@3.12.0)(@sveltejs/kit@2.55.0(@sveltejs/vite-plugin-svelte@7.0.0(svelte@5.54.0)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0)(typescript@5.9.3)(vite@8.0.0(@types/node@22.19.15)(esbuild@0.27.3)(jiti@2.6.1)(tsx@4.22.3)))(svelte@5.54.0):
     dependencies:
       '@floating-ui/core': 1.7.5
@@ -5432,8 +5397,6 @@ snapshots:
       prettier-plugin-svelte: 3.5.1(prettier@3.8.1)(svelte@5.54.0)
 
   prettier@3.8.1: {}
-
-  prettier@3.9.0: {}
 
   prism-svelte@0.4.7: {}
 

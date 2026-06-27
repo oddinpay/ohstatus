@@ -40,6 +40,8 @@
     "resend": "^6.16.0"
   },
   "devDependencies": {
+    "@better-svelte-email/components": "^2.1.1",
+    "@better-svelte-email/server": "^2.1.1",
     "@cloudflare/workers-types": "^4.20260619.1",
     "@convex-dev/aggregate": "^0.2.1",
     "@eslint/compat": "^1.4.1",
@@ -56,7 +58,6 @@
     "@tailwindcss/typography": "^0.5.19",
     "@tailwindcss/vite": "^4.2.2",
     "@types/node": "^22.19.15",
-    "better-svelte-email": "^2.1.1",
     "bits-ui": "^2.16.3",
     "clsx": "^2.1.1",
     "convex": "^1.33.1",
