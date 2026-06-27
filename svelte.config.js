@@ -8,7 +8,6 @@ const adapterOptions = {
 
 const config = {
   extensions: [".svelte", ".svx", ".md"],
-
   preprocess: [vitePreprocess()],
 
   kit: {
