@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { env } from "$env/dynamic/public";
+  import DataTableActions from "$lib/components/ui/data-table/data-table-sub.svelte";
   import ChevronLeft from "@lucide/svelte/icons/chevron-left";
   import { Search } from "lucide-svelte";
   import { Skeleton } from "$lib/components/ui/skeleton/index.js";
@@ -15,136 +17,65 @@
     getPaginationRowModel,
     getSortedRowModel,
   } from "@tanstack/table-core";
-  import { createRawSnippet } from "svelte";
-  import DataTableCheckbox from "$lib/components/ui/data-table/data-table-checkbox.svelte";
-  import DataTableEmailButton from "$lib/components/ui/data-table/data-table-sub.svelte";
-  import DataTableActions from "$lib/components/ui/data-table/data-table-actions.svelte";
-  import * as Table from "$lib/components/ui/table/index.js";
-  import { Button } from "$lib/components/ui/button/index.js";
-  import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
-  import { Input } from "$lib/components/ui/input/index.js";
 
   import {
     ConfirmDeleteDialog,
     confirmDelete,
   } from "$lib/components/ui/confirm-delete-dialog";
-
+  import { createRawSnippet } from "svelte";
+  import DataTableCheckbox from "$lib/components/ui/data-table/data-table-checkbox.svelte";
+  import DataTableEmailButton from "$lib/components/ui/data-table/data-table-sub.svelte";
+  import * as Table from "$lib/components/ui/table/index.js";
+  import { Button } from "$lib/components/ui/button/index.js";
+  import * as DropdownMenu from "$lib/components/ui/dropdown-menu/index.js";
+  import { Input } from "$lib/components/ui/input/index.js";
   import {
     FlexRender,
     createSvelteTable,
     renderComponent,
     renderSnippet,
   } from "$lib/components/ui/data-table/index.js";
-
   import { useQuery } from "convex-svelte";
   import { api } from "../../convex/_generated/api";
-  import { env } from "$env/dynamic/public";
   import { toast } from "svelte-sonner";
-  import { source } from "sveltekit-sse";
-  import { onMount, onDestroy } from "svelte";
-  import { browser } from "$app/environment";
 
-  const oddinHost = env.PUBLIC_SSE_HOST;
-  let unsubscribe: (() => void) | undefined;
-
-  type StatusType = "up" | "down" | "warn" | "default";
-
-  interface StatusEntry {
-    date: Date;
-    status: StatusType;
-  }
-
-  interface ApiData {
-    id?: string;
-    name?: string;
-    date?: string[];
-    state?: string[];
-    statuses: StatusEntry[];
-    uptime15: string;
-    uptime30: string;
-    uptime60: string;
-    uptime90: string;
-    __order?: number;
-  }
-
-  onMount(() => {
-    if (!browser) return;
-
-    const json = source(`https://${oddinHost}/v1/sse`)
-      .select("")
-      .json<ApiData>();
-
-    unsubscribe = json.subscribe((msg: any) => {
-      const probe = msg?.payload?.probe;
-      const sla = msg?.payload?.sla;
-      const index = msg?.index;
-
-      if (!probe?.id) return;
-
-      const id = probe.id;
-
-      if (probe.action?.[0] === "deleted") {
-        delete probeMap[id];
-        return;
-      }
-
-      probeMap[id] = {
-        ...probeMap[id],
-        ...probe,
-        uptime90: sla?.uptime90 ?? probeMap[id]?.uptime90 ?? "100.000%",
-        __order: index ?? probeMap[id]?.__order ?? Infinity,
-      };
-    });
-  });
-
-  onDestroy(() => {
-    unsubscribe?.();
-  });
-
-  type ProbeMap = Record<string, ApiData>;
-  let probeMap = $state<ProbeMap>({});
-
-  const monitorCount = useQuery(api.status.count, {});
+  const subC = useQuery(api.subscribers.count, {});
   let totalCount = $state(0);
 
   $effect(() => {
-    if (monitorCount.data !== undefined) {
-      totalCount = monitorCount.data;
+    if (subC.data !== undefined) {
+      totalCount = subC.data;
     } else {
       totalCount = 0;
     }
   });
 
-  type Payment = {
+  type Subscriber = {
     id: string;
-    name: string;
+    email: string;
+    status: string;
   };
 
-  type ConvexMonitor = {
-    _id: string;
-    name: string;
-  };
-
-  type TableRow = Payment & Partial<ConvexMonitor>;
+  type TableRow = Subscriber;
 
   const apiKey = env.PUBLIC_API_KEY;
 
-  const monitors = useQuery(api.status.get, {
+  const sub = useQuery(api.subscribers.get, {
     apiKey,
   });
 
-  const data: Payment[] = [];
-
+  const data: Subscriber[] = [];
   const allData = $derived<TableRow[]>([
     ...data,
-    ...(monitors.data ?? []).map((m) => ({
+    ...(sub.data ?? []).map((m) => ({
       ...m,
       id: m._id,
-      name: m.name,
+      email: m.email,
+      status: m.status,
     })),
   ]);
 
-  const columns: ColumnDef<Payment>[] = [
+  const columns: ColumnDef<Subscriber>[] = [
     {
       id: "select",
       header: ({ table }) =>
@@ -158,6 +89,7 @@
           class:
             "border cursor-pointer border-zinc-500 data-[state=checked]:border-none data-[state=checked]:bg-white data-[state=checked]:text-zinc-900",
         }),
+
       cell: ({ row }) =>
         renderComponent(DataTableCheckbox, {
           checked: row.getIsSelected(),
@@ -166,70 +98,62 @@
           class:
             "border cursor-pointer border-zinc-500 data-[state=checked]:border-none data-[state=checked]:bg-white data-[state=checked]:text-zinc-900",
         }),
+
       enableSorting: false,
       enableHiding: false,
     },
+
     {
       accessorKey: "status",
       header: "Status",
+
       cell: ({ row }) => {
-        const id = row.original.id;
-        const currentProbe = probeMap[id];
-
-        const statusValue = Array.isArray(currentProbe?.state)
-          ? currentProbe.state[0]
-          : (currentProbe?.state ?? "default");
-
-        const statusSnippet = createRawSnippet<[{ status: string }]>(
+        const emailSnippet = createRawSnippet<[{ status: string }]>(
           (getStatus) => {
             const { status } = getStatus();
 
-            const themeMap: Record<string, { base: string; ping: string }> = {
-              up: { base: "bg-green-500", ping: "bg-green-400" },
-              down: { base: "bg-red-500", ping: "bg-red-400" },
-              warn: { base: "bg-yellow-500", ping: "bg-yellow-400" },
-              default: { base: "bg-white", ping: "bg-zinc-300" },
-            };
-
-            const theme = themeMap[status] ?? themeMap.default;
-
             return {
-              render: () => `
-                <div class="flex justify-center items-center">
-                  <span class="relative flex size-3">
-                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 ${theme.ping}"></span>
-                    <span class="relative inline-flex rounded-full size-3 ${theme.base}"></span>
-                  </span>
-                </div>
-              `,
+              render: () =>
+                `<div class="truncate max-w-[150px] mx-auto">${status}</div>`,
             };
           },
         );
 
-        return renderSnippet(statusSnippet, {
-          status: statusValue,
+        return renderSnippet(emailSnippet, {
+          status: row.original.status,
         });
       },
     },
+
     {
-      accessorKey: "name",
+      accessorKey: "email",
       header: ({ column }) =>
         renderComponent(DataTableEmailButton, {
           onclick: column.getToggleSortingHandler(),
         }),
+
       cell: ({ row }) => {
-        const emailSnippet = createRawSnippet<[{ name: string }]>((getName) => {
-          const { name } = getName();
-          return {
-            render: () =>
-              `<div class="lowercase truncate max-w-[150px]">${name}</div>`,
-          };
-        });
+        const emailSnippet = createRawSnippet<[{ email: string }]>(
+          (getEmail) => {
+            const { email } = getEmail();
+
+            return {
+              render: () =>
+                `<div class="truncate max-w-[150px] mx-auto">${email}</div>`,
+            };
+          },
+        );
 
         return renderSnippet(emailSnippet, {
-          name: row.original.name,
+          email: row.original.email,
         });
       },
+    },
+
+    {
+      accessorKey: "parentId",
+      header: () => "",
+      enableSorting: true,
     },
 
     {
@@ -241,6 +165,7 @@
           class:
             "size-8 bg-transparent cursor-pointer text-red-500 hover:bg-red-950/30 hover:text-red-400 disabled:opacity-30 transition-color disabled:pointer-events-none disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-red-500",
           disabled: table.getFilteredSelectedRowModel().rows.length === 0,
+
           onclick: () => {
             const selectedRows = table.getSelectedRowModel().rows;
             const selectedIds = selectedRows.map((row) => row.original.id);
@@ -249,20 +174,26 @@
 
             confirmDelete({
               title: isBulk ? "Delete monitors" : "Delete monitor",
+
               description:
                 "Are you sure you want to delete this monitor? This action cannot be undone.",
+
               input: {
                 confirmationText: "yes",
               },
+
               onConfirm: async () => {
                 const formData = new FormData();
-
                 const action = isBulk ? "?/deleteBulk" : "?/delete";
 
                 if (!isBulk) {
                   formData.append("_id", selectedIds[0]);
                 } else {
-                  formData.append("_id", JSON.stringify(selectedIds));
+                  formData.append(
+                    "_id",
+
+                    JSON.stringify(selectedIds),
+                  );
                 }
 
                 formData.append("confirmation", "yes");
@@ -279,51 +210,55 @@
               },
             });
           },
+
           children: createRawSnippet(() => ({
             render: () =>
-              `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-`,
+              `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash2-icon lucide-trash-2"><path d="M10 11v6"/><path d="M14 11v6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>`,
           })),
         });
       },
-      cell: ({ row }) =>
-        renderComponent(DataTableActions, {
-          id: row.original.id,
-          name: row.original.name,
-        }),
+
       enableHiding: false,
     },
   ];
 
   let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 4 });
-  let sorting = $state<SortingState>([]);
+  let sorting = $state<SortingState>([{ id: "parentId", desc: false }]);
   let columnFilters = $state<ColumnFiltersState>([]);
   let rowSelection = $state<RowSelectionState>({});
-  let columnVisibility = $state<VisibilityState>({});
+  let columnVisibility = $state<VisibilityState>({
+    parentId: false,
+  });
 
   const table = createSvelteTable({
     get data() {
       return allData;
     },
+
     getRowId: (row) => row.id,
     columns,
     state: {
       get pagination() {
         return pagination;
       },
+
       get sorting() {
         return sorting;
       },
+
       get columnVisibility() {
         return columnVisibility;
       },
+
       get rowSelection() {
         return rowSelection;
       },
+
       get columnFilters() {
         return columnFilters;
       },
     },
+
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -335,6 +270,7 @@
         pagination = updater;
       }
     },
+
     onSortingChange: (updater) => {
       if (typeof updater === "function") {
         sorting = updater(sorting);
@@ -342,6 +278,7 @@
         sorting = updater;
       }
     },
+
     onColumnFiltersChange: (updater) => {
       if (typeof updater === "function") {
         columnFilters = updater(columnFilters);
@@ -349,6 +286,7 @@
         columnFilters = updater;
       }
     },
+
     onColumnVisibilityChange: (updater) => {
       if (typeof updater === "function") {
         columnVisibility = updater(columnVisibility);
@@ -356,6 +294,7 @@
         columnVisibility = updater;
       }
     },
+
     onRowSelectionChange: (updater) => {
       if (typeof updater === "function") {
         rowSelection = updater(rowSelection);
@@ -366,68 +305,30 @@
   });
 </script>
 
-<svelte:head>
-  <style>
-    tbody tr:hover td {
-      background-color: #3f3f46;
-      color: white;
-    }
-
-    thead tr:hover th {
-      background-color: #3f3f46;
-      color: white;
-    }
-
-    thead tbody tr td,
-    thead tr th {
-      transition: background-color 0.2s ease;
-    }
-
-    thead tr th:last-child,
-    tbody tr td:last-child {
-      width: 1%;
-      white-space: nowrap;
-      padding-right: 1rem;
-    }
-
-    button:disabled {
-      cursor: not-allowed !important;
-      pointer-events: auto !important;
-      opacity: 0.5;
-    }
-
-    th:nth-child(1),
-    td:nth-child(1),
-    th:nth-child(2),
-    td:nth-child(2),
-    th:last-child,
-    td:last-child {
-      text-align: center;
-    }
-  </style>
-</svelte:head>
-
 <div class="-mb-8 w-full">
   <div class="flex items-center justify-end py-4">
     <div class="relative">
       <Search
         class="absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-zinc-400"
       />
+
       <Input
         id="table-search"
         placeholder="Filter subscribers..."
-        value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+        value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
         oninput={(e) =>
-          table.getColumn("name")?.setFilterValue(e.currentTarget.value)}
+          table.getColumn("email")?.setFilterValue(e.currentTarget.value)}
         onchange={(e) => {
-          table.getColumn("name")?.setFilterValue(e.currentTarget.value);
+          table.getColumn("email")?.setFilterValue(e.currentTarget.value);
         }}
         class="max-w-sm bg-zinc-800 w-50 border-zinc-700 text-white pl-8"
       />
     </div>
+
     <DropdownMenu.Root>
       <DropdownMenu.Content align="end">
         {#each table
+
           .getAllColumns()
           .filter((col) => col.getCanHide()) as column (column)}
           <DropdownMenu.CheckboxItem
@@ -443,10 +344,11 @@
     </DropdownMenu.Root>
     <ConfirmDeleteDialog />
   </div>
+
   <div class="rounded-md">
     <Table.Root class="stm:w-100">
       <Table.Header>
-        {#if monitors.isLoading}
+        {#if subC.isLoading}
           <Table.Row>
             {#each columns as _}
               <Table.Head
@@ -475,8 +377,9 @@
           {/each}
         {/if}
       </Table.Header>
+
       <Table.Body>
-        {#if monitors.isLoading}
+        {#if subC.isLoading}
           {#each Array(Math.min(totalCount, 4)) as _}
             <Table.Row>
               {#each columns as _}
@@ -498,10 +401,11 @@
             </Table.Cell>
           </Table.Row>
         {/if}
+
         {#each table.getRowModel().rows as row (row.id)}
           <Table.Row
             data-state={row.getIsSelected() && "selected"}
-            class="data-[state=selected]:bg-zinc-700/50"
+            class="data-[state=selected]:bg-zinc-500/50"
           >
             {#each row.getVisibleCells() as cell (cell.id)}
               <Table.Cell
@@ -518,11 +422,13 @@
       </Table.Body>
     </Table.Root>
   </div>
+
   <div class="flex items-center justify-end space-x-2 pt-4">
     <div class="text-muted-foreground flex-1 text-sm">
       {table.getFilteredSelectedRowModel().rows.length} of
       {table.getFilteredRowModel().rows.length} subscriber(s) selected.
     </div>
+
     <div class="flex items-center space-x-2">
       <Button
         variant="outline"
