@@ -15,6 +15,8 @@
   import Header from "$lib/components/Header.svelte";
   import { goto } from "$app/navigation";
   import { Gauge } from "$lib/components/ui/gauge";
+  import DataTable from "$lib/components/DataTable.svelte";
+  import AlertsData from "$lib/components/AlertsData.svelte";
   let currentTab = "tab-4";
 </script>
 
@@ -90,13 +92,6 @@
               <TabsList
                 class="h-auto gap-2 rounded-full border-b border-border bg-zinc-800 px-10 py-2 text-zinc-400"
               >
-                <!-- <TabsTrigger
-                  value="tab-3"
-                  class="relative cursor-pointer after:absolute  after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5  hover:text-white hover:after:bg-white data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:shadow-none data-[state=active]:after:bg-white data-[state=active]:hover:text-white"
-                >
-                  Rules
-                </TabsTrigger> -->
-
                 <TabsTrigger
                   value="tab-3"
                   class="relative cursor-pointer after:absolute  after:inset-x-0 after:bottom-0 after:-mb-1 after:h-0.5  hover:text-white hover:after:bg-white data-[state=active]:bg-transparent data-[state=active]:text-white data-[state=active]:shadow-none data-[state=active]:after:bg-white data-[state=active]:hover:text-white"
@@ -105,48 +100,24 @@
                 </TabsTrigger>
               </TabsList>
 
-              <!-- <TabsContent value="tab-3">
-                <Alerts />
-              </TabsContent> -->
-
-              <!-- <TabsContent value="tab-4">
-                <p class="p-4 text-center text-xs text-white">
-                  Content for Tab 4
-                </p>
-              </TabsContent> -->
-
-              <!-- <TabsContent value="tab-3">
-                <div class="mt-5 grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div
-                    class="flex h-80 w-30 360:w-60 xl:w-80 flex-col overflow-hidden rounded-xl border border-zinc-700 shadow-sm"
-                  >
-                    <div class="flex-1 p-6">
-                      <h3 class="font-medium text-zinc-300">Email</h3>
-                    </div>
-                    <div class="border-t p-4"></div>
+              <TabsContent
+                class="flex items-center hover:opacity-95 justify-center min-h-50"
+                value="tab-1"
+              >
+                {#if monitorCount.isLoading}
+                  <div class="container pb-20">
+                    {#each animations as anim}
+                      <div id="canvas-{anim.id}" class="circle-container"></div>
+                    {/each}
                   </div>
-
-                  <div
-                    class="flex h-80 w-30 360:w-60 xl:w-80 flex-col overflow-hidden rounded-xl border border-zinc-700 shadow-sm relative"
-                  >
-                    <div class="p-6">
-                      <h3 class="font-medium text-zinc-300">RSS</h3>
-                    </div>
-
-                    <div
-                      class="absolute inset-0 flex items-center justify-center pointer-events-none"
-                    >
-                      <button
-                        class="pointer-events-auto rounded-lg bg-white px-5 py-2 text-sm font-bold text-black hover:bg-zinc-200 active:scale-95"
-                      >
-                        Done
-                      </button>
-                    </div>
-
-                    <div class="mt-auto border-t p-4"></div>
-                  </div>
-                </div>
-              </TabsContent> -->
+                {:else if monitorCount.error}
+                  <NotMonitor />
+                {:else if totalCount > 0}
+                  <AlertsData />
+                {:else}
+                  <NotMonitor />
+                {/if}
+              </TabsContent>
             </Tabs>
           </TabsContent>
         </div>
