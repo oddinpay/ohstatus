@@ -35,7 +35,7 @@
     class="bg-green-50 mx-auto my-auto px-2 font-[Arial,Inter_Variable,Roboto,-apple-system] antialiased leading-relaxed font-medium"
   >
     <Preview preview={previewText} />
-    <Container class="mx-auto max-w-116.25 mt-10 mb-0 p-4 my-10">
+    <Container class="mx-auto max-w-116.25 mt-10 mb-0 p-4">
       <Section>
         <Link
           href="https://oddinpay.com"
