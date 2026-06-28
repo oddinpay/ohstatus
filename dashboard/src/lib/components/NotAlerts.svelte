@@ -1,6 +1,6 @@
 <script lang="ts">
   import Button from "$lib/components/ui/button.svelte";
-  import { SquareActivity } from "lucide-svelte";
+  import { UserRoundPlus } from "lucide-svelte";
   import * as Empty from "$lib/components/ui/empty/index.js";
   import ArrowUpRightIcon from "@lucide/svelte/icons/arrow-up-right";
 </script>
@@ -8,7 +8,7 @@
 <Empty.Root>
   <Empty.Header>
     <Empty.Media variant="icon">
-      <SquareActivity />
+      <UserRoundPlus />
     </Empty.Media>
     <Empty.Title class=" text-gray-200">Subscribers Not Found</Empty.Title>
     <Empty.Description class="text-gray-400">

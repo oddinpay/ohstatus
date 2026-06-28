@@ -194,7 +194,7 @@
 
               <TabsContent
                 class="flex items-center hover:opacity-95 justify-center min-h-50"
-                value="tab-1"
+                value="tab-3"
               >
                 {#if subscriberCount.isLoading}
                   <div class="container pb-20">
