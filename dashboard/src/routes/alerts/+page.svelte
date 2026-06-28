@@ -15,9 +15,101 @@
   import Header from "$lib/components/Header.svelte";
   import { goto } from "$app/navigation";
   import { Gauge } from "$lib/components/ui/gauge";
-  import DataTable from "$lib/components/DataTable.svelte";
   import AlertsData from "$lib/components/AlertsData.svelte";
+  import { useQuery } from "convex-svelte";
+  import { api } from "../../convex/_generated/api";
+  import { browser } from "$app/environment";
+  import { onMount, onDestroy } from "svelte";
+  import NotAlerts from "$lib/components/NotAlerts.svelte";
+
   let currentTab = "tab-4";
+
+  let requestID: number;
+  let timer: ReturnType<typeof setTimeout>;
+  let totalCount = $state(0);
+  const subscriberCount = useQuery(api.subscribers.count, {});
+
+  $effect(() => {
+    if (subscriberCount.data !== undefined) {
+      totalCount = subscriberCount.data;
+    } else {
+      totalCount = 0;
+    }
+  });
+
+  const animations = [
+    { id: "pulsing-grid", title: "Loading", setup: setupPulsingGrid },
+  ];
+
+  function getCtx(id: string) {
+    const container = document.getElementById(`canvas-${id}`);
+    if (!container) return null;
+    container.innerHTML = "";
+
+    const canvas = document.createElement("canvas");
+    const dpr = window.devicePixelRatio || 1;
+
+    const rect = container.getBoundingClientRect();
+    const size = rect.width;
+
+    canvas.width = size * dpr;
+    canvas.height = size * dpr;
+    canvas.style.width = `${size}px`;
+    canvas.style.height = `${size}px`;
+
+    const ctx = canvas.getContext("2d", { alpha: true })!;
+    ctx.scale(dpr, dpr);
+
+    const internalScale = size / 180;
+    ctx.scale(internalScale, internalScale);
+
+    container.appendChild(canvas);
+    return ctx;
+  }
+
+  function setupPulsingGrid() {
+    const ctx = getCtx("pulsing-grid");
+    if (!ctx) return;
+    const animate = (ts: number) => {
+      let time = ts * 0.001;
+      ctx.clearRect(0, 0, 180, 180);
+      const bF = Math.sin(time * 0.5) * 0.2 + 1.0;
+      for (let r = 0; r < 5; r++) {
+        for (let c = 0; c < 5; c++) {
+          if (r === 2 && c === 2) continue;
+          const bX = (c - 2) * 15,
+            bY = (r - 2) * 15;
+          const dist = Math.sqrt(bX * bX + bY * bY);
+          const a = Math.atan2(bY, bX);
+          const rW = Math.sin((time - dist / 80) * Math.PI * 2) * 4;
+          const x = 90 + bX * bF + Math.cos(a) * rW;
+          const y = 90 + bY * bF + Math.sin(a) * rW;
+          ctx.fillStyle = `rgba(200, 220, 255, ${0.5 + Math.sin(time * 1.5 + a * 3) * 0.2})`;
+          ctx.beginPath();
+          ctx.arc(
+            x,
+            y,
+            (1.5 + (1 - dist / 80) * 1.5) *
+              (Math.sin(time * 2 + (dist / 80) * 5) * 0.6 + 1),
+            0,
+            Math.PI * 2,
+          );
+          ctx.fill();
+        }
+      }
+      requestID = requestAnimationFrame(animate);
+    };
+    requestID = requestAnimationFrame(animate);
+  }
+
+  onMount(() => {
+    if (!browser) return;
+    animations.forEach((a) => a.setup());
+  });
+
+  onDestroy(() => {
+    if (requestID) cancelAnimationFrame(requestID);
+  });
 </script>
 
 <div
@@ -104,18 +196,18 @@
                 class="flex items-center hover:opacity-95 justify-center min-h-50"
                 value="tab-1"
               >
-                {#if monitorCount.isLoading}
+                {#if subscriberCount.isLoading}
                   <div class="container pb-20">
                     {#each animations as anim}
                       <div id="canvas-{anim.id}" class="circle-container"></div>
                     {/each}
                   </div>
-                {:else if monitorCount.error}
-                  <NotMonitor />
+                {:else if subscriberCount.error}
+                  <NotAlerts />
                 {:else if totalCount > 0}
                   <AlertsData />
                 {:else}
-                  <NotMonitor />
+                  <NotAlerts />
                 {/if}
               </TabsContent>
             </Tabs>
