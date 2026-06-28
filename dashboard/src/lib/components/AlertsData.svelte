@@ -17,7 +17,7 @@
   } from "@tanstack/table-core";
   import { createRawSnippet } from "svelte";
   import DataTableCheckbox from "$lib/components/ui/data-table/data-table-checkbox.svelte";
-  import DataTableEmailButton from "$lib/components/ui/data-table/data-table-email-button.svelte";
+  import DataTableEmailButton from "$lib/components/ui/data-table/data-table-sub.svelte";
   import DataTableActions from "$lib/components/ui/data-table/data-table-actions.svelte";
   import * as Table from "$lib/components/ui/table/index.js";
   import { Button } from "$lib/components/ui/button/index.js";
@@ -415,7 +415,7 @@
       />
       <Input
         id="table-search"
-        placeholder="Filter monitors..."
+        placeholder="Filter subscribers..."
         value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
         oninput={(e) =>
           table.getColumn("name")?.setFilterValue(e.currentTarget.value)}
