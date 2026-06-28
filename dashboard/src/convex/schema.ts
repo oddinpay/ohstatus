@@ -37,4 +37,9 @@ export default defineSchema({
     status: v.string(),
     note: v.string(),
   }),
+
+  subscribers: defineTable({
+    email: v.string(),
+    status: v.string(),
+  }),
 });
