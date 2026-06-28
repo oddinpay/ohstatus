@@ -227,7 +227,7 @@
               class="text-white"
               show_value
               size="lg"
-              value={0}
+              value={totalCount}
             />
           </TabsContent>
         </div>
