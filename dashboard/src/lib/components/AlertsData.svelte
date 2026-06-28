@@ -521,7 +521,7 @@
   <div class="flex items-center justify-end space-x-2 pt-4">
     <div class="text-muted-foreground flex-1 text-sm">
       {table.getFilteredSelectedRowModel().rows.length} of
-      {table.getFilteredRowModel().rows.length} monitor(s) selected.
+      {table.getFilteredRowModel().rows.length} subscriber(s) selected.
     </div>
     <div class="flex items-center space-x-2">
       <Button
