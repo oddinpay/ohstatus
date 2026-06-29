@@ -124,7 +124,7 @@
 
             return {
               render: () => `
-    <div class="truncate max-w-[150px] mx-auto p-[0.9px] rounded-sm text-xs font-medium text-center ${getStatusBadgeClass(status)}">
+    <div class="truncate max-w-[150px] mx-auto p-1 sm:p-0.9 rounded-sm text-xs font-medium text-center ${getStatusBadgeClass(status)}">
       ${status}
     </div>
   `,
