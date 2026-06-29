@@ -1285,7 +1285,7 @@ func HistoryHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func RootHandler(w http.ResponseWriter, r *http.Request) {
-	if r.URL.Path != "/" && !strings.HasPrefix(r.URL.Path, "/v1/") {
+	if r.URL.Path != "/" {
 		http.Redirect(w, r, "https://oddinpay.com", http.StatusTemporaryRedirect)
 		return
 	}
