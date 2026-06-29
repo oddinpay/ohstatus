@@ -1284,6 +1284,14 @@ func HistoryHandler(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func RootHandler(w http.ResponseWriter, r *http.Request) {
+	if r.URL.Path != "/" {
+		http.Redirect(w, r, "https://oddinpay.com", http.StatusTemporaryRedirect)
+		return
+	}
+	http.Redirect(w, r, "https://oddinpay.com", http.StatusTemporaryRedirect)
+}
+
 // -------------------- MAIN --------------------
 func main() {
 
@@ -1345,6 +1353,8 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /v1/sse", Sse)
+	mux.HandleFunc("/", RootHandler)
+
 	// mux.HandleFunc("GET /v1/status/history", HistoryHandler)
 	// mux.HandleFunc("GET /ping", func(w http.ResponseWriter, r *http.Request) {
 	// 	w.WriteHeader(http.StatusOK)
