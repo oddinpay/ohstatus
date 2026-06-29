@@ -126,6 +126,14 @@
 
     {
       accessorKey: "email",
+      filterFn: (row, _columnId, filterValue) => {
+        const email = String(row.original.email).toLowerCase();
+        const status = String(row.original.status).toLowerCase();
+        const search = String(filterValue).toLowerCase();
+
+        return email.includes(search) || status.includes(search);
+      },
+
       header: ({ column }) =>
         renderComponent(DataTableEmailButton, {
           onclick: column.getToggleSortingHandler(),
@@ -321,7 +329,6 @@
     <DropdownMenu.Root>
       <DropdownMenu.Content align="end">
         {#each table
-
           .getAllColumns()
           .filter((col) => col.getCanHide()) as column (column)}
           <DropdownMenu.CheckboxItem
