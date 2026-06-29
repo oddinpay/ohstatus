@@ -111,9 +111,23 @@
           (getStatus) => {
             const { status } = getStatus();
 
+            const getStatusBadgeClass = (status: string) => {
+              switch (status.toLowerCase()) {
+                case "subscribed":
+                  return "bg-white text-black border border-gray-300";
+                case "failed":
+                  return "bg-red-500 text-white border border-red-700";
+                default:
+                  return "bg-green-500 text-white border border-green-700";
+              }
+            };
+
             return {
-              render: () =>
-                `<div class="truncate max-w-[150px] mx-auto">${status}</div>`,
+              render: () => `
+    <div class="truncate max-w-[150px] mx-auto p-[0.9px] rounded-sm text-xs font-medium text-center ${getStatusBadgeClass(status)}">
+      ${status}
+    </div>
+  `,
             };
           },
         );

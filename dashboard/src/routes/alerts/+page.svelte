@@ -174,7 +174,7 @@
       </TabsList>
 
       <div
-        class="grid w-full grid-cols-1 gap-4 overflow-y-auto px-10 pb-20 900:grid-cols-2"
+        class="grid w-full grid-cols-1 gap-4 overflow-y-auto px-5 pb-20 900:grid-cols-2"
       >
         <div
           class="relative col-span-1 rounded-lg border border-border bg-zinc-900 p-8 900:col-span-2 900:min-h-120 900:overflow-y-hidden"
