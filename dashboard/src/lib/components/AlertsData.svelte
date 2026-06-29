@@ -114,11 +114,11 @@
             const getStatusBadgeClass = (status: string) => {
               switch (status.toLowerCase()) {
                 case "subscribed":
-                  return "bg-white text-black border border-gray-300";
+                  return "bg-white text-black border border-gray-400";
                 case "failed":
-                  return "bg-red-500 text-white border border-red-700";
+                  return "bg-red-200 text-red-800 border border-red-400";
                 default:
-                  return "bg-green-500 text-white border border-green-700";
+                  return "bg-green-200 text-green-800 border border-green-400";
               }
             };
 
