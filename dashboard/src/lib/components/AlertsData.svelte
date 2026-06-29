@@ -151,12 +151,6 @@
     },
 
     {
-      accessorKey: "parentId",
-      header: () => "",
-      enableSorting: true,
-    },
-
-    {
       id: "actions",
       header: ({ table }) => {
         return renderComponent(Button, {
