@@ -1,5 +1,6 @@
 <script lang="ts">
   import { env } from "$env/dynamic/public";
+  import DataTableActions from "$lib/components/ui/data-table/data-table-sub.svelte";
   import ChevronLeft from "@lucide/svelte/icons/chevron-left";
   import { Search } from "lucide-svelte";
   import { Skeleton } from "$lib/components/ui/skeleton/index.js";
@@ -347,7 +348,7 @@
   <div class="rounded-md">
     <Table.Root class="stm:w-100">
       <Table.Header>
-        {#if subC.isLoading}
+        {#if sub.isLoading}
           <Table.Row>
             {#each columns as _}
               <Table.Head
@@ -378,7 +379,7 @@
       </Table.Header>
 
       <Table.Body>
-        {#if subC.isLoading}
+        {#if sub.isLoading}
           {#each Array(Math.min(totalCount, 4)) as _}
             <Table.Row>
               {#each columns as _}
