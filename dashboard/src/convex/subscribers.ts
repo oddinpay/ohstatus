@@ -27,6 +27,36 @@ export const get = query({
   },
 });
 
+export const deleteById = mutation({
+  args: { id: v.id("subscribers"), apiKey: v.string() },
+  handler: async (ctx, args) => {
+    if (args.apiKey !== process.env.API_KEY) {
+      throw new Error("Unauthorized");
+    }
+    const doc = await ctx.db.get(args.id);
+    if (doc) {
+      await subscriberAggregate.delete(ctx, doc);
+      await ctx.db.delete(args.id);
+    }
+  },
+});
+
+export const deleteBulk = mutation({
+  args: { id: v.array(v.id("subscribers")), apiKey: v.string() },
+  handler: async (ctx, args) => {
+    if (args.apiKey !== process.env.API_KEY) {
+      throw new Error("Unauthorized");
+    }
+    for (const id of args.id) {
+      const doc = await ctx.db.get(id);
+      if (doc) {
+        await subscriberAggregate.delete(ctx, doc);
+        await ctx.db.delete(id);
+      }
+    }
+  },
+});
+
 // Sync
 export const backfill = mutation({
   handler: async (ctx) => {
