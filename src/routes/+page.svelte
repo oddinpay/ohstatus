@@ -74,26 +74,6 @@
   const oddinHost = env.PUBLIC_SSE_HOST;
   let unsubscribe: (() => void) | undefined;
 
-  function checkDowntime(downtime: string): StatusType {
-    if (!downtime || downtime === "0s") return "up";
-
-    let totalMinutes = 0;
-    const parts = downtime.match(/(\d+)([smh])/g);
-    if (!parts) return "up";
-
-    parts.forEach((part) => {
-      const value = parseInt(part);
-      const unit = part.replace(/[0-9]/g, "");
-      if (unit === "s") totalMinutes += value / 60;
-      else if (unit === "m") totalMinutes += value;
-      else if (unit === "h") totalMinutes += value * 60;
-    });
-
-    if (totalMinutes >= 1 && totalMinutes < 2) return "warn";
-    if (totalMinutes >= 2) return "up";
-    return "down";
-  }
-
   onMount(() => {
     if (!browser) return;
 
@@ -115,14 +95,11 @@
         return;
       }
 
-      const downtime = probe?.downtime || "0s";
-
       probeMap[id] = {
         ...probeMap[id],
         ...probe,
         uptime90: sla?.uptime90 ?? probeMap[id]?.uptime90 ?? "100.000%",
         __order: index ?? probeMap[id]?.__order ?? Infinity,
-        status: checkDowntime(downtime),
       };
     });
   });
