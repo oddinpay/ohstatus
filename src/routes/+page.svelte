@@ -86,8 +86,8 @@
     else if (unit === "h") minutes = value * 60;
 
     if (minutes >= 1 && minutes < 2) return "warn";
-    if (minutes >= 2) return "down";
-    return "up";
+    if (minutes >= 2) return "up";
+    return "down";
   }
 
   onMount(() => {
