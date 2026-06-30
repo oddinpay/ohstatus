@@ -77,16 +77,20 @@
   function checkDowntime(downtime: string): StatusType {
     if (!downtime || downtime === "0s") return "up";
 
-    const value = parseInt(downtime);
-    const unit = downtime.replace(/[0-9]/g, "");
+    let totalMinutes = 0;
+    const parts = downtime.match(/(\d+)([smh])/g);
+    if (!parts) return "up";
 
-    let minutes = 0;
-    if (unit === "s") minutes = value / 60;
-    else if (unit === "m") minutes = value;
-    else if (unit === "h") minutes = value * 60;
+    parts.forEach((part) => {
+      const value = parseInt(part);
+      const unit = part.replace(/[0-9]/g, "");
+      if (unit === "s") totalMinutes += value / 60;
+      else if (unit === "m") totalMinutes += value;
+      else if (unit === "h") totalMinutes += value * 60;
+    });
 
-    if (minutes >= 1 && minutes < 2) return "warn";
-    if (minutes >= 2) return "up";
+    if (totalMinutes >= 1 && totalMinutes < 2) return "warn";
+    if (totalMinutes >= 2) return "up";
     return "down";
   }
 
