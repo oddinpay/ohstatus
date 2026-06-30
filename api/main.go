@@ -1353,7 +1353,7 @@ func main() {
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("POST /v1/sse", Sse)
-	// mux.HandleFunc("/", RootHandler)
+	mux.HandleFunc("/", RootHandler)
 
 	// mux.HandleFunc("GET /v1/status/history", HistoryHandler)
 	// mux.HandleFunc("GET /ping", func(w http.ResponseWriter, r *http.Request) {
