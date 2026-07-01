@@ -717,28 +717,31 @@ func startProbeWorker(ctx context.Context, wg *sync.WaitGroup, t HttpRequest) {
 						for i := len(history) - 1; i >= 0; i-- {
 							if day, ok := history[i].(map[string]any); ok {
 
-								tStr, _ := day["total_time"].(string)
-								if tStr == "" {
-									tStr, _ = day["total_time_seconds"].(string)
-								}
+								uptimeStr, _ := day["uptime"].(string)
+								downtimeStr, _ := day["downtime"].(string)
 
-								dStr, _ := day["total_downtime"].(string)
-								if dStr == "" {
-									dStr, _ = day["down_time_seconds"].(string)
-								}
+								if uptimeStr != "" && downtimeStr != "" {
+									upSec := parseDurationToSecs(uptimeStr)
+									downSec := parseDurationToSecs(downtimeStr)
 
-								if tStr != "" && dStr != "" {
-									tSec := parseDurationToSecs(tStr)
-									dSec := parseDurationToSecs(dStr)
+									totalSec := upSec + downSec
 
-									if tSec > 86400 {
-										tSec = 86400
-									}
-									if dSec > tSec {
-										dSec = tSec
+									if totalSec > 86400 {
+										ratio := 86400.0 / float64(totalSec)
+										totalSec = 86400
+										downSec = int64(float64(downSec) * ratio)
+										upSec = totalSec - downSec
 									}
 
-									tracker.SetState(tSec, dSec)
+									tracker.SetState(totalSec, downSec)
+
+									slog.Debug("Restored daily SLA",
+										"name", t.Name,
+										"day_index", i,
+										"total_sec", totalSec,
+										"down_sec", downSec,
+										"uptime", uptimeStr,
+										"downtime", downtimeStr)
 
 									if i > 0 {
 										tracker.mu.Lock()
@@ -748,7 +751,7 @@ func startProbeWorker(ctx context.Context, wg *sync.WaitGroup, t HttpRequest) {
 								}
 							}
 						}
-						slog.Info("Memory synced with full history", "name", t.Name)
+						slog.Info("Memory synced with full history", "name", t.Name, "days_restored", len(history))
 					}
 				}
 			}
@@ -1124,6 +1127,7 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 		"sla_target":   fmt.Sprintf("%.3f%%", s.Target*100),
 		"downtime":     formatDurationFull(downToday),
 		"uptime":       formatDurationFull(totalToday - downToday),
+		"total_time":   formatDurationFull(totalToday),
 		"uptime90":     fmt.Sprintf("%.3f%%", availToday*100),
 	}
 
