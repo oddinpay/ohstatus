@@ -757,8 +757,8 @@ func startProbeWorker(ctx context.Context, wg *sync.WaitGroup, t HttpRequest) {
 			}
 		}
 	}
-	slaTrackers.Unlock()
 
+	slaTrackers.Unlock()
 	ticker := time.NewTicker(t.Interval)
 	defer ticker.Stop()
 
