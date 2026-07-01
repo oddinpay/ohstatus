@@ -1148,41 +1148,17 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 		overallSLA := s.Snapshot()
 		totalToday, downToday := s.DailySnapshot()
 
-		sumTotal := totalToday
-		sumDown := downToday
-
-		for _, h := range oldPayload.SLA["history"].([]any) {
-			entry := h.(map[string]any)
-			if val, ok := entry["total_time_seconds_numeric"].(float64); ok {
-				sumTotal += int64(val)
-			}
-			if val, ok := entry["down_time_seconds_numeric"].(float64); ok {
-				sumDown += int64(val)
-			}
-		}
-
-		if sumTotal > 0 {
-			avail := 1.0 - (float64(sumDown) / float64(sumTotal))
-			newSLA["total_time"] = formatDurationFull(sumTotal)
-			newSLA["total_downtime"] = formatDurationFull(sumDown)
-			newSLA["total_uptime"] = formatDurationFull(sumTotal - sumDown)
-			newSLA["uptime90"] = fmt.Sprintf("%.3f%%", avail*100)
-		}
-
 		availToday := 1.0
 		if totalToday > 0 {
 			availToday = 1.0 - (float64(downToday) / float64(totalToday))
 		}
 
 		dailySnapshot := map[string]any{
-			"sla_breached":               downToday > 0,
-			"sla_target":                 fmt.Sprintf("%.3f%%", s.Target*100),
-			"downtime":                   formatDurationFull(downToday),
-			"uptime":                     formatDurationFull(totalToday - downToday),
-			"uptime90":                   fmt.Sprintf("%.3f%%", availToday*100),
-			"total_time_seconds_numeric": totalToday,
-			"down_time_seconds_numeric":  downToday,
-			"total_time":                 formatDurationFull(totalToday),
+			"sla_breached": downToday > 0,
+			"sla_target":   fmt.Sprintf("%.3f%%", s.Target*100),
+			"downtime":     formatDurationFull(downToday),
+			"uptime":       formatDurationFull(totalToday - downToday),
+			"uptime90":     fmt.Sprintf("%.3f%%", availToday*100),
 		}
 
 		var newDate []string
