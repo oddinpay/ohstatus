@@ -1196,7 +1196,6 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 
 		wrappedPayload := map[string]any{
 			"index": idx,
-			"live":  currentStatus,
 			"payload": map[string]any{
 				"probe": payload.Probe,
 				"sla":   payload.SLA,
