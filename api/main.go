@@ -1086,10 +1086,10 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 	now := time.Now().UTC()
 	todayUTC := now.Format("02/01/2006")
 
-	currentStatus := hr.Warn
-	if len(payload.Probe.State) > 0 {
-		currentStatus = payload.Probe.State[0]
-	}
+	// currentStatus := hr.Warn
+	// if len(payload.Probe.State) > 0 {
+	// 	currentStatus = payload.Probe.State[0]
+	// }
 
 	for range 3 {
 		entry, getErr := kv.Get(ctx, name)
@@ -1133,8 +1133,21 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 			availToday = 1.0 - (float64(downToday) / float64(totalToday))
 		}
 
+		var dailyStatus string
+		downMinutes := float64(downToday) / 60.0
+
+		if downToday == 0 {
+			dailyStatus = hr.Up
+		} else if downMinutes > 2.0 {
+			dailyStatus = hr.Down
+		} else if downMinutes >= 1.0 {
+			dailyStatus = hr.Warn
+		} else {
+			dailyStatus = hr.Up
+		}
+
 		dailySnapshot := map[string]any{
-			"sla_breached": downToday > 0,
+			"sla_breached": downToday > 0 && downMinutes > 2.0,
 			"sla_target":   fmt.Sprintf("%.3f%%", s.Target*100),
 			"downtime":     formatDurationFull(downToday),
 			"uptime":       formatDurationFull(totalToday - downToday),
@@ -1151,17 +1164,17 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 					h[0] = dailySnapshot
 				}
 				if len(payload.Probe.State) > 0 {
-					payload.Probe.State[0] = currentStatus
+					payload.Probe.State[0] = dailyStatus
 				}
 			} else {
 				payload.SLA["history"] = append([]any{dailySnapshot}, oldPayload.SLA["history"].([]any)...)
 				payload.Probe.Date = append([]string{todayUTC}, oldPayload.Probe.Date...)
-				payload.Probe.State = append([]string{currentStatus}, oldPayload.Probe.State...)
+				payload.Probe.State = append([]string{dailyStatus}, oldPayload.Probe.State...)
 			}
 		} else {
 			payload.SLA["history"] = []any{dailySnapshot}
 			payload.Probe.Date = []string{todayUTC}
-			payload.Probe.State = []string{currentStatus}
+			payload.Probe.State = []string{dailyStatus}
 		}
 
 		payload.SLA["history"] = capSlice(payload.SLA["history"].([]any), 90)
