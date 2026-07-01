@@ -1092,8 +1092,7 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 		currentStatus = payload.Probe.State[0]
 	}
 
-	for range 3 {
-
+	for attempt := range 5 {
 		entry, getErr := kv.Get(ctx, name)
 		var revision uint64 = 0
 		var oldPayload StatusPayload
@@ -1107,40 +1106,45 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 		if getErr == nil && entry != nil {
 			revision = entry.Revision()
 			gr, err := gzip.NewReader(bytes.NewReader(entry.Value()))
-
-			if err == nil {
-				var wrapped map[string]any
-				if err := json.NewDecoder(gr).Decode(&wrapped); err == nil {
-					if payloadMap, ok := wrapped["payload"].(map[string]any); ok {
-						payloadBytes, _ := json.Marshal(payloadMap)
-						_ = json.Unmarshal(payloadBytes, &oldPayload)
-					}
-				}
-				gr.Close()
+			if err != nil {
+				slog.Error("GZIP read error, aborting to prevent wipeout", "err", err)
+				return
 			}
 
-			if len(payload.Probe.Date) == 0 {
-				payload.Probe.Date = oldPayload.Probe.Date
-				payload.Probe.State = oldPayload.Probe.State
-				if payload.SLA == nil {
-					payload.SLA = make(map[string]any)
-				}
-				payload.SLA["history"] = oldPayload.SLA["history"]
+			var wrapped struct {
+				Payload StatusPayload `json:"payload"`
+			}
+			err = json.NewDecoder(gr).Decode(&wrapped)
+			gr.Close()
+
+			if err != nil {
+				slog.Error("Failed to decode existing NATS data, aborting to prevent wipeout", "err", err)
+				return
+			}
+			oldPayload = wrapped.Payload
+		}
+
+		newSLA := make(map[string]any)
+		if payload.SLA != nil {
+			for k, v := range payload.SLA {
+				newSLA[k] = v
 			}
 		}
 
-		if payload.Probe.Id == "" {
+		if newSLA["id"] == nil || newSLA["id"] == "" {
+			newSLA["id"] = slaId()
+		}
+
+		targetProbeId := payload.Probe.Id
+		if targetProbeId == "" {
 			targetCache.RLock()
 			for _, t := range targetCache.targets {
 				if t.Name == name {
-					payload.Probe.Id = t.ID
+					targetProbeId = t.ID
 					break
 				}
 			}
 			targetCache.RUnlock()
-		}
-		if payload.SLA["id"] == nil || payload.SLA["id"] == "" {
-			payload.SLA["id"] = slaId()
 		}
 
 		overallSLA := s.Snapshot()
@@ -1159,38 +1163,49 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 			"uptime90":     fmt.Sprintf("%.3f%%", availToday*100),
 		}
 
+		var newDate []string
+		var newState []string
+		var newHistory []any
+
 		if getErr == nil && len(oldPayload.Probe.Date) > 0 {
 			if oldPayload.Probe.Date[0] == todayUTC {
-				payload.SLA["history"] = oldPayload.SLA["history"]
-				payload.Probe.Date = oldPayload.Probe.Date
-				payload.Probe.State = oldPayload.Probe.State
-
-				if h, ok := payload.SLA["history"].([]any); ok && len(h) > 0 {
-					h[0] = dailySnapshot
+				newDate = oldPayload.Probe.Date
+				newState = oldPayload.Probe.State
+				if h, ok := oldPayload.SLA["history"].([]any); ok {
+					newHistory = h
 				}
-				if len(payload.Probe.State) > 0 {
-					payload.Probe.State[0] = currentStatus
+
+				if len(newHistory) > 0 {
+					newHistory[0] = dailySnapshot
+				} else {
+					newHistory = []any{dailySnapshot}
+				}
+				if len(newState) > 0 {
+					newState[0] = currentStatus
+				} else {
+					newState = []string{currentStatus}
 				}
 			} else {
-				payload.SLA["history"] = append([]any{dailySnapshot}, oldPayload.SLA["history"].([]any)...)
-				payload.Probe.Date = append([]string{todayUTC}, oldPayload.Probe.Date...)
-				payload.Probe.State = append([]string{currentStatus}, oldPayload.Probe.State...)
+				newDate = append([]string{todayUTC}, oldPayload.Probe.Date...)
+				newState = append([]string{currentStatus}, oldPayload.Probe.State...)
+				if h, ok := oldPayload.SLA["history"].([]any); ok {
+					newHistory = append([]any{dailySnapshot}, h...)
+				} else {
+					newHistory = []any{dailySnapshot}
+				}
 			}
 		} else {
-			payload.SLA["history"] = []any{dailySnapshot}
-			payload.Probe.Date = []string{todayUTC}
-			payload.Probe.State = []string{currentStatus}
+			newDate = []string{todayUTC}
+			newState = []string{currentStatus}
+			newHistory = []any{dailySnapshot}
 		}
 
-		payload.SLA["history"] = capSlice(payload.SLA["history"].([]any), 90)
-		payload.Probe.Date = capSlice(payload.Probe.Date, 90)
-		payload.Probe.State = capSlice(payload.Probe.State, 90)
-
-		payload.SLA["total_time"] = overallSLA["total_time"]
-		payload.SLA["total_downtime"] = overallSLA["total_downtime"]
-		payload.SLA["total_uptime"] = overallSLA["total_uptime"]
-		payload.SLA["uptime90"] = overallSLA["uptime90"]
-		payload.SLA["sla_breached"] = overallSLA["sla_breached"]
+		newSLA["history"] = capSlice(newHistory, 90)
+		newSLA["total_time"] = overallSLA["total_time"]
+		newSLA["total_downtime"] = overallSLA["total_downtime"]
+		newSLA["total_uptime"] = overallSLA["total_uptime"]
+		newSLA["uptime90"] = overallSLA["uptime90"]
+		newSLA["sla_breached"] = overallSLA["sla_breached"]
 
 		idx := -1
 		targetCache.RLock()
@@ -1199,11 +1214,16 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 		}
 		targetCache.RUnlock()
 
+		newProbe := payload.Probe
+		newProbe.Id = targetProbeId
+		newProbe.Date = capSlice(newDate, 90)
+		newProbe.State = capSlice(newState, 90)
+
 		wrappedPayload := map[string]any{
 			"index": idx,
 			"payload": map[string]any{
-				"probe": payload.Probe,
-				"sla":   payload.SLA,
+				"probe": newProbe,
+				"sla":   newSLA,
 			},
 		}
 
@@ -1214,23 +1234,24 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 		gz.Close()
 
 		var updateErr error
-		for i := range 10 {
-			if revision > 0 {
-				_, updateErr = kv.Update(ctx, name, buf.Bytes(), revision)
-			} else {
-				_, updateErr = kv.Create(ctx, name, buf.Bytes())
-			}
-			if updateErr == nil {
-				return
-			}
-
-			jitter := time.Duration(rand.Intn(50)) * time.Millisecond
-			backoff := time.Duration(i+1) * 20 * time.Millisecond
-			time.Sleep(backoff + jitter)
+		if revision > 0 {
+			_, updateErr = kv.Update(ctx, name, buf.Bytes(), revision)
+		} else {
+			_, updateErr = kv.Create(ctx, name, buf.Bytes())
 		}
 
-		slog.Error("Failed to update NATS after 10 retries", "name", name)
+		if updateErr == nil {
+			payload.Probe = newProbe
+			payload.SLA = newSLA
+			return
+		}
+
+		jitter := time.Duration(rand.Intn(50)) * time.Millisecond
+		backoff := time.Duration(attempt+1) * 20 * time.Millisecond
+		time.Sleep(backoff + jitter)
 	}
+
+	slog.Error("Failed to update NATS after 5 revision conflict retries", "name", name)
 }
 
 func capSlice[T any](s []T, max int) []T {
