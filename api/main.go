@@ -10,6 +10,7 @@ import (
 	"log"
 	"log/slog"
 	"maps"
+	"math/rand"
 	"net"
 	"net/http"
 	"os"
@@ -1092,13 +1093,21 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 	}
 
 	for range 3 {
+
 		entry, getErr := kv.Get(ctx, name)
 		var revision uint64 = 0
 		var oldPayload StatusPayload
 
+		if getErr != nil && getErr != nats.ErrKeyNotFound {
+			slog.Error("NATS read error, aborting to prevent data loss", "err", getErr)
+			time.Sleep(500 * time.Millisecond)
+			continue
+		}
+
 		if getErr == nil && entry != nil {
 			revision = entry.Revision()
 			gr, err := gzip.NewReader(bytes.NewReader(entry.Value()))
+
 			if err == nil {
 				var wrapped map[string]any
 				if err := json.NewDecoder(gr).Decode(&wrapped); err == nil {
@@ -1108,6 +1117,15 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 					}
 				}
 				gr.Close()
+			}
+
+			if len(payload.Probe.Date) == 0 {
+				payload.Probe.Date = oldPayload.Probe.Date
+				payload.Probe.State = oldPayload.Probe.State
+				if payload.SLA == nil {
+					payload.SLA = make(map[string]any)
+				}
+				payload.SLA["history"] = oldPayload.SLA["history"]
 			}
 		}
 
@@ -1196,7 +1214,7 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 		gz.Close()
 
 		var updateErr error
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			if revision > 0 {
 				_, updateErr = kv.Update(ctx, name, buf.Bytes(), revision)
 			} else {
@@ -1205,8 +1223,13 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 			if updateErr == nil {
 				return
 			}
-			time.Sleep(time.Duration(i+1) * 10 * time.Millisecond)
+
+			jitter := time.Duration(rand.Intn(50)) * time.Millisecond
+			backoff := time.Duration(i+1) * 20 * time.Millisecond
+			time.Sleep(backoff + jitter)
 		}
+
+		slog.Error("Failed to update NATS after 10 retries", "name", name)
 	}
 }
 
