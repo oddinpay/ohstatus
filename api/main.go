@@ -1196,7 +1196,7 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 		gz.Close()
 
 		var updateErr error
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			if revision > 0 {
 				_, updateErr = kv.Update(ctx, name, buf.Bytes(), revision)
 			} else {
