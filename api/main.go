@@ -1128,10 +1128,11 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 
 	var oldPayload StatusPayload
 	var revision uint64
+	var readSuccess bool
 
 	for attempt := range 5 {
 		entry, getErr := kv.Get(ctx, name)
-
+		
 		if getErr != nil && getErr != nats.ErrKeyNotFound {
 			slog.Error("NATS read error, retrying", "err", getErr, "attempt", attempt+1)
 			time.Sleep(500 * time.Millisecond)
@@ -1157,13 +1158,19 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 				return
 			}
 			oldPayload = wrapped.Payload
-			break
+			readSuccess = true
+			break 
 		}
-
+		
 		break
 	}
 
 	newSLA := make(map[string]any)
+	
+	if readSuccess && oldPayload.SLA != nil {
+		maps.Copy(newSLA, oldPayload.SLA)
+	}
+	
 	if payload.SLA != nil {
 		maps.Copy(newSLA, payload.SLA)
 	}
@@ -1176,37 +1183,33 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 	var newState []string
 	var newHistory []any
 
-	if len(oldPayload.Probe.Date) > 0 {
-		if oldPayload.Probe.Date[0] == todayUTC {
-			newDate = oldPayload.Probe.Date
-			newState = oldPayload.Probe.State
-			if h, ok := oldPayload.SLA["history"].([]any); ok {
-				newHistory = h
-			}
+	if readSuccess && len(oldPayload.Probe.Date) > 0 {
+		newDate = oldPayload.Probe.Date
+		newState = oldPayload.Probe.State
+		if h, ok := oldPayload.SLA["history"].([]any); ok {
+			newHistory = h
+		}
+	}
 
-			if len(newHistory) > 0 {
-				newHistory[0] = dailySnapshot
-			} else {
-				newHistory = []any{dailySnapshot}
-			}
-			if len(newState) > 0 {
-				newState[0] = currentStatus
-			} else {
-				newState = []string{currentStatus}
-			}
+	if len(newDate) > 0 && newDate[0] == todayUTC {
+		if len(newState) > 0 {
+			newState[0] = currentStatus
 		} else {
-			newDate = append([]string{todayUTC}, oldPayload.Probe.Date...)
-			newState = append([]string{currentStatus}, oldPayload.Probe.State...)
-			if h, ok := oldPayload.SLA["history"].([]any); ok {
-				newHistory = append([]any{dailySnapshot}, h...)
-			} else {
-				newHistory = []any{dailySnapshot}
-			}
+			newState = []string{currentStatus}
+		}
+		if len(newHistory) > 0 {
+			newHistory[0] = dailySnapshot
+		} else {
+			newHistory = []any{dailySnapshot}
 		}
 	} else {
-		newDate = []string{todayUTC}
-		newState = []string{currentStatus}
-		newHistory = []any{dailySnapshot}
+		newDate = append([]string{todayUTC}, newDate...)
+		newState = append([]string{currentStatus}, newState...)
+		if len(newHistory) > 0 {
+			newHistory = append([]any{dailySnapshot}, newHistory...)
+		} else {
+			newHistory = []any{dailySnapshot}
+		}
 	}
 
 	newSLA["history"] = capSlice(newHistory, 90)
@@ -1255,7 +1258,7 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 		}
 
 		slog.Warn("NATS write conflict, retrying", "attempt", attempt+1, "err", updateErr)
-
+		
 		jitter := time.Duration(rand.Intn(50)) * time.Millisecond
 		backoff := time.Duration(attempt+1) * 20 * time.Millisecond
 		time.Sleep(backoff + jitter)
