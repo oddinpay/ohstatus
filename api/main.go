@@ -1249,6 +1249,8 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 			return
 		}
 
+		slog.Warn("NATS update failed, retrying", "err", updateErr, "attempt", attempt+1)
+
 		jitter := time.Duration(rand.Intn(50)) * time.Millisecond
 		backoff := time.Duration(attempt+1) * 20 * time.Millisecond
 		time.Sleep(backoff + jitter)
