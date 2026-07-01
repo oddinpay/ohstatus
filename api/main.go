@@ -1086,10 +1086,10 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 	now := time.Now().UTC()
 	todayUTC := now.Format("02/01/2006")
 
-	// currentStatus := hr.Warn
-	// if len(payload.Probe.State) > 0 {
-	// 	currentStatus = payload.Probe.State[0]
-	// }
+	currentStatus := hr.Warn
+	if len(payload.Probe.State) > 0 {
+		currentStatus = payload.Probe.State[0]
+	}
 
 	for range 3 {
 		entry, getErr := kv.Get(ctx, name)
@@ -1196,6 +1196,7 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 
 		wrappedPayload := map[string]any{
 			"index": idx,
+			"live":  currentStatus,
 			"payload": map[string]any{
 				"probe": payload.Probe,
 				"sla":   payload.SLA,
