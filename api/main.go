@@ -56,7 +56,6 @@ const (
 	StatusMethodNotAllowed    = 405
 	StatusMultipleChoices     = 300
 
-	// Common headers
 	HeaderContentType  = "Content-Type"
 	HeaderCacheControl = "Cache-Control"
 	HeaderConnection   = "Connection"
@@ -1158,7 +1157,7 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 				return
 			}
 			oldPayload = wrapped.Payload
-			break 
+			break
 		}
 
 		break
