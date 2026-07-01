@@ -1126,9 +1126,7 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 
 		newSLA := make(map[string]any)
 		if payload.SLA != nil {
-			for k, v := range payload.SLA {
-				newSLA[k] = v
-			}
+			maps.Copy(newSLA, payload.SLA)
 		}
 
 		if newSLA["id"] == nil || newSLA["id"] == "" {
