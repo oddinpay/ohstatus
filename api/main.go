@@ -1086,15 +1086,11 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 	now := time.Now().UTC()
 	todayUTC := now.Format("02/01/2006")
 
-	// currentStatus := hr.Warn
-	// if len(payload.Probe.State) > 0 {
-	// 	currentStatus = payload.Probe.State[0]
-	// }
-
 	for range 3 {
 		entry, getErr := kv.Get(ctx, name)
 		var revision uint64 = 0
-		var oldPayload StatusPayload
+
+		var oldPayloadMap map[string]any
 
 		if getErr == nil && entry != nil {
 			revision = entry.Revision()
@@ -1102,9 +1098,8 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 			if err == nil {
 				var wrapped map[string]any
 				if err := json.NewDecoder(gr).Decode(&wrapped); err == nil {
-					if payloadMap, ok := wrapped["payload"].(map[string]any); ok {
-						payloadBytes, _ := json.Marshal(payloadMap)
-						_ = json.Unmarshal(payloadBytes, &oldPayload)
+					if p, ok := wrapped["payload"].(map[string]any); ok {
+						oldPayloadMap = p
 					}
 				}
 				gr.Close()
@@ -1154,11 +1149,27 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 			"uptime90":     fmt.Sprintf("%.3f%%", availToday*100),
 		}
 
-		if getErr == nil && len(oldPayload.Probe.Date) > 0 {
-			if oldPayload.Probe.Date[0] == todayUTC {
-				payload.SLA["history"] = oldPayload.SLA["history"]
-				payload.Probe.Date = oldPayload.Probe.Date
-				payload.Probe.State = oldPayload.Probe.State
+		var oldHistory []any
+		var oldDates []string
+		var oldStates []string
+
+		if oldPayloadMap != nil {
+			if oldSLA, ok := oldPayloadMap["sla"].(map[string]any); ok {
+				if h, ok := oldSLA["history"].([]any); ok {
+					oldHistory = h
+				}
+			}
+			if oldProbe, ok := oldPayloadMap["probe"].(map[string]any); ok {
+				oldDates = safeStringSlice(oldProbe["date"])
+				oldStates = safeStringSlice(oldProbe["state"])
+			}
+		}
+
+		if getErr == nil && len(oldDates) > 0 {
+			if oldDates[0] == todayUTC {
+				payload.SLA["history"] = oldHistory
+				payload.Probe.Date = oldDates
+				payload.Probe.State = oldStates
 
 				if h, ok := payload.SLA["history"].([]any); ok && len(h) > 0 {
 					h[0] = dailySnapshot
@@ -1167,9 +1178,9 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 					payload.Probe.State[0] = dailyStatus
 				}
 			} else {
-				payload.SLA["history"] = append([]any{dailySnapshot}, oldPayload.SLA["history"].([]any)...)
-				payload.Probe.Date = append([]string{todayUTC}, oldPayload.Probe.Date...)
-				payload.Probe.State = append([]string{dailyStatus}, oldPayload.Probe.State...)
+				payload.SLA["history"] = append([]any{dailySnapshot}, oldHistory...)
+				payload.Probe.Date = append([]string{todayUTC}, oldDates...)
+				payload.Probe.State = append([]string{dailyStatus}, oldStates...)
 			}
 		} else {
 			payload.SLA["history"] = []any{dailySnapshot}
@@ -1221,6 +1232,25 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 			time.Sleep(time.Duration(i+1) * 10 * time.Millisecond)
 		}
 	}
+}
+
+func safeStringSlice(val any) []string {
+	if val == nil {
+		return nil
+	}
+
+	if slice, ok := val.([]any); ok {
+		res := make([]string, len(slice))
+		for i, v := range slice {
+			res[i] = fmt.Sprint(v)
+		}
+		return res
+	}
+	
+	if slice, ok := val.([]string); ok {
+		return slice
+	}
+	return nil
 }
 
 func capSlice[T any](s []T, max int) []T {
