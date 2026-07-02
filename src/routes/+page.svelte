@@ -100,6 +100,7 @@
         ...probe,
         uptime90: sla?.uptime90 ?? probeMap[id]?.uptime90 ?? "100.000%",
         __order: index ?? probeMap[id]?.__order ?? Infinity,
+        sla: sla,
       };
     });
   });
@@ -240,8 +241,7 @@
         ? probe.state
         : [probe?.state];
 
-      const downtimeData = (probe as any).downtimeHistory || {};
-      const currentDowntime = (probe as any).downtime || "0s";
+      const slaHistory = (probe as any)?.sla?.history || [];
 
       const datesMap = new Map<string, StatusType>();
       datesList.forEach((date, index) => {
@@ -259,15 +259,18 @@
 
           let resolved: StatusType;
 
-          if (i === dayIndex) {
-            resolved = getChipStatus(currentDowntime);
+          const dateIndex = datesList.findIndex((d) => d === key);
+
+          if (dateIndex !== -1 && dateIndex < slaHistory.length) {
+            const slaEntry = slaHistory[dateIndex];
+
+            const downtime =
+              slaEntry?.downtime || slaEntry?.down_time_seconds || "0s";
+            resolved = getChipStatus(downtime);
+          } else if (dateIndex !== -1) {
+            resolved = asStatus(statesList[dateIndex] || "default");
           } else {
-            const historicalDowntime = downtimeData[key];
-            if (historicalDowntime) {
-              resolved = getChipStatus(historicalDowntime);
-            } else {
-              resolved = datesMap.get(key) ?? "default";
-            }
+            resolved = "default";
           }
 
           return {
