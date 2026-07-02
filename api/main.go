@@ -407,6 +407,7 @@ func probeHTTP(re HttpRequest) ProbeResult {
 			}
 
 			return ProbeResult{
+				Id:          re.ID,
 				Name:        re.Name,
 				Protocol:    strings.ToUpper(re.Protocol),
 				Description: fmt.Sprintf("%s - %s", re.Host, err.Error()),
@@ -421,6 +422,7 @@ func probeHTTP(re HttpRequest) ProbeResult {
 
 		if resp.StatusCode >= StatusOK && resp.StatusCode < StatusBadRequest {
 			return ProbeResult{
+				Id:          re.ID,
 				Name:        re.Name,
 				Protocol:    strings.ToUpper(re.Protocol),
 				Description: fmt.Sprintf("%s - %d", re.Host, resp.StatusCode),
@@ -436,6 +438,7 @@ func probeHTTP(re HttpRequest) ProbeResult {
 		}
 
 		return ProbeResult{
+			Id:          re.ID,
 			Name:        re.Name,
 			Protocol:    strings.ToUpper(re.Protocol),
 			Description: fmt.Sprintf("%s - %d", re.Host, resp.StatusCode),
@@ -465,6 +468,7 @@ func probeTCP(re HttpRequest) ProbeResult {
 				continue
 			}
 			return ProbeResult{
+				Id:          re.ID,
 				Name:        re.Name,
 				Protocol:    strings.ToUpper(re.Protocol),
 				Description: err.Error(),
@@ -482,6 +486,7 @@ func probeTCP(re HttpRequest) ProbeResult {
 				continue
 			}
 			return ProbeResult{
+				Id:          re.ID,
 				Name:        re.Name,
 				Protocol:    strings.ToUpper(re.Protocol),
 				Description: "write failed: " + err.Error(),
@@ -502,6 +507,7 @@ func probeTCP(re HttpRequest) ProbeResult {
 				continue
 			}
 			return ProbeResult{
+				Id:          re.ID,
 				Name:        re.Name,
 				Protocol:    strings.ToUpper(re.Protocol),
 				Description: "no response after connect",
@@ -512,6 +518,7 @@ func probeTCP(re HttpRequest) ProbeResult {
 		}
 
 		return ProbeResult{
+			Id:          re.ID,
 			Name:        re.Name,
 			Protocol:    strings.ToUpper(re.Protocol),
 			Description: fmt.Sprintf("response received %s", strings.TrimSpace(string(buf[:n]))),
@@ -529,6 +536,8 @@ func probeDNS(re HttpRequest) ProbeResult {
 
 	if net.ParseIP(re.Host) != nil {
 		return ProbeResult{
+
+			Id:          re.ID,
 			Name:        re.Name,
 			Protocol:    strings.ToUpper(re.Protocol),
 			Description: "Input is already an IP, DNS lookup skipped",
@@ -549,6 +558,7 @@ func probeDNS(re HttpRequest) ProbeResult {
 				continue
 			}
 			return ProbeResult{
+				Id:          re.ID,
 				Name:        re.Name,
 				Protocol:    strings.ToUpper(re.Protocol),
 				Description: fmt.Sprintf("DNS error: %s", err.Error()),
@@ -559,6 +569,7 @@ func probeDNS(re HttpRequest) ProbeResult {
 		}
 
 		return ProbeResult{
+			Id:          re.ID,
 			Name:        re.Name,
 			Protocol:    strings.ToUpper(re.Protocol),
 			Description: fmt.Sprintf("resolved %v", addrs),
