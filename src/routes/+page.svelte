@@ -364,7 +364,7 @@
 
   let overallStatus = $derived.by<StatusType | undefined>(() => {
     const allStatuses = [
-      ...mockData.map((api) => currentStatusFor(api)),
+      ...sortedProbes.slice(0, 3).map((p) => monitorStatus(p)),
       ...monitors.map((monitor) => asStatus(monitor.status)),
     ];
 
