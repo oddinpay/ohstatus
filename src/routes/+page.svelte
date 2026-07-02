@@ -198,6 +198,8 @@
     return [parseDate(rawDate as Date | string).toLocaleDateString()];
   }
 
+  // Classify the status based on downtime string
+
   function getChipStatus(downtime?: string): StatusType {
     if (!downtime || downtime === "0s") return "up";
 
