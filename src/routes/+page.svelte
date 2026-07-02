@@ -196,6 +196,32 @@
     return [parseDate(rawDate as Date | string).toLocaleDateString()];
   }
 
+  function getChipStatus(downtime?: string): StatusType {
+    if (!downtime || downtime === "0s") return "up";
+
+    const totalSeconds = parseDowntimeToSeconds(downtime);
+
+    if (totalSeconds <= 120) {
+      return "warn";
+    } else {
+      return "down";
+    }
+  }
+
+  function parseDowntimeToSeconds(downtime: string): number {
+    let totalSeconds = 0;
+
+    const hourMatch = downtime.match(/(\d+)\s*h/);
+    const minuteMatch = downtime.match(/(\d+)\s*m/);
+    const secondMatch = downtime.match(/(\d+)\s*s/);
+
+    if (hourMatch) totalSeconds += parseInt(hourMatch[1]) * 3600;
+    if (minuteMatch) totalSeconds += parseInt(minuteMatch[1]) * 60;
+    if (secondMatch) totalSeconds += parseInt(secondMatch[1]);
+
+    return totalSeconds;
+  }
+
   let mockData = $derived.by(() => {
     const probes = sortedProbes;
 
@@ -214,6 +240,10 @@
         ? probe.state
         : [probe?.state];
 
+      const downtime = (probe as any).downtime || "0s";
+
+      const chipStatus = getChipStatus(downtime);
+
       const datesMap = new Map<string, StatusType>();
       datesList.forEach((date, index) => {
         const state = statesList[index] ?? "default";
@@ -226,7 +256,10 @@
           const tempDate = new Date(start);
           tempDate.setUTCDate(start.getUTCDate() + i);
           const key = tempDate.toLocaleDateString();
-          const resolved = datesMap.get(key) ?? "default";
+          // const resolved = datesMap.get(key) ?? "default";
+          const resolved =
+            i === dayIndex ? chipStatus : (datesMap.get(key) ?? "default");
+
           return {
             date: tempDate,
             status: resolved,
