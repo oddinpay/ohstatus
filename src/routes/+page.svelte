@@ -64,6 +64,7 @@
     date?: string[];
     state?: string[];
     statuses: StatusEntry[];
+    status?: StatusType;
     uptime15: string;
     uptime30: string;
     uptime60: string;
@@ -131,6 +132,13 @@
     statuses?: StatusEntry[];
     status?: StatusType;
   }): StatusType {
+    if (
+      x?.status &&
+      (x.status === "up" || x.status === "down" || x.status === "warn")
+    ) {
+      return x.status;
+    }
+
     const arr = Array.isArray(x?.statuses) ? x!.statuses! : [];
 
     if (arr.length) {
@@ -285,6 +293,7 @@
       const api: ApiData = {
         name: String(probe?.name ?? ""),
         statuses,
+        status: monitorStatus(probe),
         uptime15: String(probe?.uptime90 ?? "00.000%"),
         uptime30: String(probe?.uptime90 ?? "00.000%"),
         uptime60: String(probe?.uptime90 ?? "00.000%"),
