@@ -265,8 +265,7 @@
           if (dateIndex !== -1 && dateIndex < slaHistory.length) {
             const slaEntry = slaHistory[dateIndex];
 
-            const downtime =
-              slaEntry?.downtime || slaEntry?.down_time_seconds || "0s";
+            const downtime = slaEntry?.downtime || "0s";
             resolved = getChipStatus(downtime);
           } else if (dateIndex !== -1) {
             resolved = asStatus(statesList[dateIndex] || "default");
