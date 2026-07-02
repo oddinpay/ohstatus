@@ -380,7 +380,7 @@ func probeHTTP(re HttpRequest) ProbeResult {
 	maxRetries := 5
 
 	if userAgent == "" {
-		userAgent = "OddinStatus/1.0"
+		userAgent = "Ohstatus/1.0"
 	}
 
 	for attempt := 1; attempt <= maxRetries; attempt++ {
