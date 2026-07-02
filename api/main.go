@@ -1141,7 +1141,6 @@ func publishToNATS(ctx context.Context, name string, payload *StatusPayload, s *
 		"uptime90":     fmt.Sprintf("%.3f%%", availToday*100),
 	}
 
-	// Try to read existing data
 	entry, getErr := kv.Get(ctx, name)
 
 	var revision uint64 = 0
