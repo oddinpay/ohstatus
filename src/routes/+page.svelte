@@ -95,6 +95,7 @@
         return;
       }
 
+      // Merge the new probe data with the existing data in probeMap
       probeMap[id] = {
         ...probeMap[id],
         ...probe,
