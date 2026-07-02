@@ -240,9 +240,8 @@
         ? probe.state
         : [probe?.state];
 
-      const downtime = (probe as any).downtime || "0s";
-
-      const chipStatus = getChipStatus(downtime);
+      const downtimeData = (probe as any).downtimeHistory || {};
+      const currentDowntime = (probe as any).downtime || "0s";
 
       const datesMap = new Map<string, StatusType>();
       datesList.forEach((date, index) => {
@@ -257,8 +256,19 @@
           tempDate.setUTCDate(start.getUTCDate() + i);
           const key = tempDate.toLocaleDateString();
           // const resolved = datesMap.get(key) ?? "default";
-          const resolved =
-            i === dayIndex ? chipStatus : (datesMap.get(key) ?? "default");
+
+          let resolved: StatusType;
+
+          if (i === dayIndex) {
+            resolved = getChipStatus(currentDowntime);
+          } else {
+            const historicalDowntime = downtimeData[key];
+            if (historicalDowntime) {
+              resolved = getChipStatus(historicalDowntime);
+            } else {
+              resolved = datesMap.get(key) ?? "default";
+            }
+          }
 
           return {
             date: tempDate,
