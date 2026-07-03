@@ -3,6 +3,7 @@ import { setError } from "sveltekit-superforms";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../convex/_generated/api";
 import { env } from "$env/dynamic/private";
+import { removeSubscriber } from "$lib/schema";
 
 const getConvexClient = () => {
   const url = env.CONVEX_CLOUD_URL;
@@ -15,12 +16,20 @@ const getConvexClient = () => {
 export const actions: Actions = {
   delete: async ({ request }) => {
     const formData = await request.formData();
+    const email = formData.get("email") as string;
     const id = formData.get("_id");
+
     if (!id) {
       return { status: 400, body: "Missing ID" };
     }
 
+    if (!email) {
+      return { status: 400, body: "Missing email" };
+    }
+
     try {
+      await removeSubscriber(email);
+
       const convex = getConvexClient();
       const apiKey = env.API_KEY;
 

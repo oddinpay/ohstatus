@@ -203,6 +203,7 @@
 
                 if (!isBulk) {
                   formData.append("_id", selectedIds[0]);
+                  formData.append("email", selectedRows[0].original.email);
                 } else {
                   formData.append(
                     "_id",
