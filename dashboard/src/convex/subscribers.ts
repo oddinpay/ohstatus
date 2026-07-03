@@ -12,18 +12,28 @@ export const subscriberAggregate = new TableAggregate<{
   sortKey: (doc) => doc.email,
 });
 
-export const count = query({
-  args: {},
-  handler: async (ctx) => {
-    return await subscriberAggregate.count(ctx);
+export const addSubscriber = mutation({
+  args: {
+    apiKey: v.string(),
+    email: v.string(),
+    status: v.string(),
   },
-});
-
-export const get = query({
-  args: { apiKey: v.string() },
   handler: async (ctx, args) => {
-    if (args.apiKey !== process.env.API_KEY) throw new Error("Unauthorized");
-    return await ctx.db.query("subscribers").collect();
+    if (args.apiKey !== process.env.API_KEY) {
+      throw new Error("Unauthorized");
+    }
+
+    const subscriberId = await ctx.db.insert("subscribers", {
+      email: args.email,
+      status: args.status,
+    });
+
+    if (args.status === "subscribed") {
+      const subscriber = await ctx.db.get(subscriberId);
+      if (subscriber) {
+        await subscriberAggregate.insert(ctx, subscriber);
+      }
+    }
   },
 });
 
@@ -54,6 +64,13 @@ export const deleteBulk = mutation({
         await ctx.db.delete(id);
       }
     }
+  },
+});
+
+export const count = query({
+  args: {},
+  handler: async (ctx) => {
+    return await subscriberAggregate.count(ctx);
   },
 });
 
