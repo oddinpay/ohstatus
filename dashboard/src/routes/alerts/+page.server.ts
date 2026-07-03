@@ -56,7 +56,6 @@ export const actions: Actions = {
   deleteBulk: async ({ request }) => {
     const formData = await request.formData();
     const rawIdData = formData.get("_id");
-
     const rawEmailData = formData.get("email");
 
     if (!rawIdData) {
