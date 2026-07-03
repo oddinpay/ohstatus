@@ -3,7 +3,7 @@ import { setError } from "sveltekit-superforms";
 import { ConvexHttpClient } from "convex/browser";
 import { api } from "../../convex/_generated/api";
 import { env } from "$env/dynamic/private";
-import { removeSubscriber, removeSubscribersBulk } from "$lib/schema";
+import { removeSubscriber, removeSubscribersBulk } from "$lib/server/schema";
 
 const getConvexClient = () => {
   const url = env.CONVEX_CLOUD_URL;
