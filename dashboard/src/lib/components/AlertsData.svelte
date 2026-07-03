@@ -37,6 +37,7 @@
   import { useQuery } from "convex-svelte";
   import { api } from "../../convex/_generated/api";
   import { toast } from "svelte-sonner";
+  import { form } from "$app/server";
 
   const subC = useQuery(api.subscribers.count, {});
   let totalCount = $state(0);
@@ -185,7 +186,9 @@
             const selectedRows = table.getSelectedRowModel().rows;
             const selectedIds = selectedRows.map((row) => row.original.id);
 
-            const isBulk = selectedIds.length > 1;
+            const selectEmails = selectedRows.map((row) => row.original.email);
+
+            const isBulk = selectedIds.length > 1 || selectEmails.length > 1;
 
             confirmDelete({
               title: isBulk ? "Delete monitors" : "Delete monitor",
@@ -203,13 +206,14 @@
 
                 if (!isBulk) {
                   formData.append("_id", selectedIds[0]);
-                  formData.append("email", selectedRows[0].original.email);
+                  formData.append("email", selectEmails[0]);
                 } else {
                   formData.append(
                     "_id",
 
                     JSON.stringify(selectedIds),
                   );
+                  formData.append("email", JSON.stringify(selectEmails));
                 }
 
                 formData.append("confirmation", "yes");
