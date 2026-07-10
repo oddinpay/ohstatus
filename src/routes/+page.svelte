@@ -1108,13 +1108,13 @@
                                     </Tooltip.Trigger>
 
                                     <Tooltip.Content
-                                      class="bg-[#1e293b] border-[#334155] text-white"
+                                      class="bg-[#1e293b] border-gray-500 text-white"
                                     >
                                       <div
                                         class="flex flex-col items-center justify-center p-2 text-sm"
                                       >
                                         <span
-                                          class="font-medium text-white mb-1"
+                                          class="font-lg font-semibold text-white mb-1"
                                         >
                                           {new Date(s.date).toLocaleDateString(
                                             "en-US",
@@ -1127,14 +1127,14 @@
                                             ? 'text-lime-400'
                                             : 'text-slate-300'} text-md"
                                         >
-                                          {api.uptime90} uptime
+                                          {parseFloat(api.uptime90)} uptime
                                         </span>
 
                                         {#if s.status === "warn"}
                                           <span
                                             class="text-yellow-400 text-xs mt-1 font-semibold"
                                           >
-                                            {api.uptime30} uptime
+                                            {parseFloat(api.uptime30)} uptime
                                           </span>
                                         {:else if s.status === "down"}
                                           <span
