@@ -1124,15 +1124,15 @@
                                           )}
                                         </span>
 
-                                        <span
-                                          class="{s.status === 'up'
-                                            ? 'text-lime-400'
-                                            : 'text-slate-300'} text-sm"
-                                        >
-                                          {parseFloat(api.uptime90)}% uptime
-                                        </span>
-
-                                        {#if s.status === "warn"}
+                                        {#if s.status === "up"}
+                                          <span
+                                            class="{s.status === 'up'
+                                              ? 'text-lime-400'
+                                              : 'text-slate-300'} text-sm"
+                                          >
+                                            {parseFloat(api.uptime90)}% uptime
+                                          </span>
+                                        {:else if s.status === "warn"}
                                           <span
                                             class="text-yellow-400 text-sm mt-1 font-semibold"
                                           >
@@ -1144,7 +1144,7 @@
                                           >
                                             Down for {s.downtime}
                                           </span>
-                                        {:else if s.status === "default"}
+                                        {:else}
                                           No data
                                         {/if}
                                       </div>
