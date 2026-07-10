@@ -1092,15 +1092,63 @@
                                 >
                               </div>
                             </div>
-                            <div class="bar">
-                              {#each api.statuses as s, i}
-                                <div
-                                  class="chip {s.status} {i === dayIndex
-                                    ? s.status
-                                    : ''}"
-                                ></div>
-                              {/each}
-                            </div>
+                            <Tooltip.Provider delayDuration={100}>
+                              <div class="bar">
+                                {#each api.statuses as s, i}
+                                  <Tooltip.Root>
+                                    <Tooltip.Trigger>
+                                      {#snippet child({ props })}
+                                        <div
+                                          {...props}
+                                          class="chip {s.status} {i === dayIndex
+                                            ? s.status
+                                            : ''}"
+                                        ></div>
+                                      {/snippet}
+                                    </Tooltip.Trigger>
+
+                                    <Tooltip.Content
+                                      class="bg-[#1e293b] border-[#334155] text-white"
+                                    >
+                                      <div
+                                        class="flex flex-col items-center justify-center p-2 text-sm"
+                                      >
+                                        <span
+                                          class="font-medium text-white mb-1"
+                                        >
+                                          {new Date(s.date).toLocaleDateString(
+                                            "en-US",
+                                            { month: "short", day: "numeric" },
+                                          )}
+                                        </span>
+
+                                        <span
+                                          class="{s.status === 'up'
+                                            ? 'text-lime-400'
+                                            : 'text-slate-300'} text-md"
+                                        >
+                                          {api.uptime90} uptime
+                                        </span>
+
+                                        {#if s.status === "warn"}
+                                          <span
+                                            class="text-yellow-400 text-xs mt-1 font-semibold"
+                                          >
+                                            {api.uptime30} uptime
+                                          </span>
+                                        {:else if s.status === "down"}
+                                          <span
+                                            class="text-red-400 text-xs mt-1 font-semibold"
+                                          >
+                                            Down for
+                                          </span>
+                                        {/if}
+                                      </div>
+                                    </Tooltip.Content>
+                                  </Tooltip.Root>
+                                {/each}
+                              </div>
+                            </Tooltip.Provider>
                             <div class="timeline">
                               <span class="label15 text-zinc-500"
                                 >15 days ago</span
