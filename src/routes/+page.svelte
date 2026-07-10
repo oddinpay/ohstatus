@@ -57,6 +57,7 @@
   interface StatusEntry {
     date: Date;
     status: StatusType;
+    downtime: string;
   }
 
   interface ApiData {
@@ -287,6 +288,7 @@
           return {
             date: tempDate,
             status: resolved,
+            downtime: slaHistory[dateIndex]?.downtime || "0s",
           };
         },
       );
@@ -1108,14 +1110,13 @@
                                     </Tooltip.Trigger>
 
                                     <Tooltip.Content
-                                      id="container-border"
                                       class="bg-[#1e293b] rounded-md text-white"
                                     >
                                       <div
                                         class="flex flex-col items-center justify-center p-2 text-sm"
                                       >
                                         <span
-                                          class="text-medium font-medium text-white mb-1"
+                                          class="text-lg font-medium text-white mb-1"
                                         >
                                           {new Date(s.date).toLocaleDateString(
                                             "en-US",
@@ -1126,7 +1127,7 @@
                                         <span
                                           class="{s.status === 'up'
                                             ? 'text-lime-400'
-                                            : 'text-slate-300'} text-md"
+                                            : 'text-slate-300'} text-xs"
                                         >
                                           {parseFloat(api.uptime90)}% uptime
                                         </span>
@@ -1141,7 +1142,7 @@
                                           <span
                                             class="text-red-400 text-xs mt-1 font-semibold"
                                           >
-                                            Down for
+                                            Down for {s.downtime}
                                           </span>
                                         {/if}
                                       </div>
