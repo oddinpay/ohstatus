@@ -1104,7 +1104,7 @@
                                       {#snippet child({ props })}
                                         <div
                                           {...props}
-                                          class="chip border-dark-10 border {s.status} {i ===
+                                          class="chip border-border-input border {s.status} {i ===
                                           dayIndex
                                             ? s.status
                                             : ''}"
@@ -1113,7 +1113,7 @@
                                     </Tooltip.Trigger>
 
                                     <Tooltip.Content
-                                      class="bg-black rounded-md text-white shadow-md shadow-black/20"
+                                      class="bg-black rounded-md  text-white shadow-md shadow-black/20"
                                     >
                                       <div
                                         class="flex flex-col items-center justify-center p-2 text-sm"
