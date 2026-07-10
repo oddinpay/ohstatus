@@ -1108,13 +1108,13 @@
                                     </Tooltip.Trigger>
 
                                     <Tooltip.Content
-                                      class="bg-[#1e293b] border-gray-500 text-white"
+                                      class="bg-[#1e293b] border-gray-500 border-2 text-white"
                                     >
                                       <div
                                         class="flex flex-col items-center justify-center p-2 text-sm"
                                       >
                                         <span
-                                          class="font-lg font-medium text-white mb-1"
+                                          class="text-medium font-medium text-white mb-1"
                                         >
                                           {new Date(s.date).toLocaleDateString(
                                             "en-US",
