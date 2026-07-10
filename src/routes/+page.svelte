@@ -1144,6 +1144,8 @@
                                           >
                                             Down for {s.downtime}
                                           </span>
+                                        {:else}
+                                          No data
                                         {/if}
                                       </div>
                                     </Tooltip.Content>
