@@ -1113,11 +1113,10 @@
                                     </Tooltip.Trigger>
 
                                     <Tooltip.Content
-                                      sideOffset={8}
-                                      class="bg-black rounded-md  text-white shadow-md shadow-black/20"
+                                      class="bg-black rounded-md text-white shadow-md shadow-black/20"
                                     >
                                       <div
-                                        class="flex border-dark-10 border flex-col items-center justify-center p-2 text-sm"
+                                        class="flex flex-col items-center justify-center p-2 text-sm"
                                       >
                                         <span
                                           class="text-medium font-medium text-white mb-1"
