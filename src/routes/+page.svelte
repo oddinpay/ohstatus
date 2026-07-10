@@ -1094,11 +1094,20 @@
                             </div>
                             <div class="bar">
                               {#each api.statuses as s, i}
-                                <div
-                                  class="chip {s.status} {i === dayIndex
-                                    ? s.status
-                                    : ''}"
-                                ></div>
+                                <Tooltip.Provider>
+                                  <Tooltip.Root>
+                                    <Tooltip.Trigger>
+                                      <div
+                                        class="chip {s.status} {i === dayIndex
+                                          ? s.status
+                                          : ''}"
+                                      ></div>
+                                    </Tooltip.Trigger>
+                                    <Tooltip.Content>
+                                      <p>Add to library</p>
+                                    </Tooltip.Content>
+                                  </Tooltip.Root>
+                                </Tooltip.Provider>
                               {/each}
                             </div>
                             <div class="timeline">
