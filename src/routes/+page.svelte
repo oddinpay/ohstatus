@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button/index.js";
   import Buttong from "$lib/components/Buttong.svelte";
-  import { Tooltip } from "bits-ui";
+  import * as Tooltip from "$lib/components/ui/tooltip/index.js";
   import { Skeleton } from "$lib/components/ui/skeleton/index.js";
   import Footer from "$lib/components/Footer.svelte";
   import {
@@ -1123,16 +1123,13 @@
                                     </Tooltip.Trigger>
 
                                     <Tooltip.Content
-                                      class="bg-white rounded-input border-dark-10 z-0 border shadow-popover text-white shadow-black/20"
+                                      class="bg-black rounded-input shadow-popover text-white shadow-black/20"
                                     >
-                                      <Tooltip.Arrow
-                                        class="bg-white rounded-input border-dark-10 z-0 border shadow-popover text-white shadow-black/20"
-                                      ></Tooltip.Arrow>
                                       <div
                                         class="flex flex-col items-center justify-center p-2 text-sm"
                                       >
                                         <span
-                                          class="text-medium font-medium text-black mb-1"
+                                          class="text-medium font-medium text-white mb-1"
                                         >
                                           {new Date(s.date).toLocaleDateString(
                                             "en-US",
