@@ -1123,7 +1123,7 @@
                                     </Tooltip.Trigger>
 
                                     <Tooltip.Content
-                                      class="bg-black rounded-input shadow-popover text-white shadow-black/20"
+                                      class="bg-black rounded-input shadow-sm text-white shadow-black/20"
                                     >
                                       <div
                                         class="flex flex-col items-center justify-center p-2 text-sm"
