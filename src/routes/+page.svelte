@@ -1146,9 +1146,9 @@
                                           </span>
                                         {:else}
                                           <span
-                                            class="text-slate-300 mt-1 font-semibold text-xs"
+                                            class="text-slate-300 mt-1 font-semibold text-sm"
                                           >
-                                            No uptime data
+                                            No data
                                           </span>
                                         {/if}
                                       </div>
