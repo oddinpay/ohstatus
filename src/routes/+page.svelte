@@ -288,7 +288,7 @@
           return {
             date: tempDate,
             status: resolved,
-            downtime: slaHistory[dateIndex]?.downtime || "0s",
+            downtime: slaHistory[dateIndex]?.downtime,
           };
         },
       );
@@ -1116,7 +1116,7 @@
                                         class="flex flex-col items-center justify-center p-2 text-sm"
                                       >
                                         <span
-                                          class="text-lg font-medium text-white mb-1"
+                                          class="text-medium font-medium text-white mb-1"
                                         >
                                           {new Date(s.date).toLocaleDateString(
                                             "en-US",
@@ -1127,20 +1127,21 @@
                                         <span
                                           class="{s.status === 'up'
                                             ? 'text-lime-400'
-                                            : 'text-slate-300'} text-xs"
+                                            : 'text-slate-300'} text-sm"
                                         >
                                           {parseFloat(api.uptime90)}% uptime
+                                          {s.downtime}
                                         </span>
 
                                         {#if s.status === "warn"}
                                           <span
-                                            class="text-yellow-400 text-xs mt-1 font-semibold"
+                                            class="text-yellow-400 text-sm mt-1 font-semibold"
                                           >
                                             {parseFloat(api.uptime30)}% uptime
                                           </span>
                                         {:else if s.status === "down"}
                                           <span
-                                            class="text-red-400 text-xs mt-1 font-semibold"
+                                            class="text-red-400 text-sm mt-1 font-semibold"
                                           >
                                             Down for {s.downtime}
                                           </span>
