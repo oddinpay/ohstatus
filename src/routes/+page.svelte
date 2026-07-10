@@ -1104,6 +1104,8 @@
                                       {#snippet child({ props })}
                                         <div
                                           {...props}
+                                          role="button"
+                                          tabindex="0"
                                           class="chip {s.status} {i === dayIndex
                                             ? s.status
                                             : ''}"
