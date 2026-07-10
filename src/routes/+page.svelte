@@ -1144,7 +1144,7 @@
                                           >
                                             Down for {s.downtime}
                                           </span>
-                                        {:else}
+                                        {:else if s.status === "default"}
                                           No data
                                         {/if}
                                       </div>
