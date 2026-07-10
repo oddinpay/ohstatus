@@ -1104,8 +1104,7 @@
                                       {#snippet child({ props })}
                                         <div
                                           {...props}
-                                          class="chip border {s.status} {i ===
-                                          dayIndex
+                                          class="chip {s.status} {i === dayIndex
                                             ? s.status
                                             : ''}"
                                         ></div>
