@@ -1104,7 +1104,7 @@
                                       {#snippet child({ props })}
                                         <div
                                           {...props}
-                                          class="chip border-border-input border {s.status} {i ===
+                                          class="chip border {s.status} {i ===
                                           dayIndex
                                             ? s.status
                                             : ''}"
@@ -1116,7 +1116,7 @@
                                       class="bg-black rounded-md  text-white shadow-md shadow-black/20"
                                     >
                                       <div
-                                        class="flex flex-col items-center justify-center p-2 text-sm"
+                                        class="flex border-dark-10 border flex-col items-center justify-center p-2 text-sm"
                                       >
                                         <span
                                           class="text-medium font-medium text-white mb-1"
