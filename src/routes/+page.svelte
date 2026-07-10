@@ -1146,7 +1146,7 @@
                                           </span>
                                         {:else}
                                           <span
-                                            class="text-slate-300 mt-1 font-semibold text-sm"
+                                            class="text-slate-300 mt-1 font-medium text-sm"
                                           >
                                             No data
                                           </span>
