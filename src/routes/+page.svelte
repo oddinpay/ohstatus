@@ -25,6 +25,8 @@
   } from "@internationalized/date";
   import Dialog from "$lib/components/Dialog.svelte";
 
+  let { class: className, ...restProps } = $props();
+
   const query = useQuery(api.site.get);
   const schedulesQuery = useQuery(api.schedules.get);
   const incidentsQuery = useQuery(api.incidents.get);
