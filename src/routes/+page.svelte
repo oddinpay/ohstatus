@@ -1,7 +1,7 @@
 <script lang="ts">
   import { Button } from "$lib/components/ui/button/index.js";
   import Buttong from "$lib/components/Buttong.svelte";
-  import { Tooltip } from "bits-ui";
+  import * as Tooltip from "$lib/components/ui/tooltip/index.js";
   import { Skeleton } from "$lib/components/ui/skeleton/index.js";
   import Footer from "$lib/components/Footer.svelte";
   import {
@@ -1114,8 +1114,6 @@
                                     <Tooltip.Content
                                       class="bg-[#1e293b] rounded-md text-white shadow-md shadow-black/20"
                                     >
-                                      <Tooltip.Arrow />
-
                                       <div
                                         class="flex flex-col items-center justify-center p-2 text-sm"
                                       >
