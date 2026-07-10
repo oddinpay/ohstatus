@@ -1130,7 +1130,6 @@
                                             : 'text-slate-300'} text-sm"
                                         >
                                           {parseFloat(api.uptime90)}% uptime
-                                          {s.downtime}
                                         </span>
 
                                         {#if s.status === "warn"}
