@@ -1145,7 +1145,11 @@
                                             Down for {s.downtime}
                                           </span>
                                         {:else}
-                                          No uptime data
+                                          <span
+                                            class="text-slate-300 mt-1 font-semibold text-xs"
+                                          >
+                                            No uptime data
+                                          </span>
                                         {/if}
                                       </div>
                                     </Tooltip.Content>
