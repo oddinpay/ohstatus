@@ -1108,14 +1108,14 @@
                                     </Tooltip.Trigger>
 
                                     <Tooltip.Content
-                                      class="bg-[#1e293b] border border-solid border-slate-300 rounded-lg text-white"
-                                      style="border: 1px solid #64748b;"
+                                      id="container-border"
+                                      class="bg-[#1e293b] rounded-md text-white"
                                     >
                                       <div
                                         class="flex flex-col items-center justify-center p-2 text-sm"
                                       >
                                         <span
-                                          class="text-lg font-medium text-white mb-1"
+                                          class="text-medium font-medium text-white mb-1"
                                         >
                                           {new Date(s.date).toLocaleDateString(
                                             "en-US",
@@ -2058,6 +2058,12 @@
       100% {
         background-position: 0 0;
       }
+    }
+
+    #container-border {
+      border-width: 2px;
+      border-color: red;
+      border-style: dashed;
     }
   </style>
 </svelte:head>
