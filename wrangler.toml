@@ -32,3 +32,6 @@ migrations_dir = "drizzle"
 [[queues.producers]]
 binding = "SUBSCRIBERS_QUEUE"
 queue = "sync-subscribers"
+
+[vars]
+PUBLIC_SSE_HOST = "beep.oddinpay.com"
