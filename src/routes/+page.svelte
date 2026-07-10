@@ -688,6 +688,12 @@
 
     return finalMaintenanceList.filter((m) => m.entries.length > 0);
   });
+
+  let tooltipOpen = $state<Record<number, boolean>>({});
+
+  function toggleTooltip(index: number) {
+    tooltipOpen[index] = !tooltipOpen[index];
+  }
 </script>
 
 {#if ready}
@@ -1104,6 +1110,11 @@
                                       {#snippet child({ props })}
                                         <div
                                           {...props}
+                                          onclick={() => toggleTooltip(i)}
+                                          ontouchstart={(e) => {
+                                            e.preventDefault();
+                                            toggleTooltip(i);
+                                          }}
                                           class="chip {s.status} {i === dayIndex
                                             ? s.status
                                             : ''}"
