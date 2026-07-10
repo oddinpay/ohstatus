@@ -1112,7 +1112,7 @@
                                     </Tooltip.Trigger>
 
                                     <Tooltip.Content
-                                      class="bg-black rounded-md text-white shadow-md shadow-black/20 border-solid border-2 border-zinc-700"
+                                      class="bg-black rounded-md text-white shadow-md shadow-black/20"
                                     >
                                       <div
                                         class="flex flex-col items-center justify-center p-2 text-sm"
