@@ -1113,6 +1113,7 @@
                                     </Tooltip.Trigger>
 
                                     <Tooltip.Content
+                                      sideOffset={8}
                                       class="bg-black rounded-md  text-white shadow-md shadow-black/20"
                                     >
                                       <div
