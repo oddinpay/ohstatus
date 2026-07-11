@@ -23,6 +23,15 @@ export const addSubscriber = mutation({
       throw new Error("Unauthorized");
     }
 
+    const existing = await ctx.db
+      .query("subscribers")
+      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .unique();
+
+    if (existing) {
+      throw new Error("Subscriber with this email already exists");
+    }
+
     const subscriberId = await ctx.db.insert("subscribers", {
       email: args.email,
       status: args.status,
