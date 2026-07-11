@@ -91,6 +91,23 @@ export const get = query({
   },
 });
 
+export const getSubscriberByEmail = query({
+  args: {
+    apiKey: v.string(),
+    email: v.string(),
+    status: v.string(),
+  },
+  handler: async (ctx, args) => {
+    if (args.apiKey !== process.env.API_KEY) {
+      throw new Error("Unauthorized");
+    }
+    return await ctx.db
+      .query("subscribers")
+      .withIndex("by_email", (q) => q.eq("email", args.email))
+      .unique();
+  },
+});
+
 // Sync
 export const backfill = mutation({
   handler: async (ctx) => {
