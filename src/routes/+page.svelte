@@ -1124,7 +1124,7 @@
 
                                     <Tooltip.Content
                                       style="box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;"
-                                      class="bg-black rounded-input shadow-sm text-white"
+                                      class="bg-black rounded-input  text-white"
                                     >
                                       <div
                                         class="flex flex-col items-center justify-center p-2 text-sm"
