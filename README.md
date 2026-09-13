@@ -32,6 +32,8 @@ The ohstatus dashboard runs locally, decoupled from the serverless environment. 
 > [!NOTE]
 > We have three components: `API`, `status page`, and the `dashboard`. The status page must run on Cloudflare (it doesn't work anywhere else), but the API and dashboard can run anywhere.
 
+--------------------------------------------------------------------------------
+
 ### API Deployment & Installation
 
 #### Prerequisites
@@ -79,6 +81,8 @@ X_API_KEY=
 ```
 
 <br>
+
+--------------------------------------------------------------------------------
 
 ### Deploy Everywhere
 
@@ -148,6 +152,8 @@ mv ohstatus-server ohstatus-server.exe
 
 <br>
 
+--------------------------------------------------------------------------------
+
 ### Convex
 
 Ohstatus uses [Convex](https://docs.convex.dev/) as its database.
@@ -193,6 +199,8 @@ convex deploy
 ```
 
 <br>
+
+--------------------------------------------------------------------------------
 
 ### Status Page
 
@@ -337,6 +345,8 @@ API_KEY=add_generated_API_KEY_from_above_here
 <img width="1078" height="570" alt="chrome_hYCcw03xiX" src="https://github.com/user-attachments/assets/c440d608-3c95-4b1c-ad65-275612e6e3ac" />
 
 <br>
+
+--------------------------------------------------------------------------------
 
 ### Dashboard
 
