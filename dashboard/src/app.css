@@ -141,6 +141,56 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+@theme {
+  --breakpoint-desktop: 1440px;
+  --breakpoint-stm: 515px;
+  --breakpoint-567: 567px;
+  --breakpoint-nokia: 240px;
+  --breakpoint-ipad: 810px;
+  --breakpoint-450: 450px;
+  --breakpoint-639: 639px;
+  --breakpoint-ipad-md: 484px;
+  --breakpoint-640: 640px;
+  --breakpoint-note: 412px;
+  --breakpoint-s20: 384px;
+  --breakpoint-ip11: 375px;
+  --breakpoint-480: 480px;
+  --breakpoint-iphone: 350px;
+  --breakpoint-ip13: 428px;
+  --breakpoint-ipse: 320px;
+  --breakpoint-kindle: 800px;
+  --breakpoint-612: 612px;
+  --breakpoint-668: 668px;
+  --breakpoint-1182: 1182px;
+  --breakpoint-300: 300px;
+  --breakpoint-200: 200px;
+  --breakpoint-280: 280px;
+  --breakpoint-608: 608px;
+  --breakpoint-900: 900px;
+  --breakpoint-730: 730px;
+  --breakpoint-195: 195px;
+  --breakpoint-tm: 192px;
+  --breakpoint-50: 50px;
+  --breakpoint-100: 100px;
+  --breakpoint-327: 327px;
+  --breakpoint-321: 321px;
+  --breakpoint-180: 180px;
+  --breakpoint-ip12: 390px;
+  --breeakpoint-300: 300px;
+  --breakpoint-ipxs: 414px;
+  --breakpoint-360: 360px;
+  --breakpoint-344: 344px;
+  --breakpoint-330: 330px;
+  --breakpoint-721: 721px;
+  --breakpoint-1600: 1600px;
+  --breakpoint-1601: 1601px;
+  --height: 24px;
+  --track-color: lightgray;
+  --knob-color: white;
+  --active-track-color: #2ecc71;
+  --active-knob-color: white;
+}
+
 @theme inline {
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
@@ -354,56 +404,6 @@
       0 0 0 2px var(--color-ring),
       0 0 0 6px var(--color-background);
   }
-}
-
-@theme {
-  --breakpoint-desktop: 1440px;
-  --breakpoint-stm: 515px;
-  --breakpoint-567: 567px;
-  --breakpoint-nokia: 240px;
-  --breakpoint-ipad: 810px;
-  --breakpoint-450: 450px;
-  --breakpoint-639: 639px;
-  --breakpoint-ipad-md: 484px;
-  --breakpoint-640: 640px;
-  --breakpoint-note: 412px;
-  --breakpoint-s20: 384px;
-  --breakpoint-ip11: 375px;
-  --breakpoint-480: 480px;
-  --breakpoint-iphone: 350px;
-  --breakpoint-ip13: 428px;
-  --breakpoint-ipse: 320px;
-  --breakpoint-kindle: 800px;
-  --breakpoint-612: 612px;
-  --breakpoint-668: 668px;
-  --breakpoint-1182: 1182px;
-  --breakpoint-300: 300px;
-  --breakpoint-200: 200px;
-  --breakpoint-280: 280px;
-  --breakpoint-608: 608px;
-  --breakpoint-900: 900px;
-  --breakpoint-730: 730px;
-  --breakpoint-195: 195px;
-  --breakpoint-tm: 192px;
-  --breakpoint-50: 50px;
-  --breakpoint-100: 100px;
-  --breakpoint-327: 327px;
-  --breakpoint-321: 321px;
-  --breakpoint-180: 180px;
-  --breakpoint-ip12: 390px;
-  --breeakpoint-300: 300px;
-  --breakpoint-ipxs: 414px;
-  --breakpoint-360: 360px;
-  --breakpoint-344: 344px;
-  --breakpoint-330: 330px;
-  --breakpoint-721: 721px;
-  --breakpoint-1600: 1600px;
-  --breakpoint-1601: 1601px;
-  --height: 24px;
-  --track-color: lightgray;
-  --knob-color: white;
-  --active-track-color: #2ecc71;
-  --active-knob-color: white;
 }
 
 input::-webkit-outer-spin-button,
