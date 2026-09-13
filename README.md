@@ -211,7 +211,20 @@ convex deploy
 <br>
 
 > [!TIP]
-> Be sure to provide the value for `WORKER_ENDPOINT_URL` using your worker URL/Domain (for example: [https://status.example.com/api/alerts](https://worker.hostname/api/alerts)). `/api/alerts` endpoint is required.
+> Be sure to provide the value for `WORKER_ENDPOINT_URL` using your worker URL/Domain (for example: [https://status.example.com/api/alerts](https://worker.hostname/api/alerts)) and `/api/alerts` endpoint is required.
+
+<br>
+
+Open svelte.config.js in your project and replace the existing URL with your actual domain.
+
+```js
+kit: {
+  csrf: {
+    // Replace with your actual status page domain
+    trustedOrigins: ["https://status.example.com"], 
+  }
+}
+```
 
 <br>
 
