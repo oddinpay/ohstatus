@@ -84,7 +84,7 @@ function buildAndDeploy() {
 }
 
 function init() {
-  console.log(`⚙️  Using package manager: ${pkgManager}`);
+  console.log(`⚙️ Using package manager: ${pkgManager}`);
 
   if (fs.existsSync("./build")) {
     rl.question(
