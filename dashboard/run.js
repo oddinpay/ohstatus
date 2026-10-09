@@ -59,12 +59,12 @@ function setupPM2() {
   try {
     checkGlobalPM2();
 
-    console.log("\n--- Starting App with PM2 (No OS Auto-Boot) ---");
+    console.log("\n--- Starting Ohstatus (No OS Auto-Boot) ---");
     runCommand("pm2 start ecosystem.config.cjs");
     runCommand("pm2 save");
 
     console.log(
-      "\n✅ App is running in the background at http://localhost:5174  (Note: It will not start automatically if the server reboots).",
+      "\n✅ Ohstatus is running in the background at http://localhost:5174  (Note: It will not start automatically if the server reboots).",
     );
     process.exit(0);
   } catch (error) {
@@ -77,7 +77,7 @@ function buildAndDeploy() {
   console.log(`\n--- Installing Dependencies via ${pkgManager} ---`);
   runCommand(`${pkgManager} install`);
 
-  console.log(`\n--- Building App via ${pkgManager} ---`);
+  console.log(`\n--- Building Ohstatus via ${pkgManager} ---`);
   runCommand(`${pkgManager} run build`);
 
   setupPM2();
